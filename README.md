@@ -1,1 +1,3 @@
 # MindYou
+
+"MindYou" is an application that aims to help you to be happier by the activities we all do in our daily life. It can be used to inform you of what and how much time you do something in an easy and unobtrusive way. It also makes suggestions on how to keep your days fresh and not get stuck in a routine by advising you to maybe take a walk in the park during a stressful week, or cook a nice meal or do your favourite sport if you haven't done so recently. Additionally, your friends can invite you to join them in one of their activities or suggest to you something you maybe never tried, but might be interested to try. 
