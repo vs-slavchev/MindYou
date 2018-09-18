@@ -12,6 +12,8 @@ services:
     - ./statisticsService:/code
     ports:
     - "5000:5000"
+    depends_on:
+      - postgres
     environment:
     - DATABASE_NAME=pnp_portal
     - DATABASE_USER=pnp_portal
@@ -29,3 +31,13 @@ services:
     - ./.envs/.local/.postgres
     ports:
     - "5432:5432"
+
+  play:
+    build: ./play-java-service
+    command: sbt run
+    depends_on:
+      - postgres
+    volumes:
+    - ./play-java-service:/code
+    ports:
+    - "9000:9000"

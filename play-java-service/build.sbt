@@ -2,6 +2,10 @@ name := """play-java-starter-example"""
 
 version := "1.0-SNAPSHOT"
 
+javaOptions in Universal ++= Seq(
+  "-Dpidfile.path=/dev/null"
+)
+
 lazy val root = (project in file(".")).enablePlugins(PlayJava)
 
 scalaVersion := "2.12.6"
