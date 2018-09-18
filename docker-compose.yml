@@ -1,7 +1,11 @@
 version: '3'
 
+volumes:
+  postgres_data_local: {}
+
+
 services:
-  web:
+  statistics_service:
     build: ./statisticsService
     command: python3 app.py
     volumes:
@@ -16,3 +20,12 @@ services:
     - DATABASE_HOST=37.97.227.232
     - SECRET_KEY=x&=v)*(38ab&q9y-+)ic*k-=y=!=u%!19tquq3b(cjf^w&fkdg
     - DEBUG_MODE=True
+
+  postgres:
+    image: postgres
+    volumes:
+    - postgres_data_local:/var/lib/postgresql/data
+    env_file:
+    - ./.envs/.local/.postgres
+    ports:
+    - "5432:5432"
