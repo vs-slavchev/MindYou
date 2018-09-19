@@ -1,21 +1,40 @@
 package controllers;
 
-import play.mvc.*;
+import play.libs.concurrent.HttpExecutionContext;
+import play.libs.ws.WSBodyReadables;
+import play.libs.ws.WSBodyWritables;
+import play.libs.ws.WSClient;
+import play.mvc.Controller;
+import play.mvc.Result;
+
+import javax.inject.Inject;
+import java.util.concurrent.CompletionStage;
 
 /**
  * This controller contains an action to handle HTTP requests
  * to the application's home page.
  */
-public class HomeController extends Controller {
+public class HomeController extends Controller implements WSBodyReadables, WSBodyWritables {
 
-    /**
-     * An action that renders an HTML page with a welcome message.
-     * The configuration in the <code>routes</code> file means that
-     * this method will be called when the application receives a
-     * <code>GET</code> request with a path of <code>/</code>.
-     */
-    public Result index() {
-        return ok(views.html.index.render());
+    private final WSClient ws;
+    private HttpExecutionContext httpExecutionContext;
+
+    @Inject
+    public HomeController(WSClient ws, HttpExecutionContext ec) {
+        this.ws = ws;
+        this.httpExecutionContext = ec;
+    }
+
+
+    public CompletionStage<Result> index() {
+        String requestUrl = "https://jsonplaceholder.typicode.com/todos/1";
+        //                   http://192.168.178.206:5000/activity/swimming
+
+        return ws.url(requestUrl)
+                .get().thenApplyAsync(answer -> {
+                    ctx().flash().put("info", "Response updated!");
+                    return ok("answer was " + answer.getBody(json()));
+                }, httpExecutionContext.current());
     }
 
 }
