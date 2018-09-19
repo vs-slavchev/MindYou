@@ -1,0 +1,43 @@
+version: '3'
+
+volumes:
+  postgres_data_local: {}
+
+
+services:
+  statistics_service:
+    build: ../statisticsService
+    command: python3 app.py
+    volumes:
+    - ../statisticsService:/code
+    ports:
+    - "5000:5000"
+    depends_on:
+      - postgres
+    environment:
+    - DATABASE_NAME=pnp_portal
+    - DATABASE_USER=pnp_portal
+    - DATABASE_PASSWORD=%y0nQq68
+    - DATABASE_PORT=3306
+    - DATABASE_HOST=37.97.227.232
+    - SECRET_KEY=x&=v)*(38ab&q9y-+)ic*k-=y=!=u%!19tquq3b(cjf^w&fkdg
+    - DEBUG_MODE=True
+
+  postgres:
+    image: postgres:10.4-alpine
+    volumes:
+    - postgres_data_local:/var/lib/postgresql/data
+    env_file:
+    - ../.envs/.local/.postgres
+    ports:
+    - "5432:5432"
+
+  play:
+    build: ../play-java-service
+    command: sbt run
+    depends_on:
+      - postgres
+    volumes:
+    - ../play-java-service:/code
+    ports:
+    - "9000:9000"
