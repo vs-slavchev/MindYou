@@ -200,3 +200,5 @@ statistics-service/.ropeproject
 
 # mypy
 statistics-service/.mypy_cache/
+
+\.idea/
