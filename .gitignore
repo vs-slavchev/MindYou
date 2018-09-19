@@ -202,3 +202,5 @@ statistics-service/.ropeproject
 statistics-service/.mypy_cache/
 
 \.idea/
+
+*.jar
