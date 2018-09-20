@@ -23,11 +23,15 @@ RUN \
   apt-get update && \
   apt-get install sbt
 
+COPY ./compose/local/play/run.sh /run.sh
+RUN sed -i 's/\r//' /run.sh
+RUN chmod +x /run.sh
+#RUN chown play /run.sh
+
 RUN mkdir /code
 
-#OLD
-#ADD . /code/
-#NEW
-ADD ../play-serivce/ /code/ 
+ADD ./play-service/ /code/
 
 WORKDIR /code
+
+ENTRYPOINT ["/run.sh"]

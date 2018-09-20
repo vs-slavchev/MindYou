@@ -17,6 +17,33 @@ stats = [
     }
 ]
 
+heroes = [
+    { "id": 11, "name": "Mr. Nice" },
+    { "id": 12, "name": "Narco" },
+    { "id": 13, "name": "Bombasto" },
+    { "id": 14, "name": "Celeritas" },
+    { "id": 15, "name": "Magneta" },
+    { "id": 16, "name": "RubberMan" },
+    { "id": 17, "name": "Dynama" },
+    { "id": 18, "name": "Dr IQ" },
+    { "id": 19, "name": "Magma" },
+    { "id": 20, "name": "Tornad" },
+    { "id": 11, "name": "Mr. Nice" },
+    { "id": 12, "name": "Narco" },
+    { "id": 13, "name": "Bombasto" },
+    { "id": 14, "name": "Celeritas" },
+    { "id": 15, "name": "Magneta" },
+    { "id": 16, "name": "RubberMan" },
+    { "id": 17, "name": "Dynama" },
+    { "id": 18, "name": "Dr IQ" },
+    { "id": 19, "name": "Magma" },
+    { "id": 20, "name": "Tornad" }
+]
+
+class Heroes(Resource):
+    def get(self):
+        return heroes, 200
+
 class Stat(Resource):
     def get(self, activity):
         for stat in stats:
@@ -35,6 +62,7 @@ class Stat(Resource):
       
       
 api.add_resource(Stat, "/activity/<string:activity>")
+api.add_resource(Heroes, "/heroes/")
 
 app.run(debug=True, host='0.0.0.0')
 
