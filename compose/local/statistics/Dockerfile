@@ -5,7 +5,6 @@ RUN mkdir /code
 
 ADD ./statistics-service/ /code
 WORKDIR /code
-#ADD ./requirements.txt /code/
 RUN pip install -r requirements.txt
 
 #WORKDIR /code
