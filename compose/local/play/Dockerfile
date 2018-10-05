@@ -1,32 +1,24 @@
-#
-# sbt Dockerfile
-#
-# https://github.com/hseeberger/docker-sbt
-#
+FROM anapsix/alpine-java:jdk8
 
-# Pull base image
-FROM openjdk:10.0.1-slim
-
-# Env variables
-ENV SBT_VERSION 1.1.5
-
-# Install curl
-RUN \
-  apt-get update && \
-  apt-get -y install curl
+ENV SBT_VERSION 0.13.15
+ENV CHECKSUM 18b106d09b2874f2a538c6e1f6b20c565885b2a8051428bd6d630fb92c1c0f96
 
 # Install sbt
-RUN \
-  curl -L -o sbt-$SBT_VERSION.deb https://dl.bintray.com/sbt/debian/sbt-$SBT_VERSION.deb && \
-  dpkg -i sbt-$SBT_VERSION.deb && \
-  rm sbt-$SBT_VERSION.deb && \
-  apt-get update && \
-  apt-get install sbt
+RUN apk add --update bash curl openssl ca-certificates && \
+  curl -L -o /tmp/sbt.zip \
+    https://dl.bintray.com/sbt/native-packages/sbt/${SBT_VERSION}/sbt-${SBT_VERSION}.zip && \
+  openssl dgst -sha256 /tmp/sbt.zip \
+    | grep ${CHECKSUM} \
+    || (echo 'shasum mismatch' && false) && \
+  mkdir -p /opt/sbt && \
+  unzip /tmp/sbt.zip -d /opt/sbt && \
+  rm /tmp/sbt.zip && \
+  chmod +x /opt/sbt/sbt/bin/sbt && \
+  ln -s /opt/sbt/sbt/bin/sbt /usr/bin/sbt && \
+  rm -rf /tmp/* /var/cache/apk/*
 
-COPY ./compose/local/play/run.sh /run.sh
-RUN sed -i 's/\r//' /run.sh
-RUN chmod +x /run.sh
-#RUN chown play /run.sh
+# Prebuild with sbt
+COPY ./play-service/ /tmp/build/
 
 RUN mkdir /code
 
@@ -34,4 +26,10 @@ ADD ./play-service/ /code/
 
 WORKDIR /code
 
-ENTRYPOINT ["/run.sh"]
+# sbt sometimes failed because of network. retry 3 times.
+RUN cd /tmp/build && \
+  (sbt compile || sbt compile || sbt compile) && \
+  (sbt test:compile || sbt test:compile || sbt test:compile) && \
+  rm -rf /tmp/build
+
+CMD ["sbt"]

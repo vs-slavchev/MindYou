@@ -14,28 +14,28 @@ services:
     volumes:
     - ./statistics-service:/code
     ports:
-    - "80:5000"
-#    depends_on:
-#      - postgres
+    - "5000:5000"
+    depends_on:
+      - postgres
 
-#  postgres:
-#    image: postgres:10.4-alpine
-#    volumes:
-#    - postgres_data_local:/var/lib/postgresql/data
-#    env_file:
-#    - ./.envs/.local/.postgres
-#    ports:
-#    - "5432:5432"
+  postgres:
+    image: postgres:10.4-alpine
+    volumes:
+    - postgres_data_local:/var/lib/postgresql/data
+    env_file:
+    - ./.envs/.local/.postgres
+    ports:
+    - "5432:5432"
 
 #  play:
 #    build:
 #      context: .
 #      dockerfile: ./compose/local/play/Dockerfile
 #    image: play
-#    command: /run.sh
+##    command: /run.sh
 #    volumes:
 #    - ./play-service:/code
 #    ports:
-#    - "5000:5000"
+#    - "9000:9000"
 #    depends_on:
 #      - postgres
