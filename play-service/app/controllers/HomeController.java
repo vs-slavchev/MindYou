@@ -6,6 +6,7 @@ import play.libs.ws.WSBodyWritables;
 import play.libs.ws.WSClient;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.Logger;
 
 import javax.inject.Inject;
 import java.util.concurrent.CompletionStage;
@@ -18,6 +19,7 @@ public class HomeController extends Controller implements WSBodyReadables, WSBod
 
     private final WSClient ws;
     private HttpExecutionContext httpExecutionContext;
+    final Logger.ALogger statisticsProxyLogger = Logger.of("statisticsProxy");
 
     @Inject
     public HomeController(WSClient ws, HttpExecutionContext ec) {
@@ -27,6 +29,7 @@ public class HomeController extends Controller implements WSBodyReadables, WSBod
 
 
     public CompletionStage<Result> index() {
+        statisticsProxyLogger.debug("calling statistics_service");
         String requestUrl = "https://jsonplaceholder.typicode.com/todos/1";
         //                   http://192.168.178.206:5000/activity/swimming
 
@@ -35,6 +38,10 @@ public class HomeController extends Controller implements WSBodyReadables, WSBod
                     ctx().flash().put("info", "Response updated!");
                     return ok("answer was " + answer.getBody(json()));
                 }, httpExecutionContext.current());
+    }
+
+    public Result showUser(Long id) {
+        return ok("user " + id);
     }
 
 }
