@@ -19,7 +19,7 @@ public class HomeController extends Controller implements WSBodyReadables, WSBod
 
     private final WSClient ws;
     private HttpExecutionContext httpExecutionContext;
-    final Logger.ALogger statisticsProxyLogger = Logger.of("statisticsProxy");
+    private final Logger.ALogger statisticsProxyLogger = Logger.of("statisticsProxy");
 
     @Inject
     public HomeController(WSClient ws, HttpExecutionContext ec) {
@@ -44,4 +44,16 @@ public class HomeController extends Controller implements WSBodyReadables, WSBod
         return ok("user " + id);
     }
 
+    public Result listActivities(Long number) {
+        return ok("list of " + number);
+    }
+
+    public Result startActivity() {
+        return ok();
+    }
+
+
+    public Result stopActivity() {
+        return ok();
+    }
 }
