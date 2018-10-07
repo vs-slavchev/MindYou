@@ -7,11 +7,11 @@ import javax.persistence.*;
 public class ActivityBlueprint {
 
     @Id
-    @Column(name = "activity_blueprint_id")
     @GeneratedValue
+    @Column(name = "activity_blueprint_id")
     private Long activityBlueprintId;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     public ActivityBlueprint(String name) {

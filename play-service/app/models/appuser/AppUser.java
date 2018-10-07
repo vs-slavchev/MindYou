@@ -10,7 +10,7 @@ public class AppUser {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     public AppUser(Long id, String name) {

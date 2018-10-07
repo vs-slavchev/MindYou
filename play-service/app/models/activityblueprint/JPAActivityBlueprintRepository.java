@@ -1,14 +1,11 @@
 package models.activityblueprint;
 
 import models.DatabaseExecutionContext;
-import models.appuser.AppUser;
-import models.appuser.AppUserRepository;
 import play.db.jpa.JPAApi;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.util.List;
 import java.util.concurrent.CompletionStage;
 import java.util.function.Function;
 import java.util.stream.Stream;
