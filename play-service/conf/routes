@@ -2,17 +2,20 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-GET         /                      controllers.HomeController.index
+GET         /                        controllers.HomeController.index
 
-GET         /user/:id              controllers.HomeController.showUser(id: Long)
+GET         /user/:id                controllers.HomeController.showUser(id: Long)
 
 # when app is started some activity blueprints are queried to be shown on activities screen
 # example: /activities/top?number=10 to only show the top 10 activities
-GET         /activities/top        controllers.HomeController.listActivities(number: Long)
+GET         /activities/top          controllers.HomeController.listActivities(number: Long)
 
 # in body provide as json activity_id and user_id; ex: {"activity_id":123,"user_id":321}
-POST        /activities/start      controllers.HomeController.startActivity
+POST        /activities/start        controllers.HomeController.startActivity
 
-# same as above
-GET         /activities/stop       controllers.HomeController.stopActivity
+# as param give the id of the user; example: /activities/stop?user_id=123
+GET         /activities/stop         controllers.HomeController.stopActivity(user_id: Long)
 
+
+# in body provide as json activity_id and user_id; ex: {"id":123,"name":"Andrea"}}
+POST        /user/create             controllers.HomeController.createAppUser
