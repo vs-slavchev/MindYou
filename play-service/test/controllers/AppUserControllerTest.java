@@ -15,7 +15,7 @@ import static play.mvc.Http.Status.OK;
 import static play.test.Helpers.GET;
 import static play.test.Helpers.route;
 
-public class HomeControllerTest extends WithApplication {
+public class AppUserControllerTest extends WithApplication {
 
     @Override
     protected Application provideApplication() {
@@ -35,7 +35,7 @@ public class HomeControllerTest extends WithApplication {
     //todo check how to instantiate with DI
     /*@Test
     public void testIndex() {
-        Result result = new HomeController().index();
+        Result result = new AppUserController().index();
         assertEquals(OK, result.status());
         assertEquals("text/html", result.contentType().get());
         assertEquals("utf-8", result.charset().get());
