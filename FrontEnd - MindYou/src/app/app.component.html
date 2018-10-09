@@ -1,0 +1,24 @@
+<!-- https://docs.nativescript.org/angular/core-concepts/angular-navigation.html#page-router-outlet -->
+<page-router-outlet></page-router-outlet> 
+<ScrollView>
+    <StackLayout class="form">
+        <StackLayout class="input-field">
+            <Label text="ID" class="label font-weight-bold m-b-5"></Label>
+            <TextField class="input" [(ngModel)]="input.id"></TextField>
+            <StackLayout class="hr-light"></StackLayout>
+        </StackLayout>
+        <StackLayout class="input-field">
+            <Label text="Title" class="label font-weight-bold m-b-5"></Label>
+            <TextField class="input" [(ngModel)]="input.title"></TextField>
+            <StackLayout class="hr-light"></StackLayout>
+        </StackLayout>
+        <StackLayout class="input-field">
+            <Label text="Body" class="label font-weight-bold m-b-5"></Label>
+            <TextField class="input" [(ngModel)]="input.body"></TextField>
+            <StackLayout class="hr-light"></StackLayout>
+        </StackLayout>
+        <StackLayout class="input-field">
+            <Button class="btn btn-primary w-full" text="Schedule" (tap)="schedule()"></Button>
+        </StackLayout>
+    </StackLayout>
+</ScrollView>
