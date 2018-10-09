@@ -88,7 +88,12 @@ play-service/server.pid
 play-service/*.eml
 play-service/dist/
 play-service/.cache
-
+play-service/.idea/misc.xml
+play-service/.idea/modules/play-service.iml
+play-service/.idea/modules/root-build.iml
+play-service/.idea/play2_project_settings.xml
+play-service/.idea/play2_settings.xml
+play-service/.idea/sbt.xml
 
 
 
