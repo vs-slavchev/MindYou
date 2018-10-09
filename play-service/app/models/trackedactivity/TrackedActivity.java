@@ -1,5 +1,8 @@
 package models.trackedactivity;
 
+import models.activityblueprint.ActivityBlueprint;
+import models.appuser.AppUser;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -8,58 +11,61 @@ import java.sql.Timestamp;
 public class TrackedActivity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "tracked_activity_id")
-    private Long tackedActivityId;
+    private Long trackedActivityId;
 
-    @Column(name = "activity_blueprint_id")
-    private Long activityBlueprintId;
+    @JoinColumn(name = "activity_blueprint_id")
+    @ManyToOne
+    private ActivityBlueprint activityBlueprint;
 
-    @Column(name = "user_id")
-    private Long appUserId;
+    @JoinColumn(name = "user_id")
+    @ManyToOne
+    private AppUser appUser;
 
     @Column(name = "time_start")
     private Timestamp timeStart;
 
-    @Column(name = "duration_minutes")
-    private Integer durationMinutes;
+    @Column(name = "duration_minutes", nullable = true)
+    private Long durationMinutes;
 
     @Column(name = "public_visibility")
     private Boolean publicVisibility;
 
-    public TrackedActivity(Long activityBlueprintId, Long appUserId, Timestamp timeStart,
-                           Integer durationMinutes, Boolean publicVisibility) {
-        this.activityBlueprintId = activityBlueprintId;
-        this.appUserId = appUserId;
+    public TrackedActivity(ActivityBlueprint activityBlueprint, AppUser appUser, Timestamp timeStart,
+                           Long durationMinutes, Boolean publicVisibility) {
+        this.activityBlueprint = activityBlueprint;
+        this.appUser = appUser;
         this.timeStart = timeStart;
         this.durationMinutes = durationMinutes;
         this.publicVisibility = publicVisibility;
     }
 
-    public TrackedActivity() {}
-
-    public Long getTackedActivityId() {
-        return tackedActivityId;
+    public TrackedActivity() {
     }
 
-    public void setTackedActivityId(Long tackedActivityId) {
-        this.tackedActivityId = tackedActivityId;
+    public Long getTrackedActivityId() {
+        return trackedActivityId;
     }
 
-    public Long getActivityBlueprintId() {
-        return activityBlueprintId;
+    public void setTrackedActivityId(Long tackedActivityId) {
+        this.trackedActivityId = tackedActivityId;
     }
 
-    public void setActivityBlueprintId(Long activityBlueprintId) {
-        this.activityBlueprintId = activityBlueprintId;
+    public ActivityBlueprint getActivityBlueprint() {
+        return activityBlueprint;
     }
 
-    public Long getAppUserId() {
-        return appUserId;
+    public void setActivityBlueprint(ActivityBlueprint activityBlueprint) {
+        this.activityBlueprint = activityBlueprint;
     }
 
-    public void setAppUserId(Long appUserId) {
-        this.appUserId = appUserId;
+    public AppUser getAppUser() {
+        return appUser;
+    }
+
+    public void setAppUser(AppUser appUser) {
+        this.appUser = appUser;
     }
 
     public Timestamp getTimeStart() {
@@ -70,11 +76,11 @@ public class TrackedActivity {
         this.timeStart = timeStart;
     }
 
-    public Integer getDurationMinutes() {
+    public Long getDurationMinutes() {
         return durationMinutes;
     }
 
-    public void setDurationMinutes(Integer durationMinutes) {
+    public void setDurationMinutes(Long durationMinutes) {
         this.durationMinutes = durationMinutes;
     }
 

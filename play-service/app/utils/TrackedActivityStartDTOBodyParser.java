@@ -3,7 +3,8 @@ package utils;
 import akka.util.ByteString;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.inject.Inject;
-import models.activityblueprint.ActivityBlueprint;
+import models.trackedactivity.TrackedActivity;
+import models.trackedactivity.TrackedActivityStartDTO;
 import play.libs.F;
 import play.libs.streams.Accumulator;
 import play.mvc.BodyParser;
@@ -13,18 +14,18 @@ import play.mvc.Results;
 
 import java.util.concurrent.Executor;
 
-public class ActivityBlueprintBodyParser implements BodyParser<ActivityBlueprint> {
+public class TrackedActivityStartDTOBodyParser implements BodyParser<TrackedActivityStartDTO> {
 
     private Json jsonParser;
     private Executor executor;
 
     @Inject
-    public ActivityBlueprintBodyParser(Json jsonParser, Executor executor) {
+    public TrackedActivityStartDTOBodyParser(Json jsonParser, Executor executor) {
         this.jsonParser = jsonParser;
         this.executor = executor;
     }
 
-    public Accumulator<ByteString, F.Either<Result, ActivityBlueprint>> apply(Http.RequestHeader request) {
+    public Accumulator<ByteString, F.Either<Result, TrackedActivityStartDTO>> apply(Http.RequestHeader request) {
         Accumulator<ByteString, F.Either<Result, JsonNode>> jsonAccumulator = jsonParser.apply(request);
         return jsonAccumulator.map(resultOrJson -> {
             if (resultOrJson.left.isPresent()) {
@@ -32,11 +33,12 @@ public class ActivityBlueprintBodyParser implements BodyParser<ActivityBlueprint
             } else {
                 JsonNode json = resultOrJson.right.get();
                 try {
-                    ActivityBlueprint user = play.libs.Json.fromJson(json, ActivityBlueprint.class);
-                    return F.Either.Right(user);
+                    TrackedActivityStartDTO trackedActivityStartDTO = play.libs.Json
+                            .fromJson(json, TrackedActivityStartDTO.class);
+                    return F.Either.Right(trackedActivityStartDTO);
                 } catch (Exception e) {
                     return F.Either.Left(Results.badRequest(
-                            "Unable to read ActivityBlueprint from json: " + e.getMessage()));
+                            "Unable to read TrackedActivity from json: " + e.getMessage()));
                 }
             }
         }, executor);

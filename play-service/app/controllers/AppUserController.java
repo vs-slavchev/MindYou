@@ -35,12 +35,12 @@ public class AppUserController extends Controller implements WSBodyReadables, WS
 
     @Inject
     public AppUserController(WSClient ws, FormFactory formFactory, HttpExecutionContext ec,
-                             AppUserRepository personRepository,
+                             AppUserRepository appUserRepository,
                              ActivityBlueprintRepository activityBlueprintRepository) {
         this.ws = ws;
         this.httpExecutionContext = ec;
         this.formFactory = formFactory;
-        this.appUserRepository = personRepository;
+        this.appUserRepository = appUserRepository;
         this.activityBlueprintRepository = activityBlueprintRepository;
     }
 
