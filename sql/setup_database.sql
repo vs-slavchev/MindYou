@@ -48,3 +48,22 @@ INSERT INTO activity_blueprint (name) VALUES ('eating');
 INSERT INTO activity_blueprint (name) VALUES ('music');
 INSERT INTO activity_blueprint (name) VALUES ('bbq');
 INSERT INTO activity_blueprint (name) VALUES ('reading');
+
+INSERT INTO tracked_activity (activity_blueprint_id, user_id, time_start, duration_minutes, public_visibility) VALUES (2, 6, '2018-10-01 06:00:00', 30, TRUE);
+INSERT INTO tracked_activity (activity_blueprint_id, user_id, time_start, duration_minutes, public_visibility) VALUES (3, 6, '2018-10-01 06:30:00', 120, TRUE);
+INSERT INTO tracked_activity (activity_blueprint_id, user_id, time_start, duration_minutes, public_visibility) VALUES (5, 6, '2018-10-01 08:30:00', 90, TRUE);
+INSERT INTO tracked_activity (activity_blueprint_id, user_id, time_start, duration_minutes, public_visibility) VALUES (10, 6, '2018-10-01 10:00:00', 45, TRUE);
+INSERT INTO tracked_activity (activity_blueprint_id, user_id, time_start, duration_minutes, public_visibility) VALUES (9, 6, '2018-10-01 10:45:00', 15, TRUE);
+INSERT INTO tracked_activity (activity_blueprint_id, user_id, time_start, duration_minutes, public_visibility) VALUES (5, 6, '2018-10-01 11:00:00', 240, TRUE);
+INSERT INTO tracked_activity (activity_blueprint_id, user_id, time_start, duration_minutes, public_visibility) VALUES (12, 6, '2018-10-01 15:00:00', 60, TRUE);
+INSERT INTO tracked_activity (activity_blueprint_id, user_id, time_start, duration_minutes, public_visibility) VALUES (6, 6, '2018-10-01 16:00:00', 20, TRUE);
+INSERT INTO tracked_activity (activity_blueprint_id, user_id, time_start, duration_minutes, public_visibility) VALUES (2, 6, '2018-10-01 16:20:00', 30, TRUE);
+
+INSERT INTO tracked_activity (activity_blueprint_id, user_id, time_start, duration_minutes, public_visibility) VALUES (2, 6, '2018-10-02 07:00:00', 20, TRUE);
+INSERT INTO tracked_activity (activity_blueprint_id, user_id, time_start, duration_minutes, public_visibility) VALUES (9, 6, '2018-10-02 07:20:00', 20, TRUE);
+INSERT INTO tracked_activity (activity_blueprint_id, user_id, time_start, duration_minutes, public_visibility) VALUES (8, 6, '2018-10-02 07:40:00', 60, TRUE);
+INSERT INTO tracked_activity (activity_blueprint_id, user_id, time_start, duration_minutes, public_visibility) VALUES (7, 6, '2018-10-02 08:40:00', 180, TRUE);
+INSERT INTO tracked_activity (activity_blueprint_id, user_id, time_start, duration_minutes, public_visibility) VALUES (9, 6, '2018-10-02 11:40:00', 20, TRUE);
+INSERT INTO tracked_activity (activity_blueprint_id, user_id, time_start, duration_minutes, public_visibility) VALUES (7, 6, '2018-10-02 12:00:00', 300, TRUE);
+INSERT INTO tracked_activity (activity_blueprint_id, user_id, time_start, duration_minutes, public_visibility) VALUES (8, 6, '2018-10-02 17:00:00', 40, TRUE);
+INSERT INTO tracked_activity (activity_blueprint_id, user_id, time_start, duration_minutes, public_visibility) VALUES (9, 6, '2018-10-02 17:40:00', 20, TRUE);
