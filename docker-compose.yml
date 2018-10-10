@@ -1,0 +1,44 @@
+version: '3'
+
+volumes:
+  postgres_data_local: {}
+
+
+services:
+  statistics_service:
+    build:
+      context: .
+      dockerfile: ./compose/local/statistics/Dockerfile
+    image: statistics_service
+    command: python3 app.py
+    volumes:
+    - ./statistics-service:/code
+    ports:
+    - "5000:5000"
+    depends_on:
+      - postgres
+
+  postgres:
+    build:
+      context: .
+      dockerfile: ./compose/local/postgres/Dockerfile
+    image: postgres_service
+#    volumes:
+#    - postgres_data_local:/var/lib/postgresql/data
+    env_file:
+    - ./.envs/.local/.postgres
+    ports:
+    - "5432:5432"
+
+#  play:
+#    build:
+#      context: .
+#      dockerfile: ./compose/local/play/Dockerfile
+#    image: play
+##    command: /run.sh
+#    volumes:
+#    - ./play-service:/code
+#    ports:
+#    - "9000:9000"
+#    depends_on:
+#      - postgres

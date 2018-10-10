@@ -46,3 +46,217 @@ tsconfig.esm.json
 !.vscode/launch.json
 !.vscode/extensions.json
 
+
+
+
+#INTELLIJ
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm
+# Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+
+# User-specific stuff
+**/.idea/**/workspace.xml
+**/.idea/**/tasks.xml
+**/.idea/**/usage.statistics.xml
+**/.idea/**/dictionaries
+**/.idea/**/shelf
+
+# Generated files
+**/.idea/**/contentModel.xml
+
+# Sensitive or high-churn files
+**/.idea/**/dataSources/
+**/.idea/**/dataSources.ids
+**/.idea/**/dataSources.local.xml
+**/.idea/**/sqlDataSources.xml
+**/.idea/**/dynamic.xml
+**/.idea/**/uiDesigner.xml
+**/.idea/**/dbnavigator.xml
+
+# Gradle
+**/.idea/**/gradle.xml
+**/.idea/**/libraries
+
+# Gradle and Maven with auto-import
+# When using Gradle or Maven with auto-import, you should exclude module files,
+# since they will be recreated, and may cause churn.  Uncomment if using
+# auto-import.
+# .idea/modules.xml
+# .idea/*.iml
+# .idea/modules
+
+# CMake
+cmake-build-*/
+
+# Mongo Explorer plugin
+**/.idea/**/mongoSettings.xml
+
+# File-based project format
+*.iws
+
+# IntelliJ
+out/
+
+# mpeltonen/sbt-idea plugin
+**/.idea_modules/
+
+# JIRA plugin
+**/atlassian-ide-plugin.xml
+
+# Cursive Clojure plugin
+**/.idea/replstate.xml
+
+# Crashlytics plugin (for Android Studio and IntelliJ)
+**/com_crashlytics_export_strings.xml
+**/crashlytics.properties
+**/crashlytics-build.properties
+**/fabric.properties
+
+# Editor-based Rest Client
+**/.idea/httpRequests
+
+# Android studio 3.1+ serialized cache file
+**/.idea/caches/build_file_checksums.ser
+
+
+
+
+
+
+
+#PLAY
+play-service/bin/
+play-service/db
+play-service/.eclipse
+play-service/lib/
+play-service/logs/
+play-service/modules
+play-service/project/project
+play-service/project/target
+play-service/target
+play-service/tmp/
+play-service/test-result
+play-service/server.pid
+play-service/*.eml
+play-service/dist/
+play-service/.cache
+play-service/.idea/misc.xml
+play-service/.idea/modules/play-service.iml
+play-service/.idea/modules/root-build.iml
+play-service/.idea/play2_project_settings.xml
+play-service/.idea/play2_settings.xml
+play-service/.idea/sbt.xml
+
+
+
+
+
+
+#PYTHON
+# Byte-compiled / optimized / DLL files
+statistics-service/__pycache__/
+statistics-service/*.py[cod]
+statistics-service/*$py.class
+
+# C extensions
+statistics-service/*.so
+
+# Distribution / packaging
+statistics-service/.Python
+statistics-service/build/
+statistics-service/develop-eggs/
+statistics-service/dist/
+statistics-service/downloads/
+statistics-service/eggs/
+statistics-service/.eggs/
+statistics-service/lib/
+statistics-service/lib64/
+statistics-service/parts/
+statistics-service/sdist/
+statistics-service/var/
+statistics-service/wheels/
+statistics-service/*.egg-info/
+statistics-service/.installed.cfg
+statistics-service/*.egg
+statistics-service/MANIFEST
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
+statistics-service/pip-log.txt
+statistics-service/pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+statistics-service/.cache
+nosetests.xml
+statistics-service/coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+
+# Flask stuff:
+statistics-service/instance/
+statistics-service/.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+statistics-service/target/
+
+# Jupyter Notebook
+statistics-service/.ipynb_checkpoints
+
+# pyenv
+statistics-service/.python-version
+
+# celery beat schedule file
+celerybeat-schedule
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+statistics-service/.env
+statistics-service/.venv
+statistics-service/env/
+statistics-service/venv/
+statistics-service/ENV/
+statistics-service/env.bak/
+statistics-service/venv.bak/
+
+# Spyder project settings
+statistics-service/.spyderproject
+statistics-service/.spyproject
+
+# Rope project settings
+statistics-service/.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+statistics-service/.mypy_cache/
+
+\.idea/
+
+*.jar
