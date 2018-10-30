@@ -260,3 +260,5 @@ statistics-service/.mypy_cache/
 \.idea/
 
 *.jar
+
+target/
