@@ -51,7 +51,7 @@ public class JPAActivityBlueprintRepository implements ActivityBlueprintReposito
                     "from activity_blueprint " +
                     "order by activity_blueprint_id " +
                     "limit " + number;
-            Query query = entityManager.createNativeQuery(sqlString);
+            Query query = entityManager.createNativeQuery(sqlString, ActivityBlueprint.class);
             return query.getResultList().stream();
         });
     }

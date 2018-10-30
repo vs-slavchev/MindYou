@@ -23,7 +23,7 @@ public_visibility boolean DEFAULT false
 );
 
 CREATE TABLE friendship (
-friendship_id int8 primary key,
+friendship_id SERIAL primary key,
 inviter_user_id int8 references app_user(user_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
 invitee_user_id int8 references app_user(user_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
 accepted boolean DEFAULT false

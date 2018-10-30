@@ -7,9 +7,6 @@ GET         /user/:id                controllers.AppUserController.showUser(id: 
 # in body provide as json activity_id and user_id; ex: {"id":123,"name":"Andrea"}}
 POST        /user/create             controllers.AppUserController.createAppUser
 
-# when app is started some activity blueprints are queried to be shown on activities screen
-# example: /activities/top?number=10 to only show the top 10 activities
-GET         /activities/top          controllers.ActivityBlueprintController.listActivities(number: Long)
 
 # in body provide as json activity_id and user_id; ex: {"activity_id":123,"user_id":321}
 POST        /activities/start        controllers.TrackedActivityController.startActivity
@@ -17,4 +14,11 @@ POST        /activities/start        controllers.TrackedActivityController.start
 # as param give the id of the user; example: /activities/stop?user_id=123
 GET         /activities/stop         controllers.TrackedActivityController.stopActivity(user_id: Long)
 
+
+# when app is started some activity blueprints are queried to be shown on activities screen
+# example: /activities/top?number=10 to only show the top 10 activities
+GET         /activities/top          controllers.ActivityBlueprintController.listActivities(number: Long)
+
+# create a custom activity
+#POST    --create custom activity       controllers.ActivityBlueprintController.???
 
