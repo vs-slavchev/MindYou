@@ -19,6 +19,12 @@ GET         /activities/stop         controllers.TrackedActivityController.stopA
 # example: /activities/top?number=10 to only show the top 10 activities
 GET         /activities/top          controllers.ActivityBlueprintController.listActivities(number: Long)
 
+#generate a friendship with two IDs of the inviter and the invitee in Json body, ex: {"inviter_id":123,"invitee_id":321}
+POST        /user/friendship/create  controllers.FriendshipController.sendFriendRequest
+
+#accept the friendship request between the inviter and the invitee,
+PUT         /user/friendship/accept  controllers.FriendshipController.acceptFriendRequest(inviter_id: Long, invitee_id: Long)
+
 # create a custom activity
 #POST    --create custom activity       controllers.ActivityBlueprintController.???
 

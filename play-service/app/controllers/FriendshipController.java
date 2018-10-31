@@ -4,6 +4,8 @@ import models.activityblueprint.ActivityBlueprintRepository;
 import models.appuser.AppUser;
 import models.appuser.AppUserRepository;
 import models.friendship.FriendshipRepository;
+import models.friendship.FriendshipRequestDTO;
+import models.trackedactivity.TrackedActivityStartDTO;
 import play.Logger;
 import play.data.FormFactory;
 import play.libs.concurrent.HttpExecutionContext;
@@ -15,6 +17,8 @@ import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
 import utils.AppUserBodyParser;
+import utils.FriendshipRequestDTOBodyParser;
+import utils.TrackedActivityStartDTOBodyParser;
 
 import javax.inject.Inject;
 import java.util.concurrent.CompletionStage;
@@ -40,17 +44,19 @@ public class FriendshipController extends Controller implements WSBodyReadables,
         this.friendshipRepository = friendshipRepository;
     }
 
-/*
-    public CompletionStage<Result> index() {
-        appUserLogger.debug("calling statistics_service");
-        String requestUrl = "https://jsonplaceholder.typicode.com/todos/1";
-        //                   http://192.168.178.206:5000/activity/swimming
+    @BodyParser.Of(FriendshipRequestDTOBodyParser.class)
+    public CompletionStage<Result> sendFriendRequest() {
+        Http.RequestBody body = request().body();
+        FriendshipRequestDTO friendshipRequestDTO = body.as(FriendshipRequestDTO.class);
 
-        return ws.url(requestUrl)
-                .get().thenApplyAsync(answer -> {
-                    ctx().flash().put("info", "Response updated!");
-                    return ok("answer was " + answer.getBody(json()));
-                }, httpExecutionContext.current());
-    }*/
+        //friendshipRequestLogger.debug(friendshipRequestDTO.toString());
 
+        return friendshipRepository.addFromDTO(friendshipRequestDTO)
+                .thenApplyAsync(p -> ok("friendRequest sent"), httpExecutionContext.current());
+    }
+
+    public CompletionStage<Result> acceptFriendRequest(Long inviter_id, Long invitee_id) {
+        return friendshipRepository.acceptRequest(inviter_id, invitee_id)
+                .thenApplyAsync(p -> ok("friendRequest accepted"), httpExecutionContext.current());
+    }
 }
