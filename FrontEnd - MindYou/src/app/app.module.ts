@@ -8,6 +8,15 @@ import { ItemsComponent } from "./item/items.component";
 import { ItemDetailComponent } from "./item/item-detail.component";
 import { NativeScriptFormsModule } from "nativescript-angular/forms";
 
+// import { NativeScriptUISideDrawerModule } from "nativescript-ui-sidedrawer/angular";
+// import { NativeScriptUIListViewModule } from "nativescript-ui-listview/angular";
+// import { NativeScriptUICalendarModule } from "nativescript-ui-calendar/angular";
+// import { NativeScriptUIChartModule } from "nativescript-ui-chart/angular";
+// import { NativeScriptUIDataFormModule } from "nativescript-ui-dataform/angular";
+// import { NativeScriptUIAutoCompleteTextViewModule } from "nativescript-ui-autocomplete/angular";
+// import { NativeScriptUIGaugeModule } from "nativescript-ui-gauge/angular";
+import {BottomBarModule} from "~/app/bottom-bar/bottom-bar.module";
+
 // Uncomment and add to NgModule imports if you need to use two-way binding
 // import { NativeScriptFormsModule } from "nativescript-angular/forms";
 
@@ -19,9 +28,17 @@ import { NativeScriptFormsModule } from "nativescript-angular/forms";
         AppComponent
     ],
     imports: [
+        // NativeScriptUISideDrawerModule,
+        // NativeScriptUIListViewModule,
+        // NativeScriptUICalendarModule,
+        // NativeScriptUIChartModule,
+        // NativeScriptUIDataFormModule,
+        // NativeScriptUIAutoCompleteTextViewModule,
+        // NativeScriptUIGaugeModule,
         NativeScriptModule,
         AppRoutingModule,
-        NativeScriptFormsModule
+        NativeScriptFormsModule,
+        BottomBarModule,
     ],
     declarations: [
         AppComponent,
