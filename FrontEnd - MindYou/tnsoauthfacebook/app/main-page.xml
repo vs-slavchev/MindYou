@@ -27,6 +27,6 @@ https://docs.nativescript.org/ui/components.
     <StackLayout class="p-20">
         <Label text="Welcome to MindYou" class="h1 text-center"/>
         <Button text="Log in with Facebook" tap="{{ onTap }}" class="btn btn-primary btn-active"/>
-
+        <Button text="Log out with Facebook" tap="{{ onLogOut }}" class="btn btn-primary btn-active"/>
     </StackLayout>
 </Page>

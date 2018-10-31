@@ -19,3 +19,6 @@ components that have the btn class name.
 .btn {
     font-size: 18;
 }
+.page{
+    background-color: violet;
+}
