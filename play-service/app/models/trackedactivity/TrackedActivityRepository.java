@@ -14,7 +14,7 @@ public interface TrackedActivityRepository {
 
     CompletionStage<TrackedActivity> addFromDTO(TrackedActivityStartDTO trackedActivityStartDTO);
 
-    CompletionStage<TrackedActivity> stopTracking(Long userId);
+    CompletionStage<TrackedActivity> stopTracking(String userId);
 
     CompletionStage<Stream<TrackedActivity>> list();
 }

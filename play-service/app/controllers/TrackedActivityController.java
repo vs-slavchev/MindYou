@@ -4,6 +4,7 @@ import models.activityblueprint.ActivityBlueprintRepository;
 import models.trackedactivity.TrackedActivityRepository;
 import models.trackedactivity.TrackedActivityStartDTO;
 import play.Logger;
+import play.libs.Json;
 import play.libs.concurrent.HttpExecutionContext;
 import play.libs.ws.WSBodyReadables;
 import play.libs.ws.WSBodyWritables;
@@ -12,7 +13,6 @@ import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
-import utils.TrackedActivityBodyParser;
 import utils.TrackedActivityStartDTOBodyParser;
 
 import javax.inject.Inject;
@@ -44,15 +44,13 @@ public class TrackedActivityController extends Controller implements WSBodyReada
         Http.RequestBody body = request().body();
         TrackedActivityStartDTO trackedActivityStartDTO = body.as(TrackedActivityStartDTO.class);
 
-        //trackedActivityLogger.debug(trackedActivityStartDTO.toString());
-
         return trackedActivityRepository.addFromDTO(trackedActivityStartDTO)
-                .thenApplyAsync(p -> ok("trackedActivity created"), httpExecutionContext.current());
+                .thenApplyAsync(ta -> ok(Json.toJson(ta)), httpExecutionContext.current());
     }
 
-    public CompletionStage<Result> stopActivity(Long user_id) {
-        return trackedActivityRepository.stopTracking(user_id)
-                .thenApplyAsync(p -> ok("trackedActivity stopped"), httpExecutionContext.current());
+    public CompletionStage<Result> stopActivity(String userId) {
+        return trackedActivityRepository.stopTracking(userId)
+                .thenApplyAsync(ta -> ok(Json.toJson(ta)), httpExecutionContext.current());
 
     }
 

@@ -11,8 +11,8 @@ POST        /user/create             controllers.AppUserController.createAppUser
 # in body provide as json activity_id and user_id; ex: {"activity_id":123,"user_id":321}
 POST        /activities/start        controllers.TrackedActivityController.startActivity
 
-# as param give the id of the user; example: /activities/stop?user_id=123
-GET         /activities/stop         controllers.TrackedActivityController.stopActivity(user_id: Long)
+# as param give the id of the user; example: /activities/123/stop
+GET         /activities/:userId/stop         controllers.TrackedActivityController.stopActivity(userId: String)
 
 
 # when app is started some activity blueprints are queried to be shown on activities screen
