@@ -20,5 +20,5 @@ GET         /activities/:userId/stop         controllers.TrackedActivityControll
 GET         /activities/top          controllers.ActivityBlueprintController.listActivities(number: Long)
 
 # create a custom activity
-#POST    --create custom activity       controllers.ActivityBlueprintController.???
+POST    /activities/create       controllers.ActivityBlueprintController.createActivityBlueprint
 
