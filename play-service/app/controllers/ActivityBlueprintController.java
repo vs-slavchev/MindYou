@@ -35,6 +35,13 @@ public class ActivityBlueprintController extends Controller implements WSBodyRea
         this.activityBlueprintRepository = activityBlueprintRepository;
     }
 
+    public Result showActivity(String activityId) {
+        /*return activityBlueprintRepository.list(castNumber)
+                .thenApplyAsync(activityBlueprintStream -> ok(Json.toJson(activityBlueprintStream
+                        .collect(Collectors.toList()))), httpExecutionContext.current());*/
+        return ok("{\"activityBlueprintId\": " + activityId + ",\"name\": \"juraj's activity nr." + activityId + "\"}");
+    }
+
     public CompletionStage<Result> listActivities(Long number) {
         int castNumber = 0;
         try {

@@ -38,6 +38,8 @@ GET         /activities/:userId/stop        controllers.TrackedActivityControlle
 # ex: /activities/top?number=10 to only show the top 10 activities
 GET         /activities/top                 controllers.ActivityBlueprintController.listActivities(number: Long)
 
+GET         /activites/:activityId         controllers.ActivityBlueprintController.showActivity(activityId: Long)
+
 
 # create a custom activity
 # json for now because we might want to send more, also returns existing activity if already exists
