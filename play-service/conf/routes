@@ -1,28 +1,46 @@
+############ NOT IMPLEMENTED!
+# get all users
+GET         /users                          controllers.AppUserController.showAllUsers
 
-GET         /user/:id                       controllers.AppUserController.showUser(id: Long)
+############ NOT IMPLEMENTED!
+# get all users whose name contains the string
+# ex: /users/search?name=linh
+GET         /users/search                   controllers.AppUserController.searchUsers(name: String)
 
-# in body provide as json activity_id and user_id; ex: {"id":123,"name":"Andrea"}
-POST        /user/create                    controllers.AppUserController.createAppUser
+############ NOT IMPLEMENTED!
+# get a user by the user_id
+GET         /users/:id                      controllers.AppUserController.showUser(id: Long)
 
+# create a new user
+# in body provide as json activity_id and user_id
+# ex: {"id":123,"name":"Andrea"}
+POST        /users/create                   controllers.AppUserController.createAppUser
 
-# in body provide as json activity_id and user_id; ex: {"activity_id":123,"user_id":321}
+# generate a friendship with two IDs of the inviter and the invitee in Json body
+# ex: {"inviter_id":123,"invitee_id":321}
+POST        /user/friendship/create         controllers.FriendshipController.sendFriendRequest
+
+# accept the friendship request between the inviter and the invitee,
+# ex: /user/friendship/accept?inviter_id=123&invitee_id=321
+PUT         /user/friendship/accept         controllers.FriendshipController.acceptFriendRequest(inviter_id: Long, invitee_id: Long)
+
+# start tracking activity
+# in body provide as json activity_id and user_id
+# ex: {"activity_id":123,"user_id":321}
 POST        /activities/start               controllers.TrackedActivityController.startActivity
 
-# as param give the id of the user; example: /activities/123/stop
+# as param give the id of the user
+# ex: /activities/123/stop
 GET         /activities/:userId/stop        controllers.TrackedActivityController.stopActivity(userId: String)
 
 
 # when app is started some activity blueprints are queried to be shown on activities screen
-# example: /activities/top?number=10 to only show the top 10 activities
+# ex: /activities/top?number=10 to only show the top 10 activities
 GET         /activities/top                 controllers.ActivityBlueprintController.listActivities(number: Long)
 
-#generate a friendship with two IDs of the inviter and the invitee in Json body, ex: {"inviter_id":123,"invitee_id":321}
-POST        /user/friendship/create  controllers.FriendshipController.sendFriendRequest
-
-#accept the friendship request between the inviter and the invitee,
-PUT         /user/friendship/accept  controllers.FriendshipController.acceptFriendRequest(inviter_id: Long, invitee_id: Long)
 
 # create a custom activity
+# json for now because we might want to send more, also returns existing activity if already exists
+# provide the activity name in json
+# ex: {"name":"debugging"}
 POST        /activities/create              controllers.ActivityBlueprintController.createActivityBlueprint
-
-#TODO: get user, get all users, get all friends, get all friend requests to me

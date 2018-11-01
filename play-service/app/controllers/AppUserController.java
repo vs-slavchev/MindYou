@@ -3,6 +3,7 @@ package controllers;
 import models.activityblueprint.ActivityBlueprintRepository;
 import models.appuser.AppUser;
 import models.appuser.AppUserRepository;
+import play.Logger;
 import play.data.FormFactory;
 import play.libs.Json;
 import play.libs.concurrent.HttpExecutionContext;
@@ -13,7 +14,6 @@ import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
-import play.Logger;
 import utils.AppUserBodyParser;
 
 import javax.inject.Inject;
@@ -45,6 +45,18 @@ public class AppUserController extends Controller implements WSBodyReadables, WS
         this.activityBlueprintRepository = activityBlueprintRepository;
     }
 
+    public static Result showAllUsers() {
+        return play.mvc.Results.TODO;
+    }
+
+    public static Result searchUsers(String name) {
+        return play.mvc.Results.TODO;
+    }
+
+    public Result showUser(Long id) {
+        return play.mvc.Results.TODO;
+    }
+
 /*
     public CompletionStage<Result> index() {
         appUserLogger.debug("calling statistics_service");
@@ -57,10 +69,6 @@ public class AppUserController extends Controller implements WSBodyReadables, WS
                     return ok("answer was " + answer.getBody(json()));
                 }, httpExecutionContext.current());
     }*/
-
-    public Result showUser(Long id) {
-        return ok("user " + id);
-    }
 
     @BodyParser.Of(AppUserBodyParser.class)
     public CompletionStage<Result> createAppUser() {
