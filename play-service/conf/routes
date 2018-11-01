@@ -1,20 +1,20 @@
 ############ NOT IMPLEMENTED!
 # get all users
-#GET         /users                          controllers.AppUserController.showAllUsers
+GET         /users                          controllers.AppUserController.showAllUsers
 
 ############ NOT IMPLEMENTED!
 # get all users whose name contains the string
 # ex: /users/search?name=linh
-#GET         /users/search                   controllers.AppUserController.searchUsers(name: String)
+GET         /users/search                   controllers.AppUserController.searchUsers(name: String)
 
 ############ NOT IMPLEMENTED!
 # get a user by the user_id
-#GET         /users/:id                      controllers.AppUserController.showUser(id: Long)
+GET         /users/:id                      controllers.AppUserController.showUser(id: Long)
 
 # create a new user
 # in body provide as json activity_id and user_id
 # ex: {"id":123,"name":"Andrea"}
-#POST        /users/create                   controllers.AppUserController.createAppUser
+POST        /users/create                   controllers.AppUserController.createAppUser
 
 # generate a friendship with two IDs of the inviter and the invitee in Json body
 # ex: {"inviter_id":123,"invitee_id":321}
@@ -33,14 +33,12 @@ POST        /activities/start               controllers.TrackedActivityControlle
 # ex: /activities/123/stop
 GET         /activities/:userId/stop        controllers.TrackedActivityController.stopActivity(userId: String)
 
-GET         /activity/:id                   controllers.ActivityBlueprintController.item(id: Long)
+# get details about an activty blueprint
+GET         /activities/:id                   controllers.ActivityBlueprintController.getActivityBlueprint(id)
 
 # when app is started some activity blueprints are queried to be shown on activities screen
-# ex: /activities/top?number=10 to only show the top 10 activities
-GET         /activities/top                 controllers.ActivityBlueprintController.listActivities(number: Long)
-
-
-
+# ex: /activities/top/10 to only show the top 10 activities
+GET         /activities/top/:number                 controllers.ActivityBlueprintController.listActivities(number: Long)
 
 # create a custom activity
 # json for now because we might want to send more, also returns existing activity if already exists

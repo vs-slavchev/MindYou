@@ -27,11 +27,6 @@ public class JPAActivityBlueprintRepository implements ActivityBlueprintReposito
         this.executionContext = executionContext;
     }
 
-  /*  @Override
-    public CompletionStage<ActivityBlueprint> get(Long id) {
-        return supplyAsync(() -> wrap(em -> getActivityBlueprint(em, id)), executionContext);
-    }*/
-
     @Override
     public CompletionStage<ActivityBlueprint> add(ActivityBlueprint activityBlueprint) {
         return supplyAsync(() -> wrap(em -> insert(em, activityBlueprint)), executionContext);
@@ -50,17 +45,6 @@ public class JPAActivityBlueprintRepository implements ActivityBlueprintReposito
         em.persist(activityBlueprint);
         return activityBlueprint;
     }
-/*
-    private ActivityBlueprint getActivityBlueprint(EntityManager em, int number) {
-        return jpaApi.withTransaction(entityManager -> {
-            String sqlString = "select * " +
-                    "from activity_blueprint " +
-                    "where activity_blueprint_id = " + number +
-                    " limit 1";
-            Query query = entityManager.createNativeQuery(sqlString, ActivityBlueprint.class);
-            return query.getSingleResult();
-        });
-    }*/
 
     private Stream<ActivityBlueprint> list(EntityManager em, int number) {
         return jpaApi.withTransaction(entityManager -> {
@@ -74,12 +58,12 @@ public class JPAActivityBlueprintRepository implements ActivityBlueprintReposito
     }
 
     @Override
-    public CompletionStage<ActivityBlueprint> item(int number) {
+    public CompletionStage<ActivityBlueprint> getSingle(String activityId) {
         return supplyAsync(() -> wrap(em -> {
 
             String sqlString = "select * " +
                     "from activity_blueprint " +
-                    "where activity_blueprint_id = " + number;
+                    "where activity_blueprint_id = " + activityId;
             Query query = em.createNativeQuery(sqlString, ActivityBlueprint.class);
             Object singleResult = query.getSingleResult();
             ActivityBlueprint activityBlueprint = (ActivityBlueprint) singleResult;
