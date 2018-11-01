@@ -14,4 +14,6 @@ public interface AppUserRepository {
     CompletionStage<AppUser> add(AppUser appUser);
 
     CompletionStage<Stream<AppUser>> list();
+
+    CompletionStage<Stream<AppUser>> getAllFriends(String userId);
 }

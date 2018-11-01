@@ -34,11 +34,15 @@ POST        /activities/start               controllers.TrackedActivityControlle
 GET         /activities/:userId/stop        controllers.TrackedActivityController.stopActivity(userId: String)
 
 # get details about an activty blueprint
-GET         /activities/:id                   controllers.ActivityBlueprintController.getActivityBlueprint(id)
+GET         /activities/:id                 controllers.ActivityBlueprintController.getActivityBlueprint(id)
 
 # when app is started some activity blueprints are queried to be shown on activities screen
 # ex: /activities/top/10 to only show the top 10 activities
-GET         /activities/top/:number                 controllers.ActivityBlueprintController.listActivities(number: Long)
+GET         /activities/top/:number         controllers.ActivityBlueprintController.listActivities(number: Long)
+
+# retrieving the data of all friends of a user
+# ex: /123/friends
+GET         /:userId/friends                controllers.AppUserController.getFriendList(userId: String)
 
 # create a custom activity
 # json for now because we might want to send more, also returns existing activity if already exists
