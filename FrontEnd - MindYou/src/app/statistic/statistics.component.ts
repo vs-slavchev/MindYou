@@ -1,19 +1,19 @@
 import { Component, OnInit } from "@angular/core";
 
-import { Item } from "./item";
-import { ItemService } from "./item.service";
+import { Statistic } from "./statistic";
+import { StatisticService } from "./statistic.service";
 
 @Component({
-    selector: "ns-items",
+    selector: "ns-statistics",
     moduleId: module.id,
-    templateUrl: "./items.component.html",
+    templateUrl: "./statistics.component.html",
 })
-export class ItemsComponent implements OnInit {
-    items: Item[];
+export class StatisticsComponent implements OnInit {
+    items: Statistic[];
 
     // This pattern makes use of Angular’s dependency injection implementation to inject an instance of the FriendService service into this class.
     // Angular knows about this service because it is included in your app’s main NgModule, defined in app.module.ts.
-    constructor(private itemService: ItemService) { }
+    constructor(private itemService: StatisticService) { }
 
     ngOnInit(): void {
         this.items = this.itemService.getItems();

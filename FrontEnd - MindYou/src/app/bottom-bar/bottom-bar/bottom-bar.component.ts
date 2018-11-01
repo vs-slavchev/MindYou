@@ -1,6 +1,7 @@
 import {Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from "@angular/core";
 import {screen} from "platform";
 import {AnimationCurve} from "tns-core-modules/ui/enums";
+import {RouterExtensions} from "nativescript-angular";
 
 @Component({
     moduleId: module.id,
@@ -9,6 +10,8 @@ import {AnimationCurve} from "tns-core-modules/ui/enums";
     styleUrls: ['./bottom-bar.component.scss']
 })
 export class BottomBarComponent implements OnInit {
+
+    private routes = {'0': '/items', '1': '/statistics', '2': '/friends'};
 
     static ICONS = 3;
     @ViewChild('tabHighlight') tabHighlight: ElementRef;
@@ -20,7 +23,7 @@ export class BottomBarComponent implements OnInit {
 
     @Output() tabSelected = new EventEmitter<number>();
 
-    constructor() {
+    constructor(private routerExtensions: RouterExtensions) {
     }
 
     ngOnInit() {
@@ -34,7 +37,9 @@ export class BottomBarComponent implements OnInit {
 
     selectTab(index: number) {
         let previousTab = this.selectedTab;
+
         if (index != this.selectedTab) {
+            this.routerExtensions.navigate([this.routes[index]], { clearHistory: true });
             this.selectedTab = index;
             this.tabHighlight.nativeElement.animate({
                 translate: {x: index * screen.mainScreen.widthDIPs / BottomBarComponent.ICONS, y: 0},

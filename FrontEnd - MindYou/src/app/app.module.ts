@@ -16,6 +16,12 @@ import { NativeScriptFormsModule } from "nativescript-angular/forms";
 // import { NativeScriptUIAutoCompleteTextViewModule } from "nativescript-ui-autocomplete/angular";
 // import { NativeScriptUIGaugeModule } from "nativescript-ui-gauge/angular";
 import {BottomBarModule} from "~/app/bottom-bar/bottom-bar.module";
+import {StatisticsComponent} from "~/app/statistic/statistics.component";
+import {FriendsComponent} from "~/app/friend/friends.component";
+import {StatisticDetailComponent} from "~/app/statistic/statistic-detail.component";
+import {FriendDetailComponent} from "~/app/friend/friend-detail.component";
+import {StatisticService} from "~/app/statistic/statistic.service";
+import {FriendService} from "~/app/friend/friend.service";
 
 // Uncomment and add to NgModule imports if you need to use two-way binding
 // import { NativeScriptFormsModule } from "nativescript-angular/forms";
@@ -43,10 +49,16 @@ import {BottomBarModule} from "~/app/bottom-bar/bottom-bar.module";
     declarations: [
         AppComponent,
         ItemsComponent,
-        ItemDetailComponent
+        ItemDetailComponent,
+        StatisticsComponent,
+        StatisticDetailComponent,
+        FriendsComponent,
+        FriendDetailComponent
     ],
     providers: [
-        ItemService
+        ItemService,
+        StatisticService,
+        FriendService
     ],
     schemas: [
         NO_ERRORS_SCHEMA
