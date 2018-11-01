@@ -1,20 +1,20 @@
 ############ NOT IMPLEMENTED!
 # get all users
-GET         /users                          controllers.AppUserController.showAllUsers
+#GET         /users                          controllers.AppUserController.showAllUsers
 
 ############ NOT IMPLEMENTED!
 # get all users whose name contains the string
 # ex: /users/search?name=linh
-GET         /users/search                   controllers.AppUserController.searchUsers(name: String)
+#GET         /users/search                   controllers.AppUserController.searchUsers(name: String)
 
 ############ NOT IMPLEMENTED!
 # get a user by the user_id
-GET         /users/:id                      controllers.AppUserController.showUser(id: Long)
+#GET         /users/:id                      controllers.AppUserController.showUser(id: Long)
 
 # create a new user
 # in body provide as json activity_id and user_id
 # ex: {"id":123,"name":"Andrea"}
-POST        /users/create                   controllers.AppUserController.createAppUser
+#POST        /users/create                   controllers.AppUserController.createAppUser
 
 # generate a friendship with two IDs of the inviter and the invitee in Json body
 # ex: {"inviter_id":123,"invitee_id":321}
@@ -22,7 +22,7 @@ POST        /user/friendship/create         controllers.FriendshipController.sen
 
 # accept the friendship request between the inviter and the invitee,
 # ex: /user/friendship/accept?inviter_id=123&invitee_id=321
-PUT         /user/friendship/accept         controllers.FriendshipController.acceptFriendRequest(inviter_id: Long, invitee_id: Long)
+PUT         /user/friendship/accept         controllers.FriendshipController.acceptFriendRequest(inviter_id: String, invitee_id: String)
 
 # start tracking activity
 # in body provide as json activity_id and user_id

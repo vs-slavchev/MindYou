@@ -45,8 +45,8 @@ public class JPAFriendshipRepository implements FriendshipRepository {
         }), executionContext);
     }
 
-    @Override
-    public CompletionStage<Friendship> acceptRequest(Long inviterId, Long inviteeId) {
+    //@Override
+    public CompletionStage<Friendship> acceptRequest(String inviterId, String inviteeId) {
         return supplyAsync(() -> wrap(em -> {
 
             String sqlString = "select * " +
@@ -67,6 +67,24 @@ public class JPAFriendshipRepository implements FriendshipRepository {
     public CompletionStage<Stream<Friendship>> list() {
         return supplyAsync(() -> wrap(em -> list(em)), executionContext);
     }
+
+    //@Override
+//    public CompletionStage<Friendship> getAllFriends(String userId) {
+//        return supplyAsync(() -> wrap(em -> {
+//
+//            String sqlString = "select distinct friend.* " +
+//                    "from friendship fr1, friendship fr2, app_user friend " +
+//                    "where (fr1.invitee_user_id = " + userId +
+//                    " and friend.user_id = fr1.inviter_user_id)" +
+//                    " or (fr2.inviter_user_id = " invitee_user_id = " + inviteeId;
+//
+//            Query query = em.createNativeQuery(sqlString, Friendship.class);
+//            Object singleResult = query.getSingleResult();
+//            Friendship friendship = (Friendship) singleResult;
+//            friendship.setAccepted(true);
+//            return friendship;
+//        }), executionContext);
+//    }
 
     private <T> T wrap(Function<EntityManager, T> function) {
         return jpaApi.withTransaction(function);
