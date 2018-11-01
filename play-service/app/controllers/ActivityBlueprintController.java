@@ -35,14 +35,8 @@ public class ActivityBlueprintController extends Controller implements WSBodyRea
         this.activityBlueprintRepository = activityBlueprintRepository;
     }
 
-    public CompletionStage<Result> item(Long number) {
-        int castNumber = 0;
-        try {
-            castNumber = Math.toIntExact(number);
-        } catch (ArithmeticException ae) {
-            throw new RuntimeException("activity blueprint id too long");
-        }
-        return activityBlueprintRepository.item(castNumber)
+    public CompletionStage<Result> getActivityBlueprint(String id) {
+        return activityBlueprintRepository.getSingle(id)
                 .thenApplyAsync(ta -> ok(Json.toJson(ta)), httpExecutionContext.current());
     }
 

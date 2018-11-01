@@ -55,17 +55,17 @@ public class AppUserController extends Controller implements WSBodyReadables, WS
 
     }
 
-//    public static Result showAllUsers() {
-//        return play.mvc.Results.TODO;
-//    }
-//
-//    public static Result searchUsers(String name) {
-//        return play.mvc.Results.TODO;
-//    }
-//
-//    public Result showUser(Long id) {
-//        return play.mvc.Results.TODO;
-//    }
+public Result showAllUsers() {
+return play.mvc.Results.TODO;
+}
+
+public Result searchUsers(String name) {
+return play.mvc.Results.TODO;
+}
+
+public Result showUser(Long id) {
+return play.mvc.Results.TODO;
+}
 
 /*
     public CompletionStage<Result> index() {
