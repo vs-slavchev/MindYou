@@ -55,7 +55,7 @@ public class FriendshipController extends Controller implements WSBodyReadables,
                 .thenApplyAsync(p -> ok("friendRequest sent"), httpExecutionContext.current());
     }
 
-    public CompletionStage<Result> acceptFriendRequest(Long inviter_id, Long invitee_id) {
+    public CompletionStage<Result> acceptFriendRequest(String inviter_id, String invitee_id) {
         return friendshipRepository.acceptRequest(inviter_id, invitee_id)
                 .thenApplyAsync(p -> ok("friendRequest accepted"), httpExecutionContext.current());
     }

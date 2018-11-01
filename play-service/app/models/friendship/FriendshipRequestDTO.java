@@ -1,31 +1,31 @@
 package models.friendship;
 
 public class FriendshipRequestDTO {
-    private Long inviter_id;
+    private String inviter_id;
 
-    private Long invitee_id;
+    private String invitee_id;
 
     public FriendshipRequestDTO() {
     }
 
-    public FriendshipRequestDTO(Long inviter_id, Long invitee_id) {
+    public FriendshipRequestDTO(String inviter_id, String invitee_id) {
         this.inviter_id = inviter_id;
         this.invitee_id = invitee_id;
     }
 
-    public Long getInviter_id() {
+    public String getInviter_id() {
         return inviter_id;
     }
 
-    public void setInviter_id(Long inviter_id) {
+    public void setInviter_id(String inviter_id) {
         this.inviter_id = inviter_id;
     }
 
-    public Long getInvitee_id() {
+    public String getInvitee_id() {
         return invitee_id;
     }
 
-    public void setInvitee_id(Long invitee_id) {
+    public void setInvitee_id(String invitee_id) {
         this.invitee_id = invitee_id;
     }
 

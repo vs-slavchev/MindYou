@@ -11,16 +11,17 @@ POST        /activities/start               controllers.TrackedActivityControlle
 # as param give the id of the user; example: /activities/123/stop
 GET         /activities/:userId/stop        controllers.TrackedActivityController.stopActivity(userId: String)
 
+GET         /activity/:id                   controllers.ActivityBlueprintController.item(id: Long)
 
 # when app is started some activity blueprints are queried to be shown on activities screen
 # example: /activities/top?number=10 to only show the top 10 activities
 GET         /activities/top                 controllers.ActivityBlueprintController.listActivities(number: Long)
 
 #generate a friendship with two IDs of the inviter and the invitee in Json body, ex: {"inviter_id":123,"invitee_id":321}
-POST        /user/friendship/create  controllers.FriendshipController.sendFriendRequest
+POST        /user/friendship/create         controllers.FriendshipController.sendFriendRequest
 
 #accept the friendship request between the inviter and the invitee,
-PUT         /user/friendship/accept  controllers.FriendshipController.acceptFriendRequest(inviter_id: Long, invitee_id: Long)
+PUT         /user/friendship/accept         controllers.FriendshipController.acceptFriendRequest(inviter_id: String, invitee_id: String)
 
 # create a custom activity
 POST        /activities/create              controllers.ActivityBlueprintController.createActivityBlueprint

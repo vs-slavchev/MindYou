@@ -11,4 +11,7 @@ public interface ActivityBlueprintRepository {
     CompletionStage<ActivityBlueprint> add(ActivityBlueprint activityBlueprint);
 
     CompletionStage<Stream<ActivityBlueprint>> list(int number);
+
+    CompletionStage<ActivityBlueprint> item(int number);
+
 }
