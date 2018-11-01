@@ -27,6 +27,11 @@ public class JPAActivityBlueprintRepository implements ActivityBlueprintReposito
         this.executionContext = executionContext;
     }
 
+  /*  @Override
+    public CompletionStage<ActivityBlueprint> get(Long id) {
+        return supplyAsync(() -> wrap(em -> getActivityBlueprint(em, id)), executionContext);
+    }*/
+
     @Override
     public CompletionStage<ActivityBlueprint> add(ActivityBlueprint activityBlueprint) {
         return supplyAsync(() -> wrap(em -> insert(em, activityBlueprint)), executionContext);
@@ -45,6 +50,17 @@ public class JPAActivityBlueprintRepository implements ActivityBlueprintReposito
         em.persist(activityBlueprint);
         return activityBlueprint;
     }
+/*
+    private ActivityBlueprint getActivityBlueprint(EntityManager em, int number) {
+        return jpaApi.withTransaction(entityManager -> {
+            String sqlString = "select * " +
+                    "from activity_blueprint " +
+                    "where activity_blueprint_id = " + number +
+                    " limit 1";
+            Query query = entityManager.createNativeQuery(sqlString, ActivityBlueprint.class);
+            return query.getSingleResult();
+        });
+    }*/
 
     private Stream<ActivityBlueprint> list(EntityManager em, int number) {
         return jpaApi.withTransaction(entityManager -> {
