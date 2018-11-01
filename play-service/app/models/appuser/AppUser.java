@@ -8,23 +8,23 @@ public class AppUser {
 
     @Id
     @Column(name = "user_id")
-    private Long id;
+    private String id;
 
     @Column(name = "name", nullable = false)
     private String name;
 
-    public AppUser(Long id, String name) {
+    public AppUser(String id, String name) {
         this.id = id;
         this.name = name;
     }
 
     public AppUser() {}
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

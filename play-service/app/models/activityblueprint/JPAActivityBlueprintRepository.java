@@ -2,6 +2,7 @@ package models.activityblueprint;
 
 import models.DatabaseExecutionContext;
 import play.db.jpa.JPAApi;
+import play.mvc.Result;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -55,4 +56,19 @@ public class JPAActivityBlueprintRepository implements ActivityBlueprintReposito
             return query.getResultList().stream();
         });
     }
+
+    @Override
+    public CompletionStage<ActivityBlueprint> getSingle(String activityId) {
+        return supplyAsync(() -> wrap(em -> {
+
+            String sqlString = "select * " +
+                    "from activity_blueprint " +
+                    "where activity_blueprint_id = " + activityId;
+            Query query = em.createNativeQuery(sqlString, ActivityBlueprint.class);
+            Object singleResult = query.getSingleResult();
+            ActivityBlueprint activityBlueprint = (ActivityBlueprint) singleResult;
+            return activityBlueprint;
+        }), executionContext);
+    }
+
 }

@@ -12,7 +12,11 @@ import java.util.stream.Stream;
 @ImplementedBy(JPAFriendshipRepository.class)
 public interface FriendshipRepository {
 
-    CompletionStage<Friendship> add(Friendship friendship);
+    CompletionStage<Friendship> addFromDTO(FriendshipRequestDTO friendshipRequestDTO);
+
+    CompletionStage<Friendship> acceptRequest(String inviterId, String inviteeId);
 
     CompletionStage<Stream<Friendship>> list();
+
+    //CompletionStage<Friendship> getAllFriends();
 }

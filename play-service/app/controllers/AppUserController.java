@@ -3,7 +3,9 @@ package controllers;
 import models.activityblueprint.ActivityBlueprintRepository;
 import models.appuser.AppUser;
 import models.appuser.AppUserRepository;
+import play.Logger;
 import play.data.FormFactory;
+import play.libs.Json;
 import play.libs.concurrent.HttpExecutionContext;
 import play.libs.ws.WSBodyReadables;
 import play.libs.ws.WSBodyWritables;
@@ -12,7 +14,6 @@ import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
-import play.Logger;
 import utils.AppUserBodyParser;
 
 import javax.inject.Inject;
@@ -44,6 +45,18 @@ public class AppUserController extends Controller implements WSBodyReadables, WS
         this.activityBlueprintRepository = activityBlueprintRepository;
     }
 
+public Result showAllUsers() {
+return play.mvc.Results.TODO;
+}
+
+public Result searchUsers(String name) {
+return play.mvc.Results.TODO;
+}
+
+public Result showUser(Long id) {
+return play.mvc.Results.TODO;
+}
+
 /*
     public CompletionStage<Result> index() {
         appUserLogger.debug("calling statistics_service");
@@ -57,10 +70,6 @@ public class AppUserController extends Controller implements WSBodyReadables, WS
                 }, httpExecutionContext.current());
     }*/
 
-    public Result showUser(Long id) {
-        return ok("user " + id);
-    }
-
     @BodyParser.Of(AppUserBodyParser.class)
     public CompletionStage<Result> createAppUser() {
         Http.RequestBody body = request().body();
@@ -68,6 +77,6 @@ public class AppUserController extends Controller implements WSBodyReadables, WS
 
         appUserLogger.debug(appUser.toString());
         return appUserRepository.add(appUser)
-                .thenApplyAsync(p -> ok("appUser created"), httpExecutionContext.current());
+                .thenApplyAsync(p -> ok(Json.toJson(p)), httpExecutionContext.current());
     }
 }

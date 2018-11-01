@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class ActivityBlueprint {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "activity_blueprint_id")
     private Long activityBlueprintId;
 

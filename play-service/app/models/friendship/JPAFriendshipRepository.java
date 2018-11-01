@@ -1,11 +1,15 @@
 package models.friendship;
 
 import models.DatabaseExecutionContext;
+import models.activityblueprint.ActivityBlueprint;
 import models.appuser.AppUser;
+import models.trackedactivity.TrackedActivity;
 import play.db.jpa.JPAApi;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.concurrent.CompletionStage;
 import java.util.function.Function;
@@ -28,14 +32,59 @@ public class JPAFriendshipRepository implements FriendshipRepository {
     }
 
     @Override
-    public CompletionStage<Friendship> add(Friendship friendship) {
-        return supplyAsync(() -> wrap(em -> insert(em, friendship)), executionContext);
+    public CompletionStage<Friendship> addFromDTO(FriendshipRequestDTO friendshipRequestDTO) {
+        return supplyAsync(() -> wrap(em -> {
+
+            AppUser inviter = em.find(AppUser.class, friendshipRequestDTO.getInviter_id());
+
+            AppUser invitee = em.find(AppUser.class, friendshipRequestDTO.getInvitee_id());
+
+            Friendship friendship = new Friendship(inviter, invitee);
+
+            return insert(em, friendship);
+        }), executionContext);
     }
+
+    //@Override
+    public CompletionStage<Friendship> acceptRequest(String inviterId, String inviteeId) {
+        return supplyAsync(() -> wrap(em -> {
+
+            String sqlString = "select * " +
+                    "from friendship " +
+                    "where inviter_user_id = " + inviterId +
+                    " and invitee_user_id = " + inviteeId;
+
+            Query query = em.createNativeQuery(sqlString, Friendship.class);
+            Object singleResult = query.getSingleResult();
+            Friendship friendship = (Friendship) singleResult;
+            friendship.setAccepted(true);
+            return friendship;
+        }), executionContext);
+    }
+
 
     @Override
     public CompletionStage<Stream<Friendship>> list() {
         return supplyAsync(() -> wrap(em -> list(em)), executionContext);
     }
+
+    //@Override
+//    public CompletionStage<Friendship> getAllFriends(String userId) {
+//        return supplyAsync(() -> wrap(em -> {
+//
+//            String sqlString = "select distinct friend.* " +
+//                    "from friendship fr1, friendship fr2, app_user friend " +
+//                    "where (fr1.invitee_user_id = " + userId +
+//                    " and friend.user_id = fr1.inviter_user_id)" +
+//                    " or (fr2.inviter_user_id = " invitee_user_id = " + inviteeId;
+//
+//            Query query = em.createNativeQuery(sqlString, Friendship.class);
+//            Object singleResult = query.getSingleResult();
+//            Friendship friendship = (Friendship) singleResult;
+//            friendship.setAccepted(true);
+//            return friendship;
+//        }), executionContext);
+//    }
 
     private <T> T wrap(Function<EntityManager, T> function) {
         return jpaApi.withTransaction(function);

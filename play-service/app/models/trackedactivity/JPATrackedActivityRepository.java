@@ -56,13 +56,13 @@ public class JPATrackedActivityRepository implements TrackedActivityRepository {
         return trackedActivity;
     }
 
-    public CompletionStage<TrackedActivity> stopTracking(Long userId) {
+    public CompletionStage<TrackedActivity> stopTracking(String userId) {
         return supplyAsync(() -> wrap(em -> {
 
             String sqlString = "select ta.* " +
                     "from tracked_activity ta, app_user au " +
-                    "where ta.user_id = " + userId +
-                    " and ta.duration_minutes is NULL " +
+                    "where ta.user_id = '" + userId +
+                    "' and ta.duration_minutes is NULL " +
                     "limit 1";
             Query query = em.createNativeQuery(sqlString, TrackedActivity.class);
             Object singleResult = query.getSingleResult();
