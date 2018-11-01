@@ -1,5 +1,5 @@
 export interface Item {
-    id: number;
+    activityBlueprintId: number;
     name: string;
     role: string;
 }

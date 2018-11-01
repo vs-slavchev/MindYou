@@ -23,11 +23,7 @@ import {FriendDetailComponent} from "~/app/friend/friend-detail.component";
 import {StatisticService} from "~/app/statistic/statistic.service";
 import {FriendService} from "~/app/friend/friend.service";
 
-// Uncomment and add to NgModule imports if you need to use two-way binding
-// import { NativeScriptFormsModule } from "nativescript-angular/forms";
-
-// Uncomment and add to NgModule imports if you need to use the HttpClient wrapper
-// import { NativeScriptHttpClientModule } from "nativescript-angular/http-client";
+import { NativeScriptHttpClientModule } from "nativescript-angular/http-client";
 
 @NgModule({
     bootstrap: [
@@ -44,6 +40,7 @@ import {FriendService} from "~/app/friend/friend.service";
         NativeScriptModule,
         AppRoutingModule,
         NativeScriptFormsModule,
+        NativeScriptHttpClientModule,
         BottomBarModule,
     ],
     declarations: [
