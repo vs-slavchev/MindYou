@@ -18,6 +18,7 @@ import utils.AppUserBodyParser;
 
 import javax.inject.Inject;
 import java.util.concurrent.CompletionStage;
+import java.util.stream.Collectors;
 
 /**
  * This controller contains an action to handle HTTP requests
@@ -43,6 +44,15 @@ public class AppUserController extends Controller implements WSBodyReadables, WS
         this.formFactory = formFactory;
         this.appUserRepository = appUserRepository;
         this.activityBlueprintRepository = activityBlueprintRepository;
+    }
+
+
+
+    public CompletionStage<Result> getFriendList(String userId) {
+        return appUserRepository.getAllFriends(userId)
+                .thenApplyAsync(friendListStream -> ok(Json.toJson(friendListStream
+                        .collect(Collectors.toList()))), httpExecutionContext.current());
+
     }
 
 //    public static Result showAllUsers() {

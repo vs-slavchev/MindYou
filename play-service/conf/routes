@@ -39,7 +39,7 @@ GET         /activity/:id                   controllers.ActivityBlueprintControl
 # ex: /activities/top?number=10 to only show the top 10 activities
 GET         /activities/top                 controllers.ActivityBlueprintController.listActivities(number: Long)
 
-
+GET         /:userId/friends                controllers.AppUserController.getFriendList(userId: String)
 
 
 # create a custom activity
