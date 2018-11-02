@@ -51,8 +51,8 @@ public class JPAFriendshipRepository implements FriendshipRepository {
 
             String sqlString = "select * " +
                     "from friendship " +
-                    "where inviter_user_id = " + inviterId +
-                    " and invitee_user_id = " + inviteeId;
+                    "where inviter_user_id = '" + inviterId +
+                    "' and invitee_user_id = '" + inviteeId + "'";
 
             Query query = em.createNativeQuery(sqlString, Friendship.class);
             Object singleResult = query.getSingleResult();
