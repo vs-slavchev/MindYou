@@ -52,7 +52,7 @@ export class ItemService {
     }
 
     stopActivity(activityBlueprintId: number): Observable<Item> {
-        const url = `${this.activitiesUrl}/stop?user_id${activityBlueprintId}`;
+        const url = `${this.activitiesUrl}/stop?user_id=${activityBlueprintId}`;
         return this.http.get<Item>(url).pipe(
             tap(_ => this.log(`stopped activity id=${activityBlueprintId}`)),
             catchError(this.handleError<Item>(`stopActivity id=${activityBlueprintId}`))
