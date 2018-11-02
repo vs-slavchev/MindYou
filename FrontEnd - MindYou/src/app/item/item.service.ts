@@ -3,6 +3,7 @@ import {Observable, of} from 'rxjs';
 import {catchError, map, tap} from 'rxjs/operators';
 
 import { Item } from "./item";
+import { AppSettings } from "~/app/app-settings";
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
@@ -13,11 +14,10 @@ const httpOptions = {
 @Injectable()
 export class ItemService {
 
-    // private activitiesUrl = 'http://192.168.178.52:9000/activities';  // URL to web api
-    private domain = 'http://145.93.90.30:9000';
-    private activitiesUrl = `${this.domain}/activities`;  // URL to web api
-    private activityUrl = `${this.domain}/activity`;  // URL to web api
-    private activitiesUrlTop = `${this.activitiesUrl}/top?number=10`;  // URL to web api
+    private activitiesUrl = `${AppSettings.API_URL}/activities`;  // URL to web api
+    // private activitiesUrl = `${AppSettings.API_URL}/activity`;  // URL to web api
+    private activitiesUrlTop = `${this.activitiesUrl}/top/10`;  // URL to web api
+    private activitiesUrlStart = `${this.activitiesUrl}/start`;  // URL to web api
 
     constructor(private http: HttpClient) {}
 
@@ -31,7 +31,7 @@ export class ItemService {
 
 
     getItemNo404<Data>(activityBlueprintId: number): Observable<Item> {
-        const url = `${this.activityUrl}/${activityBlueprintId}`;
+        const url = `${this.activitiesUrl}/${activityBlueprintId}`;
         return this.http.get<Item[]>(url)
             .pipe(
                 map(items => items[0]), // returns a {0|1} element array
@@ -44,10 +44,25 @@ export class ItemService {
     }
 
     getItem(activityBlueprintId: number): Observable<Item> {
-        const url = `${this.activityUrl}/${activityBlueprintId}`;
+        const url = `${this.activitiesUrl}/${activityBlueprintId}`;
         return this.http.get<Item>(url).pipe(
             tap(_ => this.log(`fetched item id=${activityBlueprintId}`)),
             catchError(this.handleError<Item>(`getItem id=${activityBlueprintId}`))
+        );
+    }
+
+    stopActivity(activityBlueprintId: number): Observable<Item> {
+        const url = `${this.activitiesUrl}/stop?user_id${activityBlueprintId}`;
+        return this.http.get<Item>(url).pipe(
+            tap(_ => this.log(`stopped activity id=${activityBlueprintId}`)),
+            catchError(this.handleError<Item>(`stopActivity id=${activityBlueprintId}`))
+        );
+    }
+
+    startActivity (activity: any): Observable<any> {
+        return this.http.post<any>(this.activitiesUrlStart, activity, httpOptions).pipe(
+            tap((activity: any) => this.log(`started activity w/ id=${activity.activity_id}`)),
+            catchError(this.handleError<any>('startActivity'))
         );
     }
 

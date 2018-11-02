@@ -17,14 +17,9 @@ export class ItemsComponent implements OnInit {
 
     ngOnInit(): void {
         this.getActivities();
-        // this.items = this.itemService.getItems();
     }
 
     getActivities(): void {
         this.itemService.getActivities().subscribe(activities => this.items = activities);
-        // this.activityService.getActivities().subscribe(function (activities) {
-        //     this.activities = activities;
-        //     console.log(`activities: ${this.activities}`);
-        // });
     }
 }

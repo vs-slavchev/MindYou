@@ -262,3 +262,7 @@ statistics-service/.mypy_cache/
 *.jar
 
 target/
+
+FrontEnd - MindYou/src/*.js
+
+*.js
