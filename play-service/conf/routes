@@ -34,6 +34,7 @@ POST        /activities/start               controllers.TrackedActivityControlle
 GET         /activities/:userId/stop        controllers.TrackedActivityController.stopActivity(userId: String)
 
 # get details about an activty blueprint
+# ex: /activities/5
 GET         /activities/:id                   controllers.ActivityBlueprintController.getActivityBlueprint(id)
 
 # when app is started some activity blueprints are queried to be shown on activities screen
