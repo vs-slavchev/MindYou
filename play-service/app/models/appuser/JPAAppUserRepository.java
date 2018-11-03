@@ -49,12 +49,21 @@ public class JPAAppUserRepository implements AppUserRepository {
         String qlString = "select * from app_user;";
         List<AppUser> appUsers = em.createQuery(qlString, AppUser.class).getResultList();
         return appUsers.stream();
-
-        /*
-        return jpaApi.withTransaction(entityManager -> {
-            Query query = entityManager.createNativeQuery("select max(age) from people");
-            return (Long) query.getSingleResult();
-        });
-         */
     }
+
+    @Override
+    public CompletionStage<Stream<AppUser>> getAllFriends(String userId) {
+        return supplyAsync(() -> wrap(em -> friendList(em, userId)), executionContext);
+    }
+
+    private Stream<AppUser> friendList(EntityManager em, String userId) {
+        String sqlString = "select distinct friend.* " +
+                "from friendship fr1, friendship fr2, app_user friend " +
+                "where (fr1.invitee_user_id = '" + userId +
+                "' and friend.user_id = fr1.inviter_user_id)" +
+                " or (fr2.inviter_user_id = '" + userId +
+                "' and friend.user_id = fr2.invitee_user_id)";
+        List<AppUser> friendList = em.createNativeQuery(sqlString, AppUser.class).getResultList();
+        return friendList.stream();
+    };
 }

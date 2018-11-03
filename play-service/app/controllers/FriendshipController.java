@@ -1,13 +1,8 @@
 package controllers;
 
-import models.activityblueprint.ActivityBlueprintRepository;
-import models.appuser.AppUser;
-import models.appuser.AppUserRepository;
 import models.friendship.FriendshipRepository;
 import models.friendship.FriendshipRequestDTO;
-import models.trackedactivity.TrackedActivityStartDTO;
 import play.Logger;
-import play.data.FormFactory;
 import play.libs.concurrent.HttpExecutionContext;
 import play.libs.ws.WSBodyReadables;
 import play.libs.ws.WSBodyWritables;
@@ -16,9 +11,8 @@ import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
-import utils.AppUserBodyParser;
+import utils.FirebaseInit;
 import utils.FriendshipRequestDTOBodyParser;
-import utils.TrackedActivityStartDTOBodyParser;
 
 import javax.inject.Inject;
 import java.util.concurrent.CompletionStage;
@@ -49,6 +43,13 @@ public class FriendshipController extends Controller implements WSBodyReadables,
         Http.RequestBody body = request().body();
         FriendshipRequestDTO friendshipRequestDTO = body.as(FriendshipRequestDTO.class);
 
+        // change token to id
+        friendshipRequestDTO.setInviter_id(
+                FirebaseInit.tokenToUserId(
+                        friendshipRequestDTO.getInviter_id()
+                )
+        );
+
         //friendshipRequestLogger.debug(friendshipRequestDTO.toString());
 
         return friendshipRepository.addFromDTO(friendshipRequestDTO)
@@ -56,7 +57,9 @@ public class FriendshipController extends Controller implements WSBodyReadables,
     }
 
     public CompletionStage<Result> acceptFriendRequest(String inviter_id, String invitee_id) {
-        return friendshipRepository.acceptRequest(inviter_id, invitee_id)
+        String verifiedInviteeId = FirebaseInit.tokenToUserId(invitee_id);
+
+        return friendshipRepository.acceptRequest(inviter_id, verifiedInviteeId)
                 .thenApplyAsync(p -> ok("friendRequest accepted"), httpExecutionContext.current());
     }
 }

@@ -16,11 +16,13 @@ GET         /users/:id                      controllers.AppUserController.showUs
 # ex: {"id":123,"name":"Andrea"}
 POST        /users/create                   controllers.AppUserController.createAppUser
 
-# generate a friendship with two IDs of the inviter and the invitee in Json body
+# generate a friendship with two IDs of the inviter and the invitee in json body
+# inviter_id is tokenized, but the invitee_id is the actual_id
 # ex: {"inviter_id":123,"invitee_id":321}
 POST        /user/friendship/create         controllers.FriendshipController.sendFriendRequest
 
 # accept the friendship request between the inviter and the invitee,
+# invitee is tokenized, inviter is not
 # ex: /user/friendship/accept?inviter_id=123&invitee_id=321
 PUT         /user/friendship/accept         controllers.FriendshipController.acceptFriendRequest(inviter_id: String, invitee_id: String)
 
@@ -39,7 +41,11 @@ GET         /activities/:id                   controllers.ActivityBlueprintContr
 
 # when app is started some activity blueprints are queried to be shown on activities screen
 # ex: /activities/top/10 to only show the top 10 activities
-GET         /activities/top/:number                 controllers.ActivityBlueprintController.listActivities(number: Long)
+GET         /activities/top/:number         controllers.ActivityBlueprintController.listActivities(number: Long)
+
+# retrieving the data of all friends of a user
+# ex: /123/friends
+GET         /:userId/friends                controllers.AppUserController.getFriendList(userId: String)
 
 # create a custom activity
 # json for now because we might want to send more, also returns existing activity if already exists

@@ -1,6 +1,5 @@
 package controllers;
 
-import models.activityblueprint.ActivityBlueprintRepository;
 import models.trackedactivity.TrackedActivityRepository;
 import models.trackedactivity.TrackedActivityStartDTO;
 import play.Logger;
@@ -13,6 +12,7 @@ import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
+import utils.FirebaseInit;
 import utils.TrackedActivityStartDTOBodyParser;
 
 import javax.inject.Inject;
@@ -44,12 +44,23 @@ public class TrackedActivityController extends Controller implements WSBodyReada
         Http.RequestBody body = request().body();
         TrackedActivityStartDTO trackedActivityStartDTO = body.as(TrackedActivityStartDTO.class);
 
+        // change token to id
+        trackedActivityStartDTO.setUser_id(
+                FirebaseInit.tokenToUserId(
+                        trackedActivityStartDTO.getUser_id()
+                )
+        );
+
         return trackedActivityRepository.addFromDTO(trackedActivityStartDTO)
                 .thenApplyAsync(ta -> ok(Json.toJson(ta)), httpExecutionContext.current());
     }
 
     public CompletionStage<Result> stopActivity(String userId) {
-        return trackedActivityRepository.stopTracking(userId)
+
+        // change token to id
+        String verifiedUserId = FirebaseInit.tokenToUserId(userId);
+
+        return trackedActivityRepository.stopTracking(verifiedUserId)
                 .thenApplyAsync(ta -> ok(Json.toJson(ta)), httpExecutionContext.current());
 
     }

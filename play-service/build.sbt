@@ -19,6 +19,13 @@ libraryDependencies ++= Seq(
   "org.hibernate" % "hibernate-entitymanager" % "5.3.6.Final"
 )
 
+// https://mvnrepository.com/artifact/com.google.firebase/firebase-admin
+libraryDependencies += "com.google.firebase" % "firebase-admin" % "6.5.0"
+
+// https://mvnrepository.com/artifact/com.google.gms/google-services
+libraryDependencies += "com.google.gms" % "google-services" % "3.1.1" % "runtime"
+
+
 libraryDependencies ++= Seq(
   ws
 )
