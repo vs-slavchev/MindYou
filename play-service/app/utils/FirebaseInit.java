@@ -24,7 +24,6 @@ public class FirebaseInit {
             serviceAccount = new FileInputStream("./conf/mindyou-ab867-firebase-adminsdk-oit5f-56a228ae1c.json");
             options = new FirebaseOptions.Builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                    //.setDatabaseUrl("https://mindyou-ab867.firebaseio.com/")
                     .build();
         } catch (IOException e) {
             e.printStackTrace();
