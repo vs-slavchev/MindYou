@@ -30,6 +30,5 @@ libraryDependencies ++= Seq(
   ws
 )
 
-javaOptions in Universal += "--Dpidfile.path=/dev/null"
 
 libraryDependencies += ehcache
