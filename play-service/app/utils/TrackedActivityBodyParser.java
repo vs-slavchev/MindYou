@@ -16,11 +16,11 @@ import java.util.concurrent.Executor;
 
 public class TrackedActivityBodyParser implements BodyParser<TrackedActivity> {
 
-    private Json jsonParser;
+    private BodyParser.Json jsonParser;
     private Executor executor;
 
     @Inject
-    public TrackedActivityBodyParser(Json jsonParser, Executor executor) {
+    public TrackedActivityBodyParser(BodyParser.Json jsonParser, Executor executor) {
         this.jsonParser = jsonParser;
         this.executor = executor;
     }

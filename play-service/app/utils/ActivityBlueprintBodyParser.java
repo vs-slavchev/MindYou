@@ -15,11 +15,11 @@ import java.util.concurrent.Executor;
 
 public class ActivityBlueprintBodyParser implements BodyParser<ActivityBlueprint> {
 
-    private Json jsonParser;
+    private BodyParser.Json jsonParser;
     private Executor executor;
 
     @Inject
-    public ActivityBlueprintBodyParser(Json jsonParser, Executor executor) {
+    public ActivityBlueprintBodyParser(BodyParser.Json jsonParser, Executor executor) {
         this.jsonParser = jsonParser;
         this.executor = executor;
     }

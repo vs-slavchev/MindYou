@@ -16,11 +16,11 @@ import java.util.concurrent.Executor;
 
 public class FriendshipRequestDTOBodyParser implements BodyParser<FriendshipRequestDTO> {
 
-    private Json jsonParser;
+    private BodyParser.Json jsonParser;
     private Executor executor;
 
     @Inject
-    public FriendshipRequestDTOBodyParser(Json jsonParser, Executor executor) {
+    public FriendshipRequestDTOBodyParser(BodyParser.Json jsonParser, Executor executor) {
         this.jsonParser = jsonParser;
         this.executor = executor;
     }
