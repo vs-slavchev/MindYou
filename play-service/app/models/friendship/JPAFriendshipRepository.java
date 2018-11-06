@@ -46,13 +46,13 @@ public class JPAFriendshipRepository implements FriendshipRepository {
     }
 
     @Override
-    public CompletionStage<Friendship> acceptRequest(String inviterId, String inviteeId) {
+    public CompletionStage<Friendship> acceptRequest(FriendshipRequestDTO friendshipRequestDTO) {
         return supplyAsync(() -> wrap(em -> {
 
             String sqlString = "select * " +
                     "from friendship " +
-                    "where inviter_user_id = '" + inviterId +
-                    "' and invitee_user_id = '" + inviteeId + "'";
+                    "where inviter_user_id = '" + friendshipRequestDTO.getInviter_id() +
+                    "' and invitee_user_id = '" + friendshipRequestDTO.getInvitee_id() + "'";
 
             Query query = em.createNativeQuery(sqlString, Friendship.class);
             Object singleResult = query.getSingleResult();
@@ -70,8 +70,7 @@ public class JPAFriendshipRepository implements FriendshipRepository {
     private Stream<Friendship> friendRequestList(EntityManager em, String userId) {
         String sqlString = "select *" +
                 " from friendship" +
-                " where (inviter_user_id = '" + userId +
-                "' or invitee_user_id = '" + userId + "')" +
+                " where inviter_user_id = '" + userId + "'" +
                 " and accepted is not true";
         List<Friendship> friendRequestList = em.createNativeQuery(sqlString, Friendship.class).getResultList();
         return friendRequestList.stream();
@@ -92,7 +91,7 @@ public class JPAFriendshipRepository implements FriendshipRepository {
     }
 
     private Stream<Friendship> list(EntityManager em) {
-        String qlString = "select * from friendship;";
+        String qlString = "select * from friendship";
         List<Friendship> friendships = em.createQuery(qlString, Friendship.class).getResultList();
         return friendships.stream();
     }

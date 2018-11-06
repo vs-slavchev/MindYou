@@ -14,7 +14,7 @@ public interface FriendshipRepository {
 
     CompletionStage<Friendship> addFromDTO(FriendshipRequestDTO friendshipRequestDTO);
 
-    CompletionStage<Friendship> acceptRequest(String inviterId, String inviteeId);
+    CompletionStage<Friendship> acceptRequest(FriendshipRequestDTO friendshipRequestDTO);
 
     CompletionStage<Stream<Friendship>> list();
 

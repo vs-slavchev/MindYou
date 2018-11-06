@@ -46,7 +46,7 @@ public class JPAAppUserRepository implements AppUserRepository {
     }
 
     private Stream<AppUser> list(EntityManager em) {
-        String qlString = "select * from app_user;";
+        String qlString = "select * from app_user";
         List<AppUser> appUsers = em.createQuery(qlString, AppUser.class).getResultList();
         return appUsers.stream();
     }
@@ -54,6 +54,17 @@ public class JPAAppUserRepository implements AppUserRepository {
     @Override
     public CompletionStage<Stream<AppUser>> getAllFriends(String userId) {
         return supplyAsync(() -> wrap(em -> friendList(em, userId)), executionContext);
+    }
+
+    @Override
+    public CompletionStage<Stream<AppUser>> getAllUsers() {
+        return supplyAsync(() -> wrap(em -> userList(em)), executionContext);
+    }
+
+    private Stream<AppUser> userList(EntityManager em) {
+        String sqlString = "select * from app_user";
+        List<AppUser> userList = em.createNativeQuery(sqlString, AppUser.class).getResultList();
+        return userList.stream();
     }
 
     private Stream<AppUser> friendList(EntityManager em, String userId) {
@@ -67,5 +78,5 @@ public class JPAAppUserRepository implements AppUserRepository {
                 " and fr2.accepted = true)";
         List<AppUser> friendList = em.createNativeQuery(sqlString, AppUser.class).getResultList();
         return friendList.stream();
-    };
+    }
 }

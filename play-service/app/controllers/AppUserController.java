@@ -46,39 +46,25 @@ public class AppUserController extends Controller implements WSBodyReadables, WS
         this.activityBlueprintRepository = activityBlueprintRepository;
     }
 
-
-
     public CompletionStage<Result> getFriendList(String userId) {
         return appUserRepository.getAllFriends(userId)
                 .thenApplyAsync(friendListStream -> ok(Json.toJson(friendListStream
                         .collect(Collectors.toList()))), httpExecutionContext.current());
-
     }
 
-public Result showAllUsers() {
+    public CompletionStage<Result> showAllUsers() {
+        return appUserRepository.getAllUsers()
+                .thenApplyAsync(friendListStream -> ok(Json.toJson(friendListStream
+                        .collect(Collectors.toList()))), httpExecutionContext.current());
+    }
+
+    public Result searchUsers(String name) {
 return play.mvc.Results.TODO;
 }
 
-public Result searchUsers(String name) {
+    public Result showUser(Long id) {
 return play.mvc.Results.TODO;
 }
-
-public Result showUser(Long id) {
-return play.mvc.Results.TODO;
-}
-
-/*
-    public CompletionStage<Result> index() {
-        appUserLogger.debug("calling statistics_service");
-        String requestUrl = "https://jsonplaceholder.typicode.com/todos/1";
-        //                   http://192.168.178.206:5000/activity/swimming
-
-        return ws.url(requestUrl)
-                .get().thenApplyAsync(answer -> {
-                    ctx().flash().put("info", "Response updated!");
-                    return ok("answer was " + answer.getBody(json()));
-                }, httpExecutionContext.current());
-    }*/
 
     @BodyParser.Of(AppUserBodyParser.class)
     public CompletionStage<Result> createAppUser() {
@@ -89,4 +75,16 @@ return play.mvc.Results.TODO;
         return appUserRepository.add(appUser)
                 .thenApplyAsync(p -> ok(Json.toJson(p)), httpExecutionContext.current());
     }
+
+    /*public CompletionStage<Result> index() {
+        appUserLogger.debug("calling statistics_service");
+        String requestUrl = "https://jsonplaceholder.typicode.com/todos/1";
+        //                   http://192.168.178.206:5000/activity/swimming
+
+        return ws.url(requestUrl)
+                .get().thenApplyAsync(answer -> {
+                    ctx().flash().put("info", "Response updated!");
+                    return ok("answer was " + answer.getBody(json()));
+                }, httpExecutionContext.current());
+    }*/
 }

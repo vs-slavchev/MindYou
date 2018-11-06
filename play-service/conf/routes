@@ -18,11 +18,11 @@ POST        /users/create                   controllers.AppUserController.create
 
 # generate a friendship with two IDs of the inviter and the invitee in Json body
 # ex: {"inviter_id":123,"invitee_id":321}
-POST        /user/friendship/create         controllers.FriendshipController.sendFriendRequest
+POST        /friendships/create         controllers.FriendshipController.sendFriendRequest
 
-# accept the friendship request between the inviter and the invitee,
-# ex: /user/friendship/accept?inviter_id=123&invitee_id=321
-PUT         /user/friendship/accept         controllers.FriendshipController.acceptFriendRequest(inviter_id: String, invitee_id: String)
+# accept the friendship request between the inviter and the invitee using json
+# ex: {"inviter_id":123,"invitee_id":321}
+PUT         /friendships/accept         controllers.FriendshipController.acceptFriendRequest
 
 # start tracking activity
 # in body provide as json activity_id and user_id
@@ -47,6 +47,7 @@ GET         /friendships/:userId            controllers.AppUserController.getFri
 # retrieving all friend request data
 # ex: /friendships/123/requests
 GET         /friendships/:userId/requests   controllers.FriendshipController.getAllFriendRequests(userId: String)
+
 
 # create a custom activity
 # json for now because we might want to send more, also returns existing activity if already exists
