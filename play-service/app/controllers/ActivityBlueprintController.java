@@ -17,10 +17,7 @@ import java.util.concurrent.CompletionStage;
 import java.util.stream.Collectors;
 
 
-/**
- * This controller contains an action to handle HTTP requests
- * to the application's home page.
- */
+
 public class ActivityBlueprintController extends Controller implements WSBodyReadables, WSBodyWritables {
 
     private HttpExecutionContext httpExecutionContext;

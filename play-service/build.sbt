@@ -30,5 +30,7 @@ libraryDependencies ++= Seq(
   ws
 )
 
-
 libraryDependencies += ehcache
+
+
+PlayKeys.externalizeResources := false
