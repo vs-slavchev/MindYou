@@ -45,7 +45,7 @@ public class JPAFriendshipRepository implements FriendshipRepository {
         }), executionContext);
     }
 
-    //@Override
+    @Override
     public CompletionStage<Friendship> acceptRequest(String inviterId, String inviteeId) {
         return supplyAsync(() -> wrap(em -> {
 
@@ -61,6 +61,21 @@ public class JPAFriendshipRepository implements FriendshipRepository {
             return friendship;
         }), executionContext);
     }
+
+    @Override
+    public CompletionStage<Stream<Friendship>> getAllFriendRequests(String userId) {
+        return supplyAsync(() -> wrap(em -> friendRequestList(em, userId)), executionContext);
+    }
+
+    private Stream<Friendship> friendRequestList(EntityManager em, String userId) {
+        String sqlString = "select *" +
+                " from friendship" +
+                " where (inviter_user_id = '" + userId +
+                "' or invitee_user_id = '" + userId + "')" +
+                " and accepted is not true";
+        List<Friendship> friendRequestList = em.createNativeQuery(sqlString, Friendship.class).getResultList();
+        return friendRequestList.stream();
+    };
 
     @Override
     public CompletionStage<Stream<Friendship>> list() {

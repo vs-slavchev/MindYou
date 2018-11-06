@@ -8,6 +8,7 @@ import models.friendship.FriendshipRequestDTO;
 import models.trackedactivity.TrackedActivityStartDTO;
 import play.Logger;
 import play.data.FormFactory;
+import play.libs.Json;
 import play.libs.concurrent.HttpExecutionContext;
 import play.libs.ws.WSBodyReadables;
 import play.libs.ws.WSBodyWritables;
@@ -22,6 +23,7 @@ import utils.TrackedActivityStartDTOBodyParser;
 
 import javax.inject.Inject;
 import java.util.concurrent.CompletionStage;
+import java.util.stream.Collectors;
 
 /**
  * This controller contains an action to handle HTTP requests
@@ -58,5 +60,11 @@ public class FriendshipController extends Controller implements WSBodyReadables,
     public CompletionStage<Result> acceptFriendRequest(String inviter_id, String invitee_id) {
         return friendshipRepository.acceptRequest(inviter_id, invitee_id)
                 .thenApplyAsync(p -> ok("friendRequest accepted"), httpExecutionContext.current());
+    }
+
+    public CompletionStage<Result> getAllFriendRequests(String userId) {
+        return friendshipRepository.getAllFriendRequests(userId)
+                .thenApplyAsync(friendListStream -> ok(Json.toJson(friendListStream
+                        .collect(Collectors.toList()))), httpExecutionContext.current());
     }
 }

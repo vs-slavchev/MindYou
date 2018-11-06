@@ -40,9 +40,13 @@ GET         /activities/:id                 controllers.ActivityBlueprintControl
 # ex: /activities/top/10 to only show the top 10 activities
 GET         /activities/top/:number         controllers.ActivityBlueprintController.listActivities(number: Long)
 
-# retrieving the data of all friends of a user
-# ex: /123/friends
-GET         /:userId/friends                controllers.AppUserController.getFriendList(userId: String)
+# retrieving data of all friends of a user
+# ex: /friendships/123
+GET         /friendships/:userId            controllers.AppUserController.getFriendList(userId: String)
+
+# retrieving all friend request data
+# ex: /friendships/123/requests
+GET         /friendships/:userId/requests   controllers.FriendshipController.getAllFriendRequests(userId: String)
 
 # create a custom activity
 # json for now because we might want to send more, also returns existing activity if already exists

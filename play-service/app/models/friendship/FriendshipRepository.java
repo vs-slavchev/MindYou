@@ -17,4 +17,6 @@ public interface FriendshipRepository {
     CompletionStage<Friendship> acceptRequest(String inviterId, String inviteeId);
 
     CompletionStage<Stream<Friendship>> list();
+
+    CompletionStage<Stream<Friendship>> getAllFriendRequests(String userId);
 }

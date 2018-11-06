@@ -60,9 +60,11 @@ public class JPAAppUserRepository implements AppUserRepository {
         String sqlString = "select distinct friend.* " +
                 "from friendship fr1, friendship fr2, app_user friend " +
                 "where (fr1.invitee_user_id = '" + userId +
-                "' and friend.user_id = fr1.inviter_user_id)" +
+                "' and friend.user_id = fr1.inviter_user_id" +
+                " and fr1.accepted = true)" +
                 " or (fr2.inviter_user_id = '" + userId +
-                "' and friend.user_id = fr2.invitee_user_id)";
+                "' and friend.user_id = fr2.invitee_user_id" +
+                " and fr2.accepted = true)";
         List<AppUser> friendList = em.createNativeQuery(sqlString, AppUser.class).getResultList();
         return friendList.stream();
     };
