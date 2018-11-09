@@ -57,12 +57,8 @@ public class FriendshipController extends Controller implements WSBodyReadables,
                 .thenApplyAsync(p -> ok("friendRequest sent"), httpExecutionContext.current());
     }
 
-    @BodyParser.Of(FriendshipRequestDTOBodyParser.class)
-    public CompletionStage<Result> acceptFriendRequest() {
-        Http.RequestBody body = request().body();
-        FriendshipRequestDTO friendshipRequestDTO = body.as(FriendshipRequestDTO.class);
-
-        return friendshipRepository.acceptRequest(friendshipRequestDTO)
+    public CompletionStage<Result> acceptFriendRequest(String friendship_id, String inviter_id) {
+        return friendshipRepository.acceptRequest(friendship_id, inviter_id)
                 .thenApplyAsync(p -> ok("friendRequest accepted"), httpExecutionContext.current());
     }
 

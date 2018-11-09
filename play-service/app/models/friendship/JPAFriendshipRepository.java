@@ -46,13 +46,13 @@ public class JPAFriendshipRepository implements FriendshipRepository {
     }
 
     @Override
-    public CompletionStage<Friendship> acceptRequest(FriendshipRequestDTO friendshipRequestDTO) {
+    public CompletionStage<Friendship> acceptRequest(String friendshipId, String inviterId) {
         return supplyAsync(() -> wrap(em -> {
 
-            String sqlString = "select * " +
-                    "from friendship " +
-                    "where inviter_user_id = '" + friendshipRequestDTO.getInviter_id() +
-                    "' and invitee_user_id = '" + friendshipRequestDTO.getInvitee_id() + "'";
+            String sqlString = "select *" +
+                    " from friendship" +
+                    " where friendship_id = '" + friendshipId +
+                    "' and inviter_user_id = '" + inviterId + "'";
 
             Query query = em.createNativeQuery(sqlString, Friendship.class);
             Object singleResult = query.getSingleResult();
