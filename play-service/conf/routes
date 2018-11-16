@@ -25,6 +25,10 @@ POST        /friendships/create             controllers.FriendshipController.sen
 # ex: /friendships/123/accept/321
 PUT         /friendships/:friendshipId/accept/:inviterId             controllers.FriendshipController.acceptFriendRequest(friendshipId, inviterId)
 
+# decline the friendship request between the inviter and the invitee using friendshipId and inviterId
+# ex: /friendships/123/decline/321
+
+
 # retrieving data of all friends of a user
 # ex: /friendships/123
 GET         /friendships/:userId            controllers.AppUserController.getFriendList(userId: String)

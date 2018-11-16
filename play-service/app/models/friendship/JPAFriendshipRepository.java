@@ -34,13 +34,22 @@ public class JPAFriendshipRepository implements FriendshipRepository {
     @Override
     public CompletionStage<Friendship> addFromDTO(FriendshipRequestDTO friendshipRequestDTO) {
         return supplyAsync(() -> wrap(em -> {
+            Friendship friendship = null;
+            String sqlString = "select *" +
+                    " from friendship" +
+                    " where (inviter_user_id = '" + friendshipRequestDTO.getInviter_id() +
+                    "' and invitee_user_id = '" + friendshipRequestDTO.getInvitee_id() + "')" +
+                    " or (inviter_user_id = '" + friendshipRequestDTO.getInvitee_id() +
+                    "' and invitee_user_id = '" + friendshipRequestDTO.getInviter_id() + "')";
 
-            AppUser inviter = em.find(AppUser.class, friendshipRequestDTO.getInviter_id());
-
-            AppUser invitee = em.find(AppUser.class, friendshipRequestDTO.getInvitee_id());
-
-            Friendship friendship = new Friendship(inviter, invitee);
-
+            List<Friendship> friendRequestList = em.createNativeQuery(sqlString, Friendship.class).getResultList();
+            if (friendRequestList.isEmpty()){
+                if (!friendshipRequestDTO.getInviter_id().equals(friendshipRequestDTO.getInvitee_id())){
+                    AppUser inviter = em.find(AppUser.class, friendshipRequestDTO.getInviter_id());
+                    AppUser invitee = em.find(AppUser.class, friendshipRequestDTO.getInvitee_id());
+                    friendship = new Friendship(inviter, invitee);
+                }
+            }
             return insert(em, friendship);
         }), executionContext);
     }
