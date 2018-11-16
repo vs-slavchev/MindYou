@@ -72,6 +72,23 @@ public class JPAFriendshipRepository implements FriendshipRepository {
     }
 
     @Override
+    public CompletionStage<Friendship> declineRequest(String friendshipId, String inviterId) {
+        return supplyAsync(() -> wrap(em -> {
+
+            String sqlString = "select *" +
+                    " from friendship" +
+                    " where friendship_id = '" + friendshipId +
+                    "' and inviter_user_id = '" + inviterId + "'";
+
+            Query query = em.createNativeQuery(sqlString, Friendship.class);
+            Object singleResult = query.getSingleResult();
+            Friendship friendship = (Friendship) singleResult;
+            return remove(em, friendship);
+        }), executionContext);
+    }
+
+
+    @Override
     public CompletionStage<Stream<Friendship>> getAllFriendRequests(String userId) {
         return supplyAsync(() -> wrap(em -> friendRequestList(em, userId)), executionContext);
     }
@@ -96,6 +113,11 @@ public class JPAFriendshipRepository implements FriendshipRepository {
 
     private Friendship insert(EntityManager em, Friendship friendship) {
         em.persist(friendship);
+        return friendship;
+    }
+
+    private Friendship remove(EntityManager em, Friendship friendship){
+        em.remove(friendship);
         return friendship;
     }
 

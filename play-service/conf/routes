@@ -23,11 +23,11 @@ POST        /friendships/create             controllers.FriendshipController.sen
 
 # accept the friendship request between the inviter and the invitee using friendshipId and inviterId
 # ex: /friendships/123/accept/321
-PUT         /friendships/:friendshipId/accept/:inviterId             controllers.FriendshipController.acceptFriendRequest(friendshipId, inviterId)
+PUT         /friendships/:friendshipId/accept/:inviterId             controllers.FriendshipController.acceptFriendRequest(friendshipId: String, inviterId: String)
 
 # decline the friendship request between the inviter and the invitee using friendshipId and inviterId
 # ex: /friendships/123/decline/321
-
+DELETE      /friendships/:friendshipId/decline/:inviterId            controllers.FriendshipController.declineFriendRequest(friendshipId: String, inviterId: String)
 
 # retrieving data of all friends of a user
 # ex: /friendships/123
@@ -48,7 +48,7 @@ POST        /activities/start               controllers.TrackedActivityControlle
 GET         /activities/:userId/stop        controllers.TrackedActivityController.stopActivity(userId: String)
 
 # get details about an activty blueprint
-GET         /activities/:id                 controllers.ActivityBlueprintController.getActivityBlueprint(id)
+GET         /activities/:id                 controllers.ActivityBlueprintController.getActivityBlueprint(id: String)
 
 # when app is started some activity blueprints are queried to be shown on activities screen
 # ex: /activities/top/10 to only show the top 10 activities
