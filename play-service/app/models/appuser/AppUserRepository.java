@@ -18,4 +18,6 @@ public interface AppUserRepository {
     CompletionStage<Stream<AppUser>> getAllFriends(String userId);
 
     CompletionStage<Stream<AppUser>> getAllUsers();
+
+    CompletionStage<AppUser> getUser(String id);
 }

@@ -1,10 +1,13 @@
 package models.appuser;
 
 import models.DatabaseExecutionContext;
+import models.activityblueprint.ActivityBlueprint;
 import play.db.jpa.JPAApi;
+import scala.App;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.List;
 import java.util.concurrent.CompletionStage;
 import java.util.function.Function;
@@ -59,6 +62,20 @@ public class JPAAppUserRepository implements AppUserRepository {
     @Override
     public CompletionStage<Stream<AppUser>> getAllUsers() {
         return supplyAsync(() -> wrap(em -> userList(em)), executionContext);
+    }
+
+    @Override
+    public CompletionStage<AppUser> getUser(String id) {
+        return supplyAsync(() -> wrap(em -> {
+
+            String sqlString = "select *" +
+                    " from app_user" +
+                    " where user_id = '" + id + "'";
+            Query query = em.createNativeQuery(sqlString, AppUser.class);
+            Object singleResult = query.getSingleResult();
+            AppUser appUser = (AppUser) singleResult;
+            return appUser;
+        }), executionContext);
     }
 
     private Stream<AppUser> userList(EntityManager em) {

@@ -62,9 +62,10 @@ public class AppUserController extends Controller implements WSBodyReadables, WS
 return play.mvc.Results.TODO;
 }
 
-    public Result showUser(Long id) {
-return play.mvc.Results.TODO;
-}
+    public CompletionStage<Result> showUser(String userId) {
+        return appUserRepository.getUser(userId)
+                .thenApplyAsync(ta -> ok(Json.toJson(ta)), httpExecutionContext.current());
+    }
 
     @BodyParser.Of(AppUserBodyParser.class)
     public CompletionStage<Result> createAppUser() {

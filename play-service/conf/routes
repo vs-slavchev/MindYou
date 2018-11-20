@@ -1,4 +1,3 @@
-############ NOT IMPLEMENTED!
 # get all users
 GET         /users                          controllers.AppUserController.showAllUsers
 
@@ -7,9 +6,8 @@ GET         /users                          controllers.AppUserController.showAl
 # ex: /users/search?name=linh
 GET         /users/search                   controllers.AppUserController.searchUsers(name: String)
 
-############ NOT IMPLEMENTED!
 # get a user by the user_id
-GET         /users/:id                      controllers.AppUserController.showUser(id: Long)
+GET         /users/:id                      controllers.AppUserController.showUser(id: String)
 
 # create a new user with activity_id and user_id provided in json format
 # ex: {"id":123,"name":"Andrea"}
