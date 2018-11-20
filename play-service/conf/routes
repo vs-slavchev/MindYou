@@ -31,9 +31,13 @@ DELETE      /friendships/:friendshipId/decline/:inviterId            controllers
 # ex: /friendships/123
 GET         /friendships/:userId            controllers.AppUserController.getFriendList(userId: String)
 
-# retrieving all friend request data
-# ex: /friendships/123/requests
-GET         /friendships/:userId/requests   controllers.FriendshipController.getAllFriendRequests(userId: String)
+# retrieving all friend requests that have been received
+# ex: /friendships/123/receivedRequests
+GET         /friendships/:userId/receivedRequests   controllers.FriendshipController.getReceivedFriendRequests(userId: String)
+
+# retrieving all friend requests that have been sent
+# ex: /friendships/123/sentRequests
+GET         /friendships/:userId/sentRequests       controllers.FriendshipController.getSentFriendRequests(userId: String)
 
 
 

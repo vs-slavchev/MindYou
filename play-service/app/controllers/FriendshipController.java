@@ -67,8 +67,14 @@ public class FriendshipController extends Controller implements WSBodyReadables,
                 .thenApplyAsync(p -> ok("friendRequest declined"), httpExecutionContext.current());
     }
 
-    public CompletionStage<Result> getAllFriendRequests(String userId) {
-        return friendshipRepository.getAllFriendRequests(userId)
+    public CompletionStage<Result> getReceivedFriendRequests(String userId) {
+        return friendshipRepository.getReceivedFriendRequests(userId)
+                .thenApplyAsync(friendListStream -> ok(Json.toJson(friendListStream
+                        .collect(Collectors.toList()))), httpExecutionContext.current());
+    }
+
+    public CompletionStage<Result> getSentFriendRequests(String userId) {
+        return friendshipRepository.getSentFriendRequests(userId)
                 .thenApplyAsync(friendListStream -> ok(Json.toJson(friendListStream
                         .collect(Collectors.toList()))), httpExecutionContext.current());
     }
