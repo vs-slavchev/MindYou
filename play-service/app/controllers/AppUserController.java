@@ -58,9 +58,11 @@ public class AppUserController extends Controller implements WSBodyReadables, WS
                         .collect(Collectors.toList()))), httpExecutionContext.current());
     }
 
-    public Result searchUsers(String name) {
-return play.mvc.Results.TODO;
-}
+    public CompletionStage<Result> searchUsers(String name) {
+        return appUserRepository.searchUsers(name)
+                .thenApplyAsync(friendListStream -> ok(Json.toJson(friendListStream
+                        .collect(Collectors.toList()))), httpExecutionContext.current());
+    }
 
     public CompletionStage<Result> showUser(String userId) {
         return appUserRepository.getUser(userId)

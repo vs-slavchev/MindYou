@@ -1,12 +1,12 @@
 # get all users
 GET         /users                          controllers.AppUserController.showAllUsers
 
-############ NOT IMPLEMENTED!
-# get all users whose name contains the string
+# search for particular users with the name specified
 # ex: /users/search?name=linh
 GET         /users/search                   controllers.AppUserController.searchUsers(name: String)
 
 # get a user by the user_id
+# ex: /users/123
 GET         /users/:id                      controllers.AppUserController.showUser(id: String)
 
 # create a new user with activity_id and user_id provided in json format

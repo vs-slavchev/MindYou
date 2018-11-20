@@ -20,4 +20,6 @@ public interface AppUserRepository {
     CompletionStage<Stream<AppUser>> getAllUsers();
 
     CompletionStage<AppUser> getUser(String id);
+
+    CompletionStage<Stream<AppUser>> searchUsers(String name);
 }

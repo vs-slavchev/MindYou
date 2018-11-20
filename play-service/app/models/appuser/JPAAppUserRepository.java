@@ -78,6 +78,11 @@ public class JPAAppUserRepository implements AppUserRepository {
         }), executionContext);
     }
 
+    @Override
+    public CompletionStage<Stream<AppUser>> searchUsers(String name) {
+        return supplyAsync(() -> wrap(em -> userWithName(em, name)), executionContext);
+    }
+
     private Stream<AppUser> userList(EntityManager em) {
         String sqlString = "select * from app_user";
         List<AppUser> userList = em.createNativeQuery(sqlString, AppUser.class).getResultList();
@@ -95,5 +100,13 @@ public class JPAAppUserRepository implements AppUserRepository {
                 " and fr2.accepted = true)";
         List<AppUser> friendList = em.createNativeQuery(sqlString, AppUser.class).getResultList();
         return friendList.stream();
+    }
+
+    private Stream<AppUser> userWithName(EntityManager em, String name){
+        String sqlString = "select *" +
+                " from app_user" +
+                " where lower(name) like " + "lower('" + name + "%')";
+        List<AppUser> users = em.createNativeQuery(sqlString, AppUser.class).getResultList();
+        return users.stream();
     }
 }
