@@ -1,0 +1,13 @@
+<!-- https://docs.nativescript.org/angular/core-concepts/angular-navigation.html#page-router-outlet -->
+<page-router-outlet></page-router-outlet>
+
+<GridLayout rows="*, auto" backgroundColor="#26252A">
+    <StackLayout row="0">
+
+        <router-outlet></router-outlet>
+
+    </StackLayout>
+
+    <BottomBar row="1" (tabSelected)="tabSelected($event)"></BottomBar>
+
+</GridLayout>
