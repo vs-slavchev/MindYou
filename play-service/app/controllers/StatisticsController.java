@@ -36,9 +36,9 @@ public class StatisticsController extends Controller implements WSBodyReadables,
         this.ws = ws;
         this.httpExecutionContext = ec;
 
-        timePeriods.put("recent", "/1/week");
-        timePeriods.put("soon", "/3/month");
-        timePeriods.put("longterm", "/1/year");
+        timePeriods.put("recent", "1/week");
+        timePeriods.put("soon", "3/month");
+        timePeriods.put("longterm", "1/year");
     }
 
     public CompletionStage<Result> hoursPerActivity(String userId, String time) {
