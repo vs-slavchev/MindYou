@@ -72,19 +72,6 @@ public class AppUserController extends Controller implements WSBodyReadables, WS
         return play.mvc.Results.TODO;
     }
 
-/*
-    public CompletionStage<Result> index() {
-        appUserLogger.debug("calling statistics_service");
-        String requestUrl = "https://jsonplaceholder.typicode.com/todos/1";
-        //                   http://192.168.178.206:5000/activity/swimming
-
-        return ws.url(requestUrl)
-                .get().thenApplyAsync(answer -> {
-                    ctx().flash().put("info", "Response updated!");
-                    return ok("answer was " + answer.getBody(json()));
-                }, httpExecutionContext.current());
-    }*/
-
     @BodyParser.Of(AppUserBodyParser.class)
     public CompletionStage<Result> createAppUser() {
         Http.RequestBody body = request().body();

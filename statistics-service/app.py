@@ -72,8 +72,8 @@ def query(query_sql, params_tuple):
     finally:
         if(connection):
             cursor.close()
-            connection.close()
-            print("PostgreSQL connection is closed")
+            #connection.close()
+            #print("PostgreSQL connection is closed")
 
 
 

@@ -2,3 +2,10 @@ img{
     width:75px;
     height:75px;
 }
+.jumbotron{
+    background-image: linear-gradient(#A1D9B4, #DFF2E6, #73C68E);
+    background-repeat: no-repeat;
+    background-position: right;
+    background-color: #FDD65C;
+    text-align: center;
+ }
