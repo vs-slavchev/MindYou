@@ -4,9 +4,12 @@ img {
     padding-right: 5px;
 }
 .jumbotron{
-    background-color: #3E8856;
     padding-left: 20%;
     padding-right: 20%;
+    background-image: url(../../assets/k1.png);
+    background-repeat: no-repeat;
+    background-position: left;
+    background-color: #FDD65C;
 }
 .btn{
     background-color: #FF7816;
