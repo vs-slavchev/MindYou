@@ -10,8 +10,8 @@ So you can still use template expressions, bindings, templates as well as all th
 The ActionBar is the NativeScript common abstraction over the Android ActionBar and iOS NavigationBar.
 http://docs.nativescript.org/ui/action-bar
 -->
-<!--<ActionBar title="My App" class="action-bar">-->
-<!--</ActionBar>-->
+<!-- <ActionBar title="My App" class="action-bar">
+</ActionBar> -->
 
 <!--
 The StackLayout stacks UI components on the screen — either vertically or horizontally.
@@ -23,11 +23,25 @@ These components make use of several CSS class names that are part of the Native
 core theme, such as p-20, btn, h2, and list-group. You can view a full list of the
 class names available for styling your app at https://docs.nativescript.org/ui/theme.
 -->
-<StackLayout class="page">
+<!-- <StackLayout class="page">
         <ListView [items]="items" class="list-group">
         <ng-template let-item="item">
             <Label [nsRouterLink]="['/item', item.id]" [text]="item.name"
                 class="list-group-item"></Label>
         </ng-template>
     </ListView>
-</StackLayout>
+</StackLayout> -->
+<!-- <ActionBar title="Application Title"></ActionBar> -->
+
+        <ActionBar title="Statistics"></ActionBar>
+
+<GridLayout>
+
+<RadPieChart allowAnimation="true" row="0" id="pieChart">
+    <DonutSeries tkPieSeries selectionMode="DataPoint" outerRadiusFactor="0.9" expandRadius="0.5" outerRadiusFactor="0.7" innerRadiusFactor="0.4"
+                 [items]="pieSource" valueProperty="Amount" legendLabel="Brand" showLabels="true"></DonutSeries>
+    <RadLegendView tkPieLegend position="Right" title="Brands" offsetOrigin="TopRight" width="110" enableSelection="true"></RadLegendView>
+</RadPieChart>
+</GridLayout>
+
+
