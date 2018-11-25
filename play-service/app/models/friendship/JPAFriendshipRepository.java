@@ -55,13 +55,13 @@ public class JPAFriendshipRepository implements FriendshipRepository {
     }
 
     @Override
-    public CompletionStage<Friendship> acceptRequest(String friendshipId, String inviterId) {
+    public CompletionStage<Friendship> acceptRequest(String friendshipId, String inviteeId) {
         return supplyAsync(() -> wrap(em -> {
 
             String sqlString = "select *" +
                     " from friendship" +
                     " where friendship_id = '" + friendshipId +
-                    "' and inviter_user_id = '" + inviterId + "'";
+                    "' and invitee_user_id = '" + inviteeId + "'";
 
             Query query = em.createNativeQuery(sqlString, Friendship.class);
             Object singleResult = query.getSingleResult();
@@ -72,13 +72,13 @@ public class JPAFriendshipRepository implements FriendshipRepository {
     }
 
     @Override
-    public CompletionStage<Friendship> declineRequest(String friendshipId, String inviterId) {
+    public CompletionStage<Friendship> declineRequest(String friendshipId, String inviteeId) {
         return supplyAsync(() -> wrap(em -> {
 
             String sqlString = "select *" +
                     " from friendship" +
                     " where friendship_id = '" + friendshipId +
-                    "' and inviter_user_id = '" + inviterId + "'";
+                    "' and invitee_user_id = '" + inviteeId + "'";
 
             Query query = em.createNativeQuery(sqlString, Friendship.class);
             Object singleResult = query.getSingleResult();

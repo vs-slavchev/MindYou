@@ -23,12 +23,12 @@ POST        /friendships/create             controllers.FriendshipController.sen
 # accept the friendship request between the inviter and the invitee using friendshipId and inviteeId
 # invitee is tokenized
 # ex: /friendships/123/accept/321
-PUT         /friendships/:friendshipId/accept/:inviterId             controllers.FriendshipController.acceptFriendRequest(friendshipId: String, inviterId: String)
+PUT         /friendships/:friendshipId/accept/:inviteeId             controllers.FriendshipController.acceptFriendRequest(friendshipId: String, inviteeId: String)
 
 # decline the friendship request between the inviter and the invitee using friendshipId and inviterId
-#invitee is tokenized
+# invitee is tokenized
 # ex: /friendships/123/decline/321
-DELETE      /friendships/:friendshipId/decline/:inviterId            controllers.FriendshipController.declineFriendRequest(friendshipId: String, inviterId: String)
+DELETE      /friendships/:friendshipId/decline/:inviteeId            controllers.FriendshipController.declineFriendRequest(friendshipId: String, inviteeId: String)
 
 # retrieving data of all friends of a user
 # ex: /friendships/123
