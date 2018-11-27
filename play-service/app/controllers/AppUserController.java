@@ -71,9 +71,11 @@ public class AppUserController extends Controller implements WSBodyReadables, WS
     }
 
     public CompletionStage<Result> showUser(String userId) {
-        return appUserRepository.getUser(userId)
+        String verifiedUserId = FirebaseInit.tokenToUserId(userId);
+        return appUserRepository.getUser(verifiedUserId)
                 .thenApplyAsync(ta -> ok(Json.toJson(ta)), httpExecutionContext.current());
     }
+
     @BodyParser.Of(AppUserBodyParser.class)
     public CompletionStage<Result> createAppUser() {
         Http.RequestBody body = request().body();

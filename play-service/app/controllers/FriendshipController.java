@@ -66,18 +66,24 @@ public class FriendshipController extends Controller implements WSBodyReadables,
     }
 
     public CompletionStage<Result> declineFriendRequest(String friendship_id, String invitee_id){
-        return friendshipRepository.declineRequest(friendship_id, invitee_id)
+        String verifiedInviteeId = FirebaseInit.tokenToUserId(invitee_id);
+
+        return friendshipRepository.declineRequest(friendship_id, verifiedInviteeId)
                 .thenApplyAsync(p -> ok("friendRequest declined"), httpExecutionContext.current());
     }
 
     public CompletionStage<Result> getReceivedFriendRequests(String userId) {
-        return friendshipRepository.getReceivedFriendRequests(userId)
+        String verifiedUserId = FirebaseInit.tokenToUserId(userId);
+
+        return friendshipRepository.getReceivedFriendRequests(verifiedUserId)
                 .thenApplyAsync(friendListStream -> ok(Json.toJson(friendListStream
                         .collect(Collectors.toList()))), httpExecutionContext.current());
     }
 
     public CompletionStage<Result> getSentFriendRequests(String userId) {
-        return friendshipRepository.getSentFriendRequests(userId)
+        String verifiedUserId = FirebaseInit.tokenToUserId(userId);
+
+        return friendshipRepository.getSentFriendRequests(verifiedUserId)
                 .thenApplyAsync(friendListStream -> ok(Json.toJson(friendListStream
                         .collect(Collectors.toList()))), httpExecutionContext.current());
     }
