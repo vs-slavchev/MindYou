@@ -3,6 +3,7 @@ package controllers;
 import models.friendship.FriendshipRepository;
 import models.friendship.FriendshipRequestDTO;
 import play.Logger;
+import play.libs.Json;
 import play.libs.concurrent.HttpExecutionContext;
 import play.libs.ws.WSBodyReadables;
 import play.libs.ws.WSBodyWritables;
@@ -16,6 +17,7 @@ import utils.FriendshipRequestDTOBodyParser;
 
 import javax.inject.Inject;
 import java.util.concurrent.CompletionStage;
+import java.util.stream.Collectors;
 
 /**
  * This controller contains an action to handle HTTP requests
@@ -56,10 +58,33 @@ public class FriendshipController extends Controller implements WSBodyReadables,
                 .thenApplyAsync(p -> ok("friendRequest sent"), httpExecutionContext.current());
     }
 
-    public CompletionStage<Result> acceptFriendRequest(String inviter_id, String invitee_id) {
+    public CompletionStage<Result> acceptFriendRequest(String friendship_id, String invitee_id) {
         String verifiedInviteeId = FirebaseInit.tokenToUserId(invitee_id);
 
-        return friendshipRepository.acceptRequest(inviter_id, verifiedInviteeId)
+        return friendshipRepository.acceptRequest(friendship_id, verifiedInviteeId)
                 .thenApplyAsync(p -> ok("friendRequest accepted"), httpExecutionContext.current());
+    }
+
+    public CompletionStage<Result> declineFriendRequest(String friendship_id, String invitee_id){
+        String verifiedInviteeId = FirebaseInit.tokenToUserId(invitee_id);
+
+        return friendshipRepository.declineRequest(friendship_id, verifiedInviteeId)
+                .thenApplyAsync(p -> ok("friendRequest declined"), httpExecutionContext.current());
+    }
+
+    public CompletionStage<Result> getReceivedFriendRequests(String userId) {
+        String verifiedUserId = FirebaseInit.tokenToUserId(userId);
+
+        return friendshipRepository.getReceivedFriendRequests(verifiedUserId)
+                .thenApplyAsync(friendListStream -> ok(Json.toJson(friendListStream
+                        .collect(Collectors.toList()))), httpExecutionContext.current());
+    }
+
+    public CompletionStage<Result> getSentFriendRequests(String userId) {
+        String verifiedUserId = FirebaseInit.tokenToUserId(userId);
+
+        return friendshipRepository.getSentFriendRequests(verifiedUserId)
+                .thenApplyAsync(friendListStream -> ok(Json.toJson(friendListStream
+                        .collect(Collectors.toList()))), httpExecutionContext.current());
     }
 }

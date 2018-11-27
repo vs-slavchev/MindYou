@@ -9,6 +9,8 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserTimelineComponent } from './user-timeline/user-timeline.component';
 import { TestComponent } from './test/test.component';
 import { HttpClientModule } from '@angular/common/http';
+import { GetRequestsComponent } from './get-requests/get-requests.component';
+import { HttpTestComponent } from './http-test/http-test.component';
 
 
 @NgModule({
@@ -20,6 +22,8 @@ import { HttpClientModule } from '@angular/common/http';
     UserProfileComponent,
     UserTimelineComponent,
     TestComponent,
+    GetRequestsComponent,
+    HttpTestComponent,
   ],
   imports: [
     BrowserModule,

@@ -2,6 +2,7 @@ from flask import Flask
 app = Flask(__name__)
 import psycopg2
 import logging
+import pandas
 
 logging.basicConfig(level=logging.DEBUG)
 logging.debug('------------%s', 'started' )
@@ -33,7 +34,6 @@ def hours_per_activity(user_id, number_units, unit):
     records = '[' + ','.join(obj for obj in list_of_jsons) + ']'
     return records
 
-
 # hours spent on activity per day
 @app.route("/hours-per-day/<user_id>/<activity_id>/<number_units>/<unit>")
 def hours_per_day(user_id, activity_id, number_units, unit):
@@ -53,13 +53,29 @@ def hours_per_day(user_id, activity_id, number_units, unit):
     records = '[' + ','.join(obj for obj in list_of_jsons) + ']'
     return records
 
+# cumulate distribution function for total time spent on an activity compared to other users
+@app.route("/percentile-rank/<user_id>/<activity_id>/<number_units>/<unit>")
+def percentile_rank(user_id, activity_id, number_units, unit):
+    time_interval = "'{} {}'".format( str(number_units), str(unit))
+    query_str = '''
+        select user_id, sum(duration_minutes)
+        from tracked_activity
+        where activity_blueprint_id = %s
+          and time_start > now() - interval %s
+        group by user_id
+        order by sum(duration_minutes) asc
+        ''' % (activity_id, time_interval)
+    user_minutes = pandas.read_sql_query(query_str, connection)
 
-def getActivitiesList(user_id):
-    query_str = '''select ta.activity_blueprint_id, ta.time_start, ta.duration_minutes
-                   from tracked_activity ta
-                   where ta.user_id = %s
-                   and ta.duration_minutes is NOT NULL'''
-    return query(query_str, (user_id)) 
+    current_user = user_minutes[user_minutes['user_id'] == user_id]
+    current_user_value = current_user['sum'].values[0]
+
+    less_user_minutes = user_minutes[user_minutes['sum'] < current_user_value]
+    return str(100.0 * less_user_minutes.size / user_minutes.size)
+
+
+
+
 
 def query(query_sql, params_tuple):
     try:
@@ -72,29 +88,5 @@ def query(query_sql, params_tuple):
     finally:
         if(connection):
             cursor.close()
-            #connection.close()
-            #print("PostgreSQL connection is closed")
 
 
-
-
-
-
-@app.route("/activities/<user_id>")
-def getActivities(user_id):
-    result = getActivitiesList(user_id)
-
-    records = ''.join(str(row) for row  in result)
-    return records
-
-@app.route("/average/<user_id>/<activity_id>")
-def average(user_id, activity_id):
-    result = getActivitiesList(user_id)
-
-    result = list(filter(lambda row: row[0] == int(activity_id), result))
-
-    duration_sum = 0
-    for activity_event in result:
-        duration_sum += activity_event[2]
-
-    return str(duration_sum / len(result))

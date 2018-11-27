@@ -24,7 +24,6 @@ public class StatisticsController extends Controller implements WSBodyReadables,
 
     private static final Map<String, String> timePeriods = new HashMap<>();
 
-
     private final WSClient ws;
     private HttpExecutionContext httpExecutionContext;
 
@@ -53,6 +52,14 @@ public class StatisticsController extends Controller implements WSBodyReadables,
         String verifiedUserId = FirebaseInit.tokenToUserId(userId);
 
         String path = String.format("hours-per-day/%s/%s/", verifiedUserId, activityId);
+
+        return makeStatisticsRequest(path, time);
+    }
+
+    public CompletionStage<Result> percentileRank(String userId, String activityId, String time) {
+        String verifiedUserId = FirebaseInit.tokenToUserId(userId);
+
+        String path = String.format("percentile-rank/%s/%s/", verifiedUserId, activityId);
 
         return makeStatisticsRequest(path, time);
     }

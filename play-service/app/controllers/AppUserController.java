@@ -47,7 +47,6 @@ public class AppUserController extends Controller implements WSBodyReadables, WS
         this.activityBlueprintRepository = activityBlueprintRepository;
     }
 
-
     public CompletionStage<Result> getFriendList(String userId) {
 
         // change token to id
@@ -56,20 +55,25 @@ public class AppUserController extends Controller implements WSBodyReadables, WS
         return appUserRepository.getAllFriends(verifiedUserId)
                 .thenApplyAsync(friendListStream -> ok(Json.toJson(friendListStream
                         .collect(Collectors.toList()))), httpExecutionContext.current());
-
     }
 
 
-    public Result showAllUsers() {
-        return play.mvc.Results.TODO;
+    public CompletionStage<Result> showAllUsers() {
+        return appUserRepository.getAllUsers()
+                .thenApplyAsync(friendListStream -> ok(Json.toJson(friendListStream
+                        .collect(Collectors.toList()))), httpExecutionContext.current());
     }
 
-    public Result searchUsers(String name) {
-        return play.mvc.Results.TODO;
+    public CompletionStage<Result> searchUsers(String name) {
+        return appUserRepository.searchUsers(name)
+                .thenApplyAsync(friendListStream -> ok(Json.toJson(friendListStream
+                        .collect(Collectors.toList()))), httpExecutionContext.current());
     }
 
-    public Result showUser(Long id) {
-        return play.mvc.Results.TODO;
+    public CompletionStage<Result> showUser(String userId) {
+        String verifiedUserId = FirebaseInit.tokenToUserId(userId);
+        return appUserRepository.getUser(verifiedUserId)
+                .thenApplyAsync(ta -> ok(Json.toJson(ta)), httpExecutionContext.current());
     }
 
     @BodyParser.Of(AppUserBodyParser.class)
