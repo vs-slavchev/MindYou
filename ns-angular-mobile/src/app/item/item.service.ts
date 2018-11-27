@@ -24,15 +24,25 @@ export class ItemService {
         console.log('init activities service');
     }
 
+    addAuthToken() {
+        let httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json',
+                'Authorization': AppSettings.TOKEN})};
+        return httpOptions
+    }
+
     getActivities(): Observable<Item[]> {
-        console.log(AppSettings.API_URL);
-        return this.http.get<Item[]>(this.activitiesUrlTop)
+        console.log(AppSettings.API_URL, this.addAuthToken());
+        return this.http.get<Item[]>(this.activitiesUrlTop, )
             .pipe(
                 tap(activities => this.log('fetched activities')),
                 catchError(this.handleError('getActivities', []))
             );
     }
 
+    createAccount(): Observable<any> {
+        return this.http.post(`${AppSettings.API_URL}/users/create`, {"id": AppSettings.TOKEN},
+            this.addAuthToken())
+    }
 
     getItemNo404<Data>(activityBlueprintId: number): Observable<Item> {
         const url = `${this.activitiesUrl}/${activityBlueprintId}`;
