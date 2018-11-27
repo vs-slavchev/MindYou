@@ -2,6 +2,7 @@ import {Component} from "@angular/core";
 const firebase = require("nativescript-plugin-firebase");
 
 import { ios } from "application";
+import {AppSettings} from "~/app/app-settings"
 declare var UITableViewCellSelectionStyle;
 
 
@@ -11,7 +12,9 @@ declare var UITableViewCellSelectionStyle;
     templateUrl: "./app.component.html",
 })
 export class AppComponent {
+    public bottomBar: boolean;
     constructor () {
+        this.bottomBar = AppSettings.showBottomBar;
         firebase.init({
             // Optionally pass in properties for database, authentication and cloud messaging,
             // see their respective docs.

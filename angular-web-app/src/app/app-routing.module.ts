@@ -4,12 +4,18 @@ import {HomeComponent} from './home/home.component';
 import {StatisticsComponent} from './statistics/statistics.component';
 import {RouterModule, Routes} from "@angular/router";
 import {ContactComponent} from "./contact/contact.component";
+import {UserProfileComponent} from "./user-profile/user-profile.component";
+import {UserTimelineComponent} from "./user-timeline/user-timeline.component";
+import {TestComponent} from "./test/test.component";
 
 const routes:Routes=[
     {path:'home', component: HomeComponent},
     {path:'statistics', component:StatisticsComponent},
     {path:'contact', component:ContactComponent},
-    {path:'', component:HomeComponent}
+    {path:'', component:HomeComponent},
+    {path:'profile', component:UserProfileComponent},
+    {path:'timeline', component:UserTimelineComponent},
+    {path:'test', component:TestComponent}
     ];
 @NgModule({
   declarations: [],

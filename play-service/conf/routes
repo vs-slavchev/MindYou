@@ -1,54 +1,79 @@
-############ NOT IMPLEMENTED!
 # get all users
-GET         /users                          controllers.AppUserController.showAllUsers
+GET           /users                                                       controllers.AppUserController.showAllUsers
 
-############ NOT IMPLEMENTED!
-# get all users whose name contains the string
+# search for particular users with the name specified
 # ex: /users/search?name=linh
-GET         /users/search                   controllers.AppUserController.searchUsers(name: String)
+GET           /users/search                                                controllers.AppUserController.searchUsers(name: String)
 
-############ NOT IMPLEMENTED!
 # get a user by the user_id
-GET         /users/:id                      controllers.AppUserController.showUser(id: Long)
+# ex: /users/123
+GET           /users/:id                                                   controllers.AppUserController.showUser(id: String)
 
-# create a new user
-# in body provide as json activity_id and user_id
+# create a new user with activity_id and user_id provided in json format
 # ex: {"id":123,"name":"Andrea"}
-POST        /users/create                   controllers.AppUserController.createAppUser
+POST          /users/create                                                controllers.AppUserController.createAppUser
 
-# generate a friendship with two IDs of the inviter and the invitee in json body
+
+
+# generate a friendship with two IDs of the inviter and the invitee in json format
 # inviter_id is tokenized, but the invitee_id is the actual_id
 # ex: {"inviter_id":123,"invitee_id":321}
-POST        /user/friendship/create         controllers.FriendshipController.sendFriendRequest
+POST          /friendships/create                                          controllers.FriendshipController.sendFriendRequest
 
-# accept the friendship request between the inviter and the invitee,
-# invitee is tokenized, inviter is not
-# ex: /user/friendship/accept?inviter_id=123&invitee_id=321
-PUT         /user/friendship/accept         controllers.FriendshipController.acceptFriendRequest(inviter_id: String, invitee_id: String)
+# accept the friendship request between the inviter and the invitee using friendshipId and inviteeId
+# invitee is tokenized
+# ex: /friendships/123/accept/321
+PUT           /friendships/:friendshipId/accept/:inviteeId                 controllers.FriendshipController.acceptFriendRequest(friendshipId: String, inviteeId: String)
 
-# start tracking activity
-# in body provide as json activity_id and user_id
+# decline the friendship request between the inviter and the invitee using friendshipId and inviterId
+# invitee is tokenized
+# ex: /friendships/123/decline/321
+DELETE        /friendships/:friendshipId/decline/:inviteeId                controllers.FriendshipController.declineFriendRequest(friendshipId: String, inviteeId: String)
+
+# retrieving data of all friends of a user
+# ex: /friendships/123
+GET           /friendships/:userId                                         controllers.AppUserController.getFriendList(userId: String)
+
+# retrieving all friend requests that have been received
+# ex: /friendships/123/receivedRequests
+GET           /friendships/:userId/receivedRequests                        controllers.FriendshipController.getReceivedFriendRequests(userId: String)
+
+# retrieving all friend requests that have been sent
+# ex: /friendships/123/sentRequests
+GET           /friendships/:userId/sentRequests                            controllers.FriendshipController.getSentFriendRequests(userId: String)
+
+
+
+# start tracking activity with activity_id and user_id provided in json format
 # ex: {"activity_id":123,"user_id":321}
-POST        /activities/start               controllers.TrackedActivityController.startActivity
+POST          /activities/start                                            controllers.TrackedActivityController.startActivity
 
 # as param give the id of the user
 # ex: /activities/123/stop
-GET         /activities/:userId/stop        controllers.TrackedActivityController.stopActivity(userId: String)
+GET           /activities/:userId/stop                                     controllers.TrackedActivityController.stopActivity(userId: String)
 
 # get details about an activty blueprint
 # ex: /activities/5
-GET         /activities/:id                   controllers.ActivityBlueprintController.getActivityBlueprint(id)
+GET           /activities/:id                                              controllers.ActivityBlueprintController.getActivityBlueprint(id: String)
 
 # when app is started some activity blueprints are queried to be shown on activities screen
 # ex: /activities/top/10 to only show the top 10 activities
-GET         /activities/top/:number         controllers.ActivityBlueprintController.listActivities(number: Long)
-
-# retrieving the data of all friends of a user
-# ex: /123/friends
-GET         /:userId/friends                controllers.AppUserController.getFriendList(userId: String)
+GET           /activities/top/:number                                      controllers.ActivityBlueprintController.listActivities(number: Long)
 
 # create a custom activity
 # json for now because we might want to send more, also returns existing activity if already exists
 # provide the activity name in json
 # ex: {"name":"debugging"}
-POST        /activities/create              controllers.ActivityBlueprintController.createActivityBlueprint
+POST          /activities/create                                           controllers.ActivityBlueprintController.createActivityBlueprint
+
+# get the total hours spen on an activity, for all activities done
+# time can be : recent or soon or longterm
+# ex. /statistics/hours-per-activity/123/recent
+GET           /statistics/hours-per-activity/:userId/:time                 controllers.StatisticsController.hoursPerActivity(userId, time)
+
+# for a specific activity get how many hours it was done for every day
+# ex. /statistics/hours-per-day/123/321/soon
+GET           /statistics/hours-per-day/:userId/:activityId/:time          controllers.StatisticsController.hoursPerDay(userId, activityId, time)
+
+# ex. /statistics/percentile-rank/123/321/soon
+GET           /statistics/percentile-rank/:userId/:activityId/:time        controllers.StatisticsController.percentileRank(userId, activityId, time)

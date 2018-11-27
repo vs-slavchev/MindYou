@@ -16,10 +16,13 @@ const firebase = require("nativescript-plugin-firebase");
 export class ItemsComponent implements OnInit {
     items: Item[];
     reponse: any;
+    public bottomBarShow = true;
 
     // This pattern makes use of Angular’s dependency injection implementation to inject an instance of the FriendService service into this class.
     // Angular knows about this service because it is included in your app’s main NgModule, defined in app.module.ts.
-    constructor(private itemService: ItemService) { }
+    constructor(private itemService: ItemService) { 
+        // bottomBarShow
+    }
 
     ngOnInit(): void {
         this.getActivities();

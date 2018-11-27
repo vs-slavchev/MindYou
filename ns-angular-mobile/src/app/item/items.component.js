@@ -9,6 +9,8 @@ var ItemsComponent = /** @class */ (function () {
     // Angular knows about this service because it is included in your app’s main NgModule, defined in app.module.ts.
     function ItemsComponent(itemService) {
         this.itemService = itemService;
+        this.bottomBarShow = true;
+        // bottomBarShow
     }
     ItemsComponent.prototype.ngOnInit = function () {
         this.getActivities();

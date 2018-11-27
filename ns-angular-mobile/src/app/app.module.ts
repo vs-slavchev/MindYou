@@ -20,6 +20,8 @@ import {FriendDetailComponent} from "~/app/friend/friend-detail.component";
 import {StatisticService} from "~/app/statistic/statistic.service";
 import {FriendService} from "~/app/friend/friend.service";
 import {ItemService} from "~/app/item/item.service";
+import { HomeComponent } from './home/home.component';
+import { NativeScriptUIChartModule } from "nativescript-ui-chart/angular";
 
 @NgModule({
     bootstrap: [
@@ -30,8 +32,8 @@ import {ItemService} from "~/app/item/item.service";
         AppRoutingModule,
         NativeScriptFormsModule,
         NativeScriptHttpClientModule,
-
         BottomBarModule,
+        NativeScriptUIChartModule
     ],
     declarations: [
         AppComponent,
@@ -40,7 +42,8 @@ import {ItemService} from "~/app/item/item.service";
         StatisticsComponent,
         StatisticDetailComponent,
         FriendsComponent,
-        FriendDetailComponent
+        FriendDetailComponent,
+        HomeComponent
     ],
     providers: [
         ItemService,

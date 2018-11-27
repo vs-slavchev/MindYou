@@ -9,6 +9,7 @@ import { StatisticsComponent } from "./statistic/statistics.component";
 import { StatisticDetailComponent } from "./statistic/statistic-detail.component";
 import { FriendsComponent } from "./friend/friends.component";
 import { FriendDetailComponent } from "./friend/friend-detail.component";
+import {HomeComponent} from "./home/home.component";
 
 const routes: Routes = [
     { path: "", redirectTo: "/items", pathMatch: "full" },
@@ -18,6 +19,8 @@ const routes: Routes = [
     { path: "statistic/:id", component: StatisticDetailComponent },
     { path: "friends", component: FriendsComponent },
     { path: "friend/:id", component: FriendDetailComponent },
+    { path: "home", component: HomeComponent },
+
 ];
 
 @NgModule({
