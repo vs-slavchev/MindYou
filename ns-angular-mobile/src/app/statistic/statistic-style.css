@@ -1,3 +1,28 @@
 #pieChart{
-    background-color: gold;
+    /* background-color: #54BA76; */
+}
+#cartesianChart{
+    /* background-color: #54BA76; */
+    padding: 100px;
+}
+
+#Label{
+    font-size: 50pt;
+    padding: 100px;
+    padding-bottom: 0;
+    text-align: left;
+    color: white;
+    text-justify: auto;
+}
+
+#description{
+    font-size: 15pt;
+    padding: 10px;
+    text-align: center;
+    color: white;
+    text-justify: auto;
+}
+
+#ScrollView{
+    background-color: #E0CBA0; 
 }
