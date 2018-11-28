@@ -4,22 +4,29 @@ import { Statistic } from "./statistic";
 import { StatisticService } from "./statistic.service";
 import * as chartModule from "nativescript-ui-chart";
 
+import { Label } from "tns-core-modules/ui/label";
+
 @Component({
     selector: "ns-statistics",
     moduleId: module.id,
     templateUrl: "./statistics.component.html",
     styleUrls: ["./statistic-style.css"],
     // template: `<ActionBar title="Application Title"></ActionBar>`
+
 })
 export class StatisticsComponent implements OnInit {
     items: Statistic[];
     public bottomBarShow = true;
-    pieSource: {Brand: string, Amount: number}[] = [
-        { Brand: 'Audi', Amount: 10 },
-        { Brand: 'Mercedes', Amount: 76 },
-        { Brand: 'Fiat', Amount: 60 },
-        { Brand: 'BMW', Amount: 24 },
-        { Brand: 'Crysler', Amount: 40 }
+    pieSource: {activity_name: string, hours: number}[] = [
+        { activity_name: 'Cleaning', hours: 0.33 },
+        { activity_name: 'Commuting', hours: 1.66 },
+        { activity_name: 'Cooking', hours: 1.33 },
+        { activity_name: 'Eating', hours: 1.25 },
+        { activity_name: 'Gym', hours: 2.00 },
+        { activity_name: 'Music', hours: 0.75 },
+        { activity_name: 'Reading', hours: 1.00 },
+        { activity_name: 'Studying', hours: 5.50 },
+        { activity_name: 'Working', hours: 8.00 }
 ];
 
 

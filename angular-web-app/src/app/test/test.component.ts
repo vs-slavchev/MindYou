@@ -38,9 +38,10 @@ export class TestComponent implements OnInit {
       // });
       firebase.auth().onAuthStateChanged(function(user) {
           if (user) {
+              console.log(user);
               // User is signed in.
             var myEl= document.querySelector('#image');
-            //myEl.src=user.photoURL;
+           // myEl.src=user.photoURL;
 
               var fbName=document.querySelector('#name');
               fbName.innerHTML=user.displayName;
