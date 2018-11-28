@@ -1,9 +1,9 @@
 import { Injectable } from "@angular/core";
 import {Observable, of} from 'rxjs';
 import {catchError, map, tap} from 'rxjs/operators';
+import {AppSettings} from "~/app/app-settings";
 
 import { Item } from "./item";
-import { AppSettings } from "~/app/app-settings";
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 

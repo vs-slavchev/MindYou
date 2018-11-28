@@ -1,2 +1,15 @@
-<Button text="home works!" class="btn btn-primary"></Button>
-<p>Home component works</p>
+<page-router-outlet></page-router-outlet>
+
+<GridLayout rows="*, auto" backgroundColor="#26252A">
+    <StackLayout row="0">
+
+        <router-outlet></router-outlet>
+
+    </StackLayout>
+
+    <BottomBar row="1" (tabSelected)="tabSelected($event)"></BottomBar>
+
+</GridLayout>
+
+<!--<Button text="home works!" class="btn btn-primary"></Button>-->
+<!--<p>Home component works</p>-->

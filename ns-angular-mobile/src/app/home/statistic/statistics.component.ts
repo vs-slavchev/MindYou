@@ -2,7 +2,6 @@ import { Component, OnInit } from "@angular/core";
 
 import { Statistic } from "./statistic";
 import { StatisticService } from "./statistic.service";
-import { AppSettings } from "~/app/app-settings";
 import * as chartModule from "nativescript-ui-chart";
 
 @Component({

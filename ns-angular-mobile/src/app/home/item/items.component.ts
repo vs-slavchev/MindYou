@@ -2,7 +2,8 @@ import { Component, OnInit } from "@angular/core";
 
 import { Item } from "./item";
 import { ItemService } from "./item.service";
-import { AppSettings } from "~/app/app-settings";
+import { Router } from "@angular/router";
+import {AppSettings} from "~/app/app-settings";
 
 
 const firebase = require("nativescript-plugin-firebase");
@@ -20,8 +21,9 @@ export class ItemsComponent implements OnInit {
 
     // This pattern makes use of Angular’s dependency injection implementation to inject an instance of the FriendService service into this class.
     // Angular knows about this service because it is included in your app’s main NgModule, defined in app.module.ts.
-    constructor(private itemService: ItemService) { 
+    constructor(private itemService: ItemService, private router Router) {
         // bottomBarShow
+        console.log("Items are loading...");
     }
 
     ngOnInit(): void {
@@ -44,38 +46,9 @@ export class ItemsComponent implements OnInit {
         this.itemService.createAccount().subscribe(response => this.reponse = response)
     }
 
-    onTapLogin(): void {
-        console.log("Facebook login");
-        firebase.login({
-            type: firebase.LoginType.FACEBOOK,
-            // Optional
-            facebookOptions: {
-                scope: ['public_profile', 'email']
-            },
-
-        }).then(
-            function (result) {
-                JSON.stringify(result);
-                firebase.getAuthToken({
-                    // default false, not recommended to set to true by Firebase but exposed for {N} devs nonetheless :)
-                    forceRefresh: false
-                }).then(
-                    function (token) {
-                        console.log("Auth token retrieved: " + token);
-                        AppSettings.TOKEN = token;
-                    },
-                    function (errorMessage) {
-                        console.log("Auth token retrieval error: " + errorMessage);
-                    }
-                );
-            },
-            function (errorMessage) {
-                console.log(errorMessage);
-            }
-        );
-    }
-
     onTapLogout(): void {
         firebase.logout();
+        AppSettings.TOKEN = null;
+        this.router.navigate(['/login']);
     }
 }

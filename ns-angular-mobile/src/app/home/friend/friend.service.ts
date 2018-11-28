@@ -5,13 +5,11 @@ import {catchError, map, tap} from 'rxjs/operators';
 import { Friend } from "./friend";
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {AppSettings} from "~/app/app-settings";
 
 const httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
-
-import { AppSettings } from "~/app/app-settings";
-
 
 @Injectable()
 export class FriendService {
