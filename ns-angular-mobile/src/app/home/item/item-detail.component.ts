@@ -43,7 +43,7 @@ export class ItemDetailComponent implements OnInit {
             this.seconds = 0;
         }
         this.itemService.startActivity({
-            "activity_id": this.item.activityBlueprintId, "user_id": AppSettings.USER_ID}).subscribe();
+            "activity_id": this.item.activityBlueprintId, "user_id": AppSettings.TOKEN}).subscribe();
         this.timerEnabled = true;
     }
 

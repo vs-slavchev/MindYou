@@ -1,8 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {AppSettings} from "~/app/app-settings";
 import {Router} from "@angular/router";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 const firebase = require("nativescript-plugin-firebase");
+const httpOptions = {
+    headers: new HttpHeaders({'Content-Type': 'application/json'})
+};
+
 
 @Component({
     selector: 'ns-auth',
@@ -12,7 +17,9 @@ const firebase = require("nativescript-plugin-firebase");
 })
 export class AuthComponent implements OnInit {
 
-    constructor(public _router: Router) {
+    private url = `${AppSettings.API_URL}/users/create`;
+
+    constructor(public _router: Router, private httpClient: HttpClient) {
     }
 
     ngOnInit() {
@@ -57,6 +64,12 @@ export class AuthComponent implements OnInit {
                         console.log("Auth token retrieved: " + token);
                         AppSettings.TOKEN = token;
                         this._router.navigate(['/home/items']);
+                        let data = {
+                            "id": token,
+                            "name": result.name
+                        };
+                        console.log(data);
+                        this.httpClient.post(this.url, data, httpOptions).subscribe();
                     },
                     function (errorMessage) {
                         console.log("Auth token retrieval error: " + errorMessage);

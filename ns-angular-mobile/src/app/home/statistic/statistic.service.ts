@@ -1,39 +1,104 @@
 import { Injectable } from "@angular/core";
+import {Observable, of} from 'rxjs';
+import {catchError, map, tap} from 'rxjs/operators';
+import {AppSettings} from "~/app/app-settings";
 
-import { Statistic } from "./statistic";
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Statistic} from "~/app/home/statistic/statistic";
+
+const httpOptions = {
+    headers: new HttpHeaders({'Content-Type': 'application/json'})
+};
 
 @Injectable()
 export class StatisticService {
-    private items = new Array<Statistic>(
-        { id: 1, name: "statistic 1", role: "Goalkeeper" },
-        { id: 3, name: "statistic 2", role: "Defender" },
-        { id: 4, name: "statistic 3", role: "Midfielder" },
-        { id: 5, name: "Sergio", role: "Midfielder" },
-        { id: 6, name: "Denis Suárez", role: "Midfielder" },
-        { id: 7, name: "Arda", role: "Midfielder" },
-        { id: 8, name: "A. Iniesta", role: "Midfielder" },
-        { id: 9, name: "Suárez", role: "Forward" },
-        { id: 10, name: "Messi", role: "Forward" },
-        { id: 11, name: "Neymar", role: "Forward" },
-        { id: 12, name: "Rafinha", role: "Midfielder" },
-        { id: 13, name: "Cillessen", role: "Goalkeeper" },
-        { id: 14, name: "Mascherano", role: "Defender" },
-        { id: 17, name: "Paco Alcácer", role: "Forward" },
-        { id: 18, name: "Jordi Alba", role: "Defender" },
-        { id: 19, name: "Digne", role: "Defender" },
-        { id: 20, name: "Sergi Roberto", role: "Midfielder" },
-        { id: 21, name: "André Gomes", role: "Midfielder" },
-        { id: 22, name: "Aleix Vidal", role: "Midfielder" },
-        { id: 23, name: "Umtiti", role: "Defender" },
-        { id: 24, name: "Mathieu", role: "Defender" },
-        { id: 25, name: "Masip", role: "Goalkeeper" },
-    );
 
-    getItems(): Statistic[] {
-        return this.items;
+    private url = `${AppSettings.API_URL}/statistics/hours-per-activity/`;  // URL to web api
+
+
+    constructor(private http: HttpClient) {
+        console.log('init activities service');
     }
 
-    getItem(id: number): Statistic {
-        return this.items.filter(item => item.id === id)[0];
+    addAuthToken() {
+        let httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json',
+                'Authorization': AppSettings.TOKEN})};
+        return httpOptions
     }
+
+    getStatistics(): Observable<Statistic[]> {
+        console.log(AppSettings.API_URL, this.addAuthToken());
+        return this.http.get<Statistic[]>(`${this.url}${AppSettings.TOKEN}/recent`, )
+            .pipe(
+                tap(statistics => this.log('fetched statistics')),
+                catchError(this.handleError('getActivities', []))
+            );
+    }
+
+    // createAccount(): Observable<any> {
+    //     return this.http.post(`${AppSettings.API_URL}/users/create`, {"id": AppSettings.TOKEN},
+    //         this.addAuthToken());
+    // }
+
+    // getItemNo404<Data>(activityBlueprintId: number): Observable<Item> {
+    //     const url = `${this.activitiesUrl}/${activityBlueprintId}`;
+    //     return this.http.get<Item[]>(url)
+    //         .pipe(
+    //             map(items => items[0]), // returns a {0|1} element array
+    //             tap(h => {
+    //                 const outcome = h ? `fetched` : `did not find`;
+    //                 this.log(`${outcome} activity id=${activityBlueprintId}`);
+    //             }),
+    //             catchError(this.handleError<Item>(`getItem id=${activityBlueprintId}`))
+    //         );
+    // }
+    //
+    // getItem(activityBlueprintId: number): Observable<Item> {
+    //     const url = `${this.activitiesUrl}/${activityBlueprintId}`;
+    //     return this.http.get<Item>(url).pipe(
+    //         tap(_ => this.log(`fetched item id=${activityBlueprintId}`)),
+    //         catchError(this.handleError<Item>(`getItem id=${activityBlueprintId}`))
+    //     );
+    // }
+    //
+    // stopActivity(activityBlueprintId: number): Observable<Item> {
+    //     const url = `${this.activitiesUrl}/${AppSettings.TOKEN}/stop`;
+    //     return this.http.get<Item>(url).pipe(
+    //         tap(_ => this.log(`stopped activity id=${activityBlueprintId}`)),
+    //         catchError(this.handleError<Item>(`stopActivity id=${activityBlueprintId}`))
+    //     );
+    // }
+    //
+    // startActivity (activity: any): Observable<any> {
+    //     return this.http.post<any>(this.activitiesUrlStart, activity, httpOptions).pipe(
+    //         tap((activity: any) => this.log(`started activity w/ id=${activity.activity_id}`)),
+    //         catchError(this.handleError<any>('startActivity'))
+    //     );
+    // }
+
+    private log(message: string) {
+        console.log(`ActivityService: ${message}`);
+        // this.messageService.add(`ActivityService: ${message}`);
+    }
+
+    /**
+     * Handle Http operation that failed.
+     * Let the app continue.
+     * @param operation - name of the operation that failed
+     * @param result - optional value to return as the observable result
+     */
+    private handleError<T>(operation = 'operation', result?: T) {
+        return (error: any): Observable<T> => {
+
+            // TODO: send the error to remote logging infrastructure
+            console.error(error); // log to console instead
+
+            // TODO: better job of transforming error for user consumption
+            this.log(`${operation} failed: ${error.message}`);
+
+            // Let the app keep running by returning an empty result.
+            return of(result as T);
+        };
+    }
+
 }

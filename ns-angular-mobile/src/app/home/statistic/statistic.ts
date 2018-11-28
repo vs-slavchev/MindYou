@@ -1,5 +1,4 @@
 export interface Statistic {
-    id: number;
-    name: string;
-    role: string;
+    activity_name: string;
+    hour: number;
 }

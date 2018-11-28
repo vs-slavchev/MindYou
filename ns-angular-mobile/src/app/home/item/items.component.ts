@@ -43,7 +43,7 @@ export class ItemsComponent implements OnInit {
 
     getActivities(): void {
         this.itemService.getActivities().subscribe(activities => this.items = activities);
-        this.itemService.createAccount().subscribe(response => this.reponse = response)
+        // this.itemService.createAccount().subscribe(response => this.reponse = response)
     }
 
     onTapLogout(): void {

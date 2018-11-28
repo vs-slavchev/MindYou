@@ -39,10 +39,10 @@ export class ItemService {
             );
     }
 
-    createAccount(): Observable<any> {
-        return this.http.post(`${AppSettings.API_URL}/users/create`, {"id": AppSettings.TOKEN},
-            this.addAuthToken())
-    }
+    // createAccount(): Observable<any> {
+    //     return this.http.post(`${AppSettings.API_URL}/users/create`, {"id": AppSettings.TOKEN},
+    //         this.addAuthToken());
+    // }
 
     getItemNo404<Data>(activityBlueprintId: number): Observable<Item> {
         const url = `${this.activitiesUrl}/${activityBlueprintId}`;
@@ -66,7 +66,7 @@ export class ItemService {
     }
 
     stopActivity(activityBlueprintId: number): Observable<Item> {
-        const url = `${this.activitiesUrl}/${AppSettings.USER_ID}/stop`;
+        const url = `${this.activitiesUrl}/${AppSettings.TOKEN}/stop`;
         return this.http.get<Item>(url).pipe(
             tap(_ => this.log(`stopped activity id=${activityBlueprintId}`)),
             catchError(this.handleError<Item>(`stopActivity id=${activityBlueprintId}`))
