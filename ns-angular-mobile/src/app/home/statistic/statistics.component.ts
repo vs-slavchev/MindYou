@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 
 import { Statistic } from "./statistic";
 import { StatisticService } from "./statistic.service";
+import { AppSettings } from "~/app/app-settings";
 import * as chartModule from "nativescript-ui-chart";
 
 import { Label } from "tns-core-modules/ui/label";
@@ -27,7 +28,7 @@ export class StatisticsComponent implements OnInit {
         { activity_name: 'Reading', hours: 1.00 },
         { activity_name: 'Studying', hours: 5.50 },
         { activity_name: 'Working', hours: 8.00 }
-];
+    ];
 
 
     // This pattern makes use of Angular’s dependency injection implementation to inject an instance of the FriendService service into this class.

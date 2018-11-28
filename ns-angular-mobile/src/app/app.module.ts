@@ -10,7 +10,6 @@ import { NativeScriptFormsModule } from "nativescript-angular/forms";
 // Uncomment and add to NgModule imports if you need to use the HttpClient wrapper
 import { NativeScriptHttpClientModule } from "nativescript-angular/http-client";
 
-import { NativeScriptUIChartModule } from "nativescript-ui-chart/angular";
 import { HomeModule } from "~/app/home/home.module";
 import { AuthModule } from "~/app/auth/auth.module";
 import { AuthGuard } from "~/app/auth/auth.guard";
@@ -23,7 +22,6 @@ import { AuthGuard } from "~/app/auth/auth.guard";
         NativeScriptModule,
         NativeScriptFormsModule,
         NativeScriptHttpClientModule,
-        NativeScriptUIChartModule,
         AuthModule,
         HomeModule,
         AppRoutingModule,

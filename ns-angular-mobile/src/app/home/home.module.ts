@@ -12,6 +12,7 @@ import {ItemService} from "~/app/home/item/item.service";
 import {HomeRoutingModule} from "~/app/home/home-routing.module";
 import {BottomBarComponent} from "~/app/bottom-bar/bottom-bar/bottom-bar.component";
 import {NativeScriptCommonModule} from "nativescript-angular/common";
+import {NativeScriptUIChartModule} from "nativescript-ui-chart/angular";
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import {NativeScriptCommonModule} from "nativescript-angular/common";
     ],
     imports: [
         NativeScriptCommonModule,
+        NativeScriptUIChartModule,
         // BottomBarModule,
         HomeRoutingModule,
     ],
