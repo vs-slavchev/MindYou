@@ -1,3 +1,6 @@
+**/.cloud/
+*.apk
+
 node_modules
 platforms
 hooks
