@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "894821178077",
-    "firebase_url": "https://trynativescript.firebaseio.com",
-    "project_id": "trynativescript",
-    "storage_bucket": "trynativescript.appspot.com"
+    "project_number": "1030568896261",
+    "firebase_url": "https://mindyou-ab867.firebaseio.com",
+    "project_id": "mindyou-ab867",
+    "storage_bucket": "mindyou-ab867.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:894821178077:android:9eaa81f8f2a4fefc",
+        "mobilesdk_app_id": "1:1030568896261:android:e40cd03c8f5947c7",
         "android_client_info": {
-          "package_name": "nl.fontys.proep.mindyou"
+          "package_name": "org.nativescript.demoangular"
         }
       },
       "oauth_client": [
         {
-          "client_id": "894821178077-bnocr568qlshfigsj768anu8rdrv4o45.apps.googleusercontent.com",
+          "client_id": "1030568896261-rb4obrqjr80kgkam2fvrnct8tben735s.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDEH8zVxGDc9yvuOw3jQjk3QcHDY55xF-w"
+          "current_key": "AIzaSyC-4ZvqMpXmtiEVSsWBrECCRZX9u4_CisA"
         }
       ],
       "services": {

@@ -1,0 +1,45 @@
+<ActionBar title="Statistics"></ActionBar>
+
+
+<ScrollView id="ScrollView">
+    <StackLayout>
+        <Label text="Pie chart" id="Label"></Label>
+        <Label textWrap="true" text="The following pie chart shows the activities that you have done in the past month." id="description"></Label>
+        <!-- <GridLayout>        -->
+        <RadPieChart allowAnimation="true" row="0" id="pieChart" height="400">
+            <DonutSeries tkPieSeries selectionMode="DataPoint" outerRadiusFactor="0.9" expandRadius="0.5" outerRadiusFactor="0.7" innerRadiusFactor="0.4"
+                         [items]="pieSource" valueProperty="hours" legendLabel="activity_name" showLabels="true"></DonutSeries>
+            <RadLegendView tkPieLegend position="Right"  title="Activities" offsetOrigin="TopRight" width="110" enableSelection="true"></RadLegendView>
+        </RadPieChart>
+        <!-- <RadCartesianChart tkExampleTitle tkToggleNavButton id="cartesianChart" height="600">
+                <CategoricalAxis tkCartesianHorizontalAxis labelRotationAngle=150  labelFitMode="Rotate"></CategoricalAxis>
+                <LinearAxis tkCartesianVerticalAxis></LinearAxis>
+                <BarSeries tkCartesianSeries [items]="pieSource" categoryProperty="activity_name" valueProperty="hours"></BarSeries>
+            </RadCartesianChart>
+            -->
+        <Label text="Bar chart" id="Label"></Label>
+        <Label textWrap="true" text="The following bar chart shows the activities that you have done in the past month." id="description"></Label>
+        <RadCartesianChart tkExampleTitle tkToggleNavButton height="400">
+            <LinearAxis tkCartesianHorizontalAxis labelTextColor="#6F5B54"></LinearAxis>
+            <CategoricalAxis tkCartesianVerticalAxis labelTextColor="#6F5B54" labelSize="10" lineThickness="3" lineColor="#6F5B54"></CategoricalAxis>
+            <BarSeries tkCartesianSeries seriesName="Bar" [items]="pieSource" categoryProperty="activity_name" valueProperty="hours"></BarSeries>
+            <Palette tkCartesianPalette seriesName="Bar">
+                <PaletteEntry tkCartesianPaletteEntry fillColor="#FF7816" strokeColor="#6F5B54"></PaletteEntry>
+            </Palette>
+        </RadCartesianChart>
+        <Label text="Statistics" id="Label"></Label>
+        <!--
+            <RadCartesianChart id="cartesianChart">
+                    <BarSeries [items]="pieSource" categoryProperty="activity_name" valueProperty="hours">
+                        <chart:BarSeries.horizontalAxis>
+                            <chart:CategoricalAxis/>
+                        </chart:BarSeries.horizontalAxis>
+                        <chart:BarSeries.verticalAxis>
+                            <chart:LinearAxis/>
+                        </chart:BarSeries.verticalAxis>
+                    <BarSeries>
+            <RadCartesianChart> -->
+
+        <!-- </GridLayout> -->
+    </StackLayout>
+</ScrollView>

@@ -38,7 +38,4 @@ export class AppComponent {
         }
     }
 
-    tabSelected(args: number) {
-        console.log(`tab selected: ${args}`);
-    }
 }

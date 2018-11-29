@@ -11,7 +11,8 @@ import {RouterExtensions} from "nativescript-angular";
 })
 export class BottomBarComponent implements OnInit {
 
-    private routes = {'0': '/items', '1': '/statistics', '2': '/friends'};
+    // private routes = {'0': '/items', '1': '/statistics', '2': '/home/statistics'};
+    private routes = {'0': '/home/items', '1': '/home/statistics', '2': '/home/friends'};
 
     static ICONS = 3;
     @ViewChild('tabHighlight') tabHighlight: ElementRef;

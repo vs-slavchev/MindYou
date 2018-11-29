@@ -1,3 +1,5 @@
+SET client_encoding = 'UTF8';
+
 DROP TABLE IF EXISTS friendship;
 DROP TABLE IF EXISTS tracked_activity;
 DROP TABLE IF EXISTS activity_blueprint;

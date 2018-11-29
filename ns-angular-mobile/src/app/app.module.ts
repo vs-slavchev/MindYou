@@ -3,8 +3,6 @@ import { NativeScriptModule } from "nativescript-angular/nativescript.module";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
-import { ItemsComponent } from "./item/items.component";
-import { ItemDetailComponent } from "./item/item-detail.component";
 
 // Uncomment and add to NgModule imports if you need to use two-way binding
 import { NativeScriptFormsModule } from "nativescript-angular/forms";
@@ -12,16 +10,9 @@ import { NativeScriptFormsModule } from "nativescript-angular/forms";
 // Uncomment and add to NgModule imports if you need to use the HttpClient wrapper
 import { NativeScriptHttpClientModule } from "nativescript-angular/http-client";
 
-import {BottomBarModule} from "~/app/bottom-bar/bottom-bar.module";
-import {StatisticsComponent} from "~/app/statistic/statistics.component";
-import {FriendsComponent} from "~/app/friend/friends.component";
-import {StatisticDetailComponent} from "~/app/statistic/statistic-detail.component";
-import {FriendDetailComponent} from "~/app/friend/friend-detail.component";
-import {StatisticService} from "~/app/statistic/statistic.service";
-import {FriendService} from "~/app/friend/friend.service";
-import {ItemService} from "~/app/item/item.service";
-import { HomeComponent } from './home/home.component';
-import { NativeScriptUIChartModule } from "nativescript-ui-chart/angular";
+import { HomeModule } from "~/app/home/home.module";
+import { AuthModule } from "~/app/auth/auth.module";
+import { AuthGuard } from "~/app/auth/auth.guard";
 
 @NgModule({
     bootstrap: [
@@ -29,27 +20,16 @@ import { NativeScriptUIChartModule } from "nativescript-ui-chart/angular";
     ],
     imports: [
         NativeScriptModule,
-        AppRoutingModule,
         NativeScriptFormsModule,
         NativeScriptHttpClientModule,
-        BottomBarModule,
-        NativeScriptUIChartModule
+        AuthModule,
+        HomeModule,
+        AppRoutingModule,
     ],
     declarations: [
-        AppComponent,
-        ItemsComponent,
-        ItemDetailComponent,
-        StatisticsComponent,
-        StatisticDetailComponent,
-        FriendsComponent,
-        FriendDetailComponent,
-        HomeComponent
+        AppComponent
     ],
-    providers: [
-        ItemService,
-        StatisticService,
-        FriendService
-    ],
+    providers:[AuthGuard],
     schemas: [
         NO_ERRORS_SCHEMA
     ]

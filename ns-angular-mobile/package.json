@@ -1,6 +1,6 @@
 {
   "nativescript": {
-    "id": "nl.fontys.proep.mindyou",
+    "id": "org.nativescript.demoangular",
     "tns-ios": {
       "version": "5.0.0"
     },

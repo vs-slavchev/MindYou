@@ -24,6 +24,17 @@ tns create my-app-name --template https://github.com/NativeScript/template-hello
 
 **NB:** Please, have in mind that the master branch may refer to dependencies that are not on NPM yet!
 
+# Generate and run documentation
+
+    # set enviroment variable
+    # linux:
+    export NODE_OPTIONS="--max-old-space-size=4096"
+    compodoc -p tsconfig.json -s
+
+# TODO
+
+- [ ] Test coverage report - exclude imported libraries from report
+
 # Issues
 
 Issues related to `template-hello-world-ng` template should be logged in the https://github.com/NativeScript/NativeScript repository.

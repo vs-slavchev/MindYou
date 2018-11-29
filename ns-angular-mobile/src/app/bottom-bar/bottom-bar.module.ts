@@ -4,8 +4,7 @@ import {NativeScriptFormsModule} from 'nativescript-angular/forms';
 import {NativeScriptRouterModule} from 'nativescript-angular';
 
 // import {BottomBarRoutes} from './bottom-bar.routes';
-import {BottomBarRoutes} from './bottom-bar.routes';
-import {BottomBarComponent} from './bottom-bar/bottom-bar.component';
+import {BottomBarRoutes} from "~/app/bottom-bar/bottom-bar.routes";
 
 @NgModule({
     imports: [
@@ -13,10 +12,10 @@ import {BottomBarComponent} from './bottom-bar/bottom-bar.component';
         NativeScriptRouterModule.forChild(<any>BottomBarRoutes)
     ],
     declarations: [
-        BottomBarComponent
+        // BottomBarComponent
     ],
     exports: [
-        BottomBarComponent
+        // BottomBarComponent
     ],
     schemas: [
         NO_ERRORS_SCHEMA
