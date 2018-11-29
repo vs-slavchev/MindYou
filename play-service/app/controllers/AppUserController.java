@@ -82,7 +82,7 @@ public class AppUserController extends Controller implements WSBodyReadables, WS
         AppUser appUser = body.as(AppUser.class);
 
         // change token to id
-        appUser.setId(FirebaseInit.tokenToUserId(appUser.getId()));
+        //appUser.setId(FirebaseInit.tokenToUserId(appUser.getId()));
 
         appUserLogger.debug(appUser.toString());
         return appUserRepository.add(appUser)

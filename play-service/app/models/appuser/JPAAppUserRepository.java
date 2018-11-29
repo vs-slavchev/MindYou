@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletionStage;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -44,8 +45,12 @@ public class JPAAppUserRepository implements AppUserRepository {
     }
 
     private AppUser insert(EntityManager em, AppUser appUser) {
-        em.persist(appUser);
-        return appUser;
+        Optional<AppUser> userMaybe = Optional.ofNullable(em.find(AppUser.class, appUser.getId()));
+        if (!userMaybe.isPresent()) {
+            em.persist(appUser);
+            return appUser;
+        }
+        return userMaybe.get();
     }
 
     private Stream<AppUser> list(EntityManager em) {
