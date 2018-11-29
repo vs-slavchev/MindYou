@@ -67,7 +67,16 @@ public class JPATrackedActivityRepository implements TrackedActivityRepository {
             Query query = em.createNativeQuery(sqlString, TrackedActivity.class);
             Object singleResult = query.getSingleResult();
             TrackedActivity trackedActivity = (TrackedActivity) singleResult;
-            trackedActivity.setDurationMinutes((new Timestamp(System.currentTimeMillis()).getTime() - trackedActivity.getTimeStart().getTime())/60000);
+            long durationMinutes = (new Timestamp(System.currentTimeMillis()).getTime()
+                    - trackedActivity.getTimeStart().getTime()) / 60000;
+
+            // don't save to database
+            if (durationMinutes < 1) {
+                em.remove(trackedActivity);
+            } else {
+                // do save
+                trackedActivity.setDurationMinutes(durationMinutes);
+            }
 
             return trackedActivity;
         }), executionContext);
