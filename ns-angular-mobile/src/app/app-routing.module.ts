@@ -7,7 +7,6 @@ import {StatisticsComponent} from "~/app/home/statistic/statistics.component";
 import {FriendsComponent} from "~/app/home/friend/friends.component";
 import {HomeComponent} from "~/app/home/home.component";
 import {ItemDetailComponent} from "~/app/home/item/item-detail.component";
-import {StatisticDetailComponent} from "~/app/home/statistic/statistic-detail.component";
 import {FriendDetailComponent} from "~/app/home/friend/friend-detail.component";
 import {AuthGuard} from "~/app/auth/auth.guard";
 
@@ -16,15 +15,14 @@ const routes: Routes = [
     // { path: 'home',   loadChildren: '~/app/home/home.module#HomeModule' },
     // { path: "login", loadChildren: "./auth/auth.module#AuthModule" },
     { path: "login", component: AuthComponent },
-    { path: "home", component: HomeComponent, canActivate: [AuthGuard], canActivateChild: [AuthGuard],
-    // { path: "home", component: HomeComponent,
+    // { path: "home", component: HomeComponent, canActivate: [AuthGuard], canActivateChild: [AuthGuard],
+    { path: "home", component: HomeComponent,
         children: [
             // { path: "", redirectTo: "/home/items", pathMatch: 'full' },
             { path: "", redirectTo: "items", pathMatch: 'full' },
             { path: "items", component: ItemsComponent },
             { path: "item/:id", component: ItemDetailComponent },
             { path: "statistics", component: StatisticsComponent },
-            { path: "statistic/:id", component: StatisticDetailComponent },
             { path: "friends", component: FriendsComponent },
             { path: "friend/:id", component: FriendDetailComponent }]}
 ];

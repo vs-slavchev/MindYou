@@ -1,6 +1,5 @@
 import {NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
 import {ItemDetailComponent} from "~/app/home/item/item-detail.component";
-import {StatisticDetailComponent} from "~/app/home/statistic/statistic-detail.component";
 import {StatisticsComponent} from "~/app/home/statistic/statistics.component";
 import {FriendsComponent} from "~/app/home/friend/friends.component";
 import {FriendDetailComponent} from "~/app/home/friend/friend-detail.component";
@@ -21,7 +20,6 @@ import {NativeScriptUIListViewModule} from "nativescript-ui-listview/angular";
         ItemsComponent,
         ItemDetailComponent,
         StatisticsComponent,
-        StatisticDetailComponent,
         FriendsComponent,
         FriendDetailComponent,
         BottomBarComponent,
