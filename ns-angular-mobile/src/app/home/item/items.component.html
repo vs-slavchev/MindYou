@@ -28,10 +28,20 @@ class names available for styling your app at https://docs.nativescript.org/ui/t
     <Button class="btn btn-primary btn-active" id="button" text="Login facebook" (tap)="onTapLogin()"></Button>
     <Button class="btn btn-primary btn-active" id="button" text="Logout" (tap)="onTapLogout()"></Button>
 
-    <ListView [items]="items" class="list-group">
+    <!-- <ListView [items]="items" class="list-group">
         <ng-template let-item="item">
             <Label [nsRouterLink]="['/home/item', item.activityBlueprintId]" [text]="item.name"
                    class="list-group-item"></Label>
         </ng-template>
-    </ListView>
+    </ListView> -->
+    <!-- <GridLayout tkExampleTitle tkToggleNavButton> -->
+        <RadListView [items]="items">
+            <ng-template tkListItemTemplate let-item="item">
+                <StackLayout orientation="vertical">
+                    <Label class="nameLabel" [text]="item.name"></Label>
+                    <Label class="descriptionLabel" [text]="item.description"></Label>
+                </StackLayout>
+            </ng-template>
+        </RadListView>
+    <!-- </GridLayout> -->
 </StackLayout>
