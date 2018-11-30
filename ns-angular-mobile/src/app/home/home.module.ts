@@ -13,6 +13,7 @@ import {HomeRoutingModule} from "~/app/home/home-routing.module";
 import {BottomBarComponent} from "~/app/bottom-bar/bottom-bar/bottom-bar.component";
 import {NativeScriptCommonModule} from "nativescript-angular/common";
 import {NativeScriptUIChartModule} from "nativescript-ui-chart/angular";
+import {NativeScriptUIListViewModule} from "nativescript-ui-listview/angular";
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import {NativeScriptUIChartModule} from "nativescript-ui-chart/angular";
     imports: [
         NativeScriptCommonModule,
         NativeScriptUIChartModule,
+        NativeScriptUIListViewModule,
         // BottomBarModule,
         HomeRoutingModule,
     ],
