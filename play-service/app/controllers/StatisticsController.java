@@ -9,12 +9,15 @@ import play.libs.ws.WSBodyWritables;
 import play.libs.ws.WSClient;
 import play.mvc.Controller;
 import play.mvc.Result;
+import utils.AuthorizationException;
 import utils.FirebaseInit;
 
 import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletionStage;
+
+import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 /**
  * This controller contains an action to handle HTTP requests
@@ -41,7 +44,12 @@ public class StatisticsController extends Controller implements WSBodyReadables,
     }
 
     public CompletionStage<Result> hoursPerActivity(String userId, String time) {
-        String verifiedUserId = FirebaseInit.tokenToUserId(userId);
+        String verifiedUserId;
+        try {
+            verifiedUserId = FirebaseInit.getVerifiedUserIdFromRequestHeader(request());
+        } catch (AuthorizationException ae) {
+            return supplyAsync(() -> badRequest(ae.getMessage()));
+        }
 
         String path = String.format("hours-per-activity/%s/", verifiedUserId);
 
@@ -49,7 +57,12 @@ public class StatisticsController extends Controller implements WSBodyReadables,
     }
 
     public CompletionStage<Result> hoursPerDay(String userId, String activityId, String time) {
-        String verifiedUserId = FirebaseInit.tokenToUserId(userId);
+        String verifiedUserId;
+        try {
+            verifiedUserId = FirebaseInit.getVerifiedUserIdFromRequestHeader(request());
+        } catch (AuthorizationException ae) {
+            return supplyAsync(() -> badRequest(ae.getMessage()));
+        }
 
         String path = String.format("hours-per-day/%s/%s/", verifiedUserId, activityId);
 
@@ -57,7 +70,12 @@ public class StatisticsController extends Controller implements WSBodyReadables,
     }
 
     public CompletionStage<Result> percentileRank(String userId, String activityId, String time) {
-        String verifiedUserId = FirebaseInit.tokenToUserId(userId);
+        String verifiedUserId;
+        try {
+            verifiedUserId = FirebaseInit.getVerifiedUserIdFromRequestHeader(request());
+        } catch (AuthorizationException ae) {
+            return supplyAsync(() -> badRequest(ae.getMessage()));
+        }
 
         String path = String.format("percentile-rank/%s/%s/", verifiedUserId, activityId);
 

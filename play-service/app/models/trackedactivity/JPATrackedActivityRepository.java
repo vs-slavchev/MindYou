@@ -33,14 +33,13 @@ public class JPATrackedActivityRepository implements TrackedActivityRepository {
     /**
      * Construct a TrackedActivity instance from the DTO.
      */
-    public CompletionStage<TrackedActivity> addFromDTO(
-            TrackedActivityStartDTO trackedActivityStartDTO) {
+    public CompletionStage<TrackedActivity> createTrackedActivity(String activityBlueprintId, String verifiedUserId) {
         return supplyAsync(() -> wrap(em -> {
 
             ActivityBlueprint activityBlueprint = em.find(ActivityBlueprint.class,
-                    trackedActivityStartDTO.getActivity_id());
+                    activityBlueprintId);
 
-            AppUser appUser = em.find(AppUser.class, trackedActivityStartDTO.getUser_id());
+            AppUser appUser = em.find(AppUser.class, verifiedUserId);
 
 
             TrackedActivity trackedActivity = new TrackedActivity(activityBlueprint, appUser,

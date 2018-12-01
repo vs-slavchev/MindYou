@@ -1,22 +1,21 @@
 package controllers;
 
 import models.trackedactivity.TrackedActivityRepository;
-import models.trackedactivity.TrackedActivityStartDTO;
 import play.Logger;
 import play.libs.Json;
 import play.libs.concurrent.HttpExecutionContext;
 import play.libs.ws.WSBodyReadables;
 import play.libs.ws.WSBodyWritables;
 import play.libs.ws.WSClient;
-import play.mvc.BodyParser;
 import play.mvc.Controller;
-import play.mvc.Http;
 import play.mvc.Result;
+import utils.AuthorizationException;
 import utils.FirebaseInit;
-import utils.TrackedActivityStartDTOBodyParser;
 
 import javax.inject.Inject;
 import java.util.concurrent.CompletionStage;
+
+import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 /**
  * This controller contains an action to handle HTTP requests
@@ -39,26 +38,27 @@ public class TrackedActivityController extends Controller implements WSBodyReada
         this.trackedActivityRepository = trackedActivityRepository;
     }
 
-    @BodyParser.Of(TrackedActivityStartDTOBodyParser.class)
-    public CompletionStage<Result> startActivity() {
-        Http.RequestBody body = request().body();
-        TrackedActivityStartDTO trackedActivityStartDTO = body.as(TrackedActivityStartDTO.class);
+    public CompletionStage<Result> startActivity(String activity_id) {
 
-        // change token to id
-        trackedActivityStartDTO.setUser_id(
-                FirebaseInit.tokenToUserId(
-                        trackedActivityStartDTO.getUser_id()
-                )
-        );
+        String verifiedUserId;
+        try {
+            verifiedUserId = FirebaseInit.getVerifiedUserIdFromRequestHeader(request());
+        } catch (AuthorizationException ae) {
+            return supplyAsync(() -> badRequest(ae.getMessage()));
+        }
 
-        return trackedActivityRepository.addFromDTO(trackedActivityStartDTO)
+        return trackedActivityRepository.createTrackedActivity(activity_id, verifiedUserId)
                 .thenApplyAsync(ta -> ok(Json.toJson(ta)), httpExecutionContext.current());
     }
 
-    public CompletionStage<Result> stopActivity(String userId) {
+    public CompletionStage<Result> stopActivity() {
 
-        // change token to id
-        String verifiedUserId = FirebaseInit.tokenToUserId(userId);
+        String verifiedUserId;
+        try {
+            verifiedUserId = FirebaseInit.getVerifiedUserIdFromRequestHeader(request());
+        } catch (AuthorizationException ae) {
+            return supplyAsync(() -> badRequest(ae.getMessage()));
+        }
 
         return trackedActivityRepository.stopTracking(verifiedUserId)
                 .thenApplyAsync(ta -> ok(Json.toJson(ta)), httpExecutionContext.current());
