@@ -1,14 +1,16 @@
 <page-router-outlet></page-router-outlet>
-
-<GridLayout rows="*, auto" backgroundColor="#26252A">
+<GridLayout rows="*, auto" backgroundColor="#ffffff">
     <StackLayout row="0">
-
-        <router-outlet></router-outlet>
-
+         <RadSideDrawer>
+          <GridLayout tkDrawerContent>
+                <Label text="Side Menu"></Label>
+          </GridLayout>
+            <StackLayout tkMainContent>
+                    <router-outlet></router-outlet>
+            </StackLayout>
+        </RadSideDrawer>
     </StackLayout>
-
-    <BottomBar row="1" (tabSelected)="tabSelected($event)"></BottomBar>
-
+<BottomBar row="1" (tabSelected)="tabSelected($event)"></BottomBar>
 </GridLayout>
 
 <!--<Button text="home works!" class="btn btn-primary"></Button>-->
