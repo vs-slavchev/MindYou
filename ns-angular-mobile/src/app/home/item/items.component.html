@@ -34,14 +34,19 @@ class names available for styling your app at https://docs.nativescript.org/ui/t
                    class="list-group-item"></Label>
         </ng-template>
     </ListView> -->
-    <!-- <GridLayout tkExampleTitle tkToggleNavButton> -->
+
+    <TextField hint="Input the name of your custom activity" [(ngModel)]="customActivity"></TextField>
+    <Button class="btn btn-primary btn-active" id="button" text="Create my own activity" (tap)="onTapCreateActivity()"></Button>
+    <GridLayout tkExampleTitle tkToggleNavButton class="page">
         <RadListView [items]="items">
-            <ng-template tkListItemTemplate let-item="item">
-                <StackLayout orientation="vertical">
-                    <Label class="nameLabel" [text]="item.name"></Label>
-                    <Label class="descriptionLabel" [text]="item.description"></Label>
-                </StackLayout>
-            </ng-template>
-        </RadListView>
-    <!-- </GridLayout> -->
+                <ng-template tkListItemTemplate let-item="item">
+                    <StackLayout orientation="vertical">
+                        <Label class="nameLabel" style=" text-align: center" [nsRouterLink]="['/home/item', item.activityBlueprintId]" [text]="item.name"></Label>
+                        <Label class="descriptionLabel" [text]="item.description"></Label>
+                    </StackLayout>
+                </ng-template>
+                <ListViewStaggeredLayout tkListViewLayout scrollDirection="Vertical" spanCount="3"></ListViewStaggeredLayout>
+            </RadListView>             
+</GridLayout>
 </StackLayout>
+

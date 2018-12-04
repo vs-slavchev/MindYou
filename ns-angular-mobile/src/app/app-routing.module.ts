@@ -15,8 +15,8 @@ const routes: Routes = [
     // { path: 'home',   loadChildren: '~/app/home/home.module#HomeModule' },
     // { path: "login", loadChildren: "./auth/auth.module#AuthModule" },
     { path: "login", component: AuthComponent },
-    // { path: "home", component: HomeComponent, canActivate: [AuthGuard], canActivateChild: [AuthGuard],
-    { path: "home", component: HomeComponent,
+    { path: "home", component: HomeComponent, canActivate: [AuthGuard], canActivateChild: [AuthGuard],
+    // { path: "home", component: HomeComponent,
         children: [
             // { path: "", redirectTo: "/home/items", pathMatch: 'full' },
             { path: "", redirectTo: "items", pathMatch: 'full' },

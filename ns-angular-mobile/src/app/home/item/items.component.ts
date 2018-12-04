@@ -4,6 +4,7 @@ import { Item } from "./item";
 import { ItemService } from "./item.service";
 import { Router } from "@angular/router";
 import {AppSettings} from "~/app/app-settings";
+import { Page } from "tns-core-modules/ui/page/page";
 
 
 const firebase = require("nativescript-plugin-firebase");
@@ -18,12 +19,13 @@ export class ItemsComponent implements OnInit {
     items: Item[];
     reponse: any;
     public bottomBarShow = true;
-
+    customActivity="";
     // This pattern makes use of Angular’s dependency injection implementation to inject an instance of the FriendService service into this class.
     // Angular knows about this service because it is included in your app’s main NgModule, defined in app.module.ts.
     constructor(private itemService: ItemService, private router: Router) {
         // bottomBarShow
         console.log("Items are loading...");
+        console.log("Custom activity"+ this.customActivity);
     }
 
     ngOnInit(): void {
@@ -41,6 +43,7 @@ export class ItemsComponent implements OnInit {
         );
     }
 
+
     getActivities(): void {
         this.itemService.getActivities().subscribe(activities => this.items = activities);
         // this.itemService.createAccount().subscribe(response => this.reponse = response)
@@ -51,4 +54,11 @@ export class ItemsComponent implements OnInit {
         AppSettings.TOKEN = null;
         this.router.navigate(['/login']);
     }
+
+    // Method that creates a custom activity
+    onTapCreateActivity(): void{
+        this.itemService.createCustomActivity(this.customActivity).subscribe();
+        console.log("This is the custom activity " + this.customActivity);
+    }
 }
+

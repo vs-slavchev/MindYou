@@ -13,6 +13,7 @@ import {BottomBarComponent} from "~/app/bottom-bar/bottom-bar/bottom-bar.compone
 import {NativeScriptCommonModule} from "nativescript-angular/common";
 import {NativeScriptUIChartModule} from "nativescript-ui-chart/angular";
 import {NativeScriptUIListViewModule} from "nativescript-ui-listview/angular";
+import {NativeScriptFormsModule} from "nativescript-angular/forms"
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import {NativeScriptUIListViewModule} from "nativescript-ui-listview/angular";
         NativeScriptUIListViewModule,
         // BottomBarModule,
         HomeRoutingModule,
+        NativeScriptFormsModule
     ],
     providers: [
         ItemService,
