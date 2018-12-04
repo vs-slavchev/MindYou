@@ -17,6 +17,7 @@ import { Label } from "tns-core-modules/ui/label";
 })
 export class StatisticsComponent implements OnInit {
     statistics: Statistic[];
+    hasData: boolean = false;
     public bottomBarShow = true;
 
     pieSource: Statistic[];
@@ -24,13 +25,20 @@ export class StatisticsComponent implements OnInit {
     // This pattern makes use of Angular’s dependency injection implementation to inject an instance of the FriendService service into this class.
     // Angular knows about this service because it is included in your app’s main NgModule, defined in app.module.ts.
     constructor(private statisticService: StatisticService) { }
-
+    
     ngOnInit(): void {
+        this.getStatistics();
+        // this.statistics = this.statisticService.getStatistics();
+    }
+
+    getStatistics() {
+        this.hasData = false;
         this.statisticService.getStatistics().subscribe((statistics) => {
+            console.log('statistics response');
+            console.log(statistics);
             this.statistics = statistics;
             this.pieSource = statistics;
-            // console.log(statistics);
+            this.hasData=true;
         });
-        // this.statistics = this.statisticService.getStatistics();
     }
 }

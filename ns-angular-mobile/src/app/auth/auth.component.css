@@ -1,1 +1,11 @@
 /* Add mobile styles for the component here.  */
+#logo{
+    margin-top: 300px;
+}
+#Label{
+    font-size: 20pt;
+    padding: 100px;
+    padding-bottom: 0;
+    text-align: center;
+    text-justify: auto;
+}
