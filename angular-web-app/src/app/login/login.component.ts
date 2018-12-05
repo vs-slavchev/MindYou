@@ -16,7 +16,7 @@ const httpOptions = {
 
 export class LoginComponent implements OnInit {
   private httpObject;
-  constructor(private router:Router, private http:HttpClient) {
+  constructor(private _router:Router, private http:HttpClient) {
       //console.log("This is the http"+http);
       this.httpObject = http;
       //console.log("2222"+this.httpObject);
@@ -26,22 +26,11 @@ export class LoginComponent implements OnInit {
 
   LogIn(){
       var provider=new firebase.auth.FacebookAuthProvider();
-      var config = {
-          apiKey: "AIzaSyB2wYFZ2ySNN76SLspJfWQw_Iz9lMo-wzc",
-          authDomain: "mindyou-ab867.firebaseapp.com",
-          databaseURL: "https://mindyou-ab867.firebaseio.com",
-          projectId: "mindyou-ab867",
-          storageBucket: "mindyou-ab867.appspot.com",
-          messagingSenderId: "1030568896261"
-      };
-
-      firebase.initializeApp(config);
-
       firebase.auth().signInWithPopup(provider).then((result)=> {
           JSON.stringify(result);
           var user = result.user;
           console.log(user);
-            
+          this._router.navigate(['/profile']);
            })   
       .catch(function(error) {
           // Handle Errors here.
@@ -58,7 +47,7 @@ export class LoginComponent implements OnInit {
         if(user){
             firebase.auth().currentUser.getIdToken().then((data)=>{
                // console.log(data);
-               this.router.navigate(['/profile']);
+               
                 let datau={
                     "id": data,
                     "name":firebase.auth().currentUser.displayName
@@ -69,7 +58,7 @@ export class LoginComponent implements OnInit {
             })
           
         } else {
-            console.log('onAuthStateChanged else')
+            console.log('didnt work')
         }
 })
 
@@ -94,7 +83,6 @@ export class LoginComponent implements OnInit {
     LogOut(){
       firebase.auth().signOut();
       console.log("sucess");
-
     }
   ngOnInit() {
   }

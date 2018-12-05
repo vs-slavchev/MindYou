@@ -12,8 +12,7 @@ import { StatisticsService } from './statistics.service';
 export class StatisticsComponent implements OnInit {
 
     public statistics=[];
-    constructor(
-        private statService : StatisticsService) {
+    constructor(private statService : StatisticsService) {
         
     }
      
