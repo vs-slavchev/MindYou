@@ -1,20 +1,30 @@
 import {Component, OnInit} from '@angular/core';
 import {Chart} from '../../../node_modules/chart.js';
+import { StatisticsService } from './statistics.service';
 
 @Component({
     selector: 'app-statistics',
     templateUrl: './statistics.component.html',
-    styleUrls: ['./statistics.component.css']
+    styleUrls: ['./statistics.component.css'],
+    providers:[StatisticsService]
 })
 
 export class StatisticsComponent implements OnInit {
 
-
+    public statistics=[];
+    constructor(
+        private statService : StatisticsService) {
+        
+    }
+     
+    
     LineChart = [];
     BarChart = [];
     DoughnutChart = [];
 
     ngOnInit() {
+        this.statService.getStatistics().subscribe(data =>this.statistics = data);
+        console.log(this.statistics);
 
         var Json = [{"activity_name": "cleaning", "hours": 0.33}, {
             "activity_name": "commuting",
@@ -36,8 +46,8 @@ export class StatisticsComponent implements OnInit {
             activities.push(object.activity_name);
             hours.push(object.hours);
         }
-        console.log(activities);
-        console.log(activities);
+        //console.log(activities);
+        //console.log(activities);
 
         this.LineChart = new Chart('lineChart', {
             type: 'line',
