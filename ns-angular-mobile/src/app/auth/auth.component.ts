@@ -46,10 +46,13 @@ export class AuthComponent implements OnInit {
             // },
             // thisArg: this
         // });
+        
         console.log("Facebook login");
+        console.log("Firebase " + firebase);
+         
         // firebase.addAuthStateListener(listener);
         firebase.login({
-            type: firebase.LoginType.FACEBOOK,
+           type: firebase.LoginType.FACEBOOK,
             // Optional
             facebookOptions: {
                 scope: ['public_profile', 'email']

@@ -56,6 +56,7 @@ export class ItemsComponent implements OnInit {
 
     onTapLogout(): void {
         firebase.logout();
+        console.log("Logout done");
         AppSettings.TOKEN = null;
         this.router.navigate(['/login']);
     }
