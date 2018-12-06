@@ -37,8 +37,8 @@ export class UserProfileComponent implements OnInit {
               var fbName2=document.querySelector('#name2');
               fbName2.innerHTML=user.displayName;
 
-              var phoneNr=document.querySelector('phoneNumber');
-              phoneNr.innerHTML=user.phoneNumber;
+              // var phoneNr=document.querySelector('phoneNumber');
+              // phoneNr.innerHTML=user.phoneNumber;
           } else {
               // No user is signed in.
               console.log('asd2');

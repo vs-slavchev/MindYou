@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
       firebase.auth().onAuthStateChanged((user)=>{
         if(user){
             firebase.auth().currentUser.getIdToken().then((data)=>{
-               // console.log(data);
+               console.log(data);
                
                 let datau={
                     "id": data,
@@ -60,26 +60,9 @@ export class LoginComponent implements OnInit {
         } else {
             console.log('didnt work')
         }
-})
-
-//       firebase.auth().currentUser.getIdToken(true).then((idToken)=>{
-//         let data={
-//             "id": idToken,
-//             "name":firebase.auth().currentUser.displayName
-//         };
-//         this.http.post(this.curl,data, httpOptions).subscribe();
-//     }).catch(function(error) {
-//         console.log("didnt work");
-//         console.log(this.curl)
-        
-//     }
-
-  
-// )
-
-
-
+        })
 }
+
     LogOut(){
       firebase.auth().signOut();
       console.log("sucess");
