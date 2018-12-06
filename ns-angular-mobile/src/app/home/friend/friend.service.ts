@@ -14,7 +14,7 @@ const httpOptions = {
 @Injectable()
 export class FriendService {
 
-    private url = `${AppSettings.API_URL}/user`;
+    private url = `${AppSettings.API_URL}/users`;
 
     private items = new Array<Friend>(
         { id: 1, name: "user 1", role: "Goalkeeper" },
@@ -28,6 +28,22 @@ export class FriendService {
 
     getItems(): Friend[] {
         return this.items;
+    }
+
+    getUsers(): Observable<Friend[]> {
+        return this.http.get<Friend[]>(this.url, )
+            .pipe(
+                tap(users => this.log('fetched activities')),
+                catchError(this.handleError('getActivities', []))
+            );
+    }
+
+    searchUser(name: String): Observable<Friend[]> {
+        return this.http.get<Friend[]>(`${this.url}/search?name=${name}`)
+            .pipe(
+                tap(users => this.log('fetched activities')),
+                catchError(this.handleError('getActivities', []))
+            );
     }
 
     getItem(id: number): Friend {

@@ -6,7 +6,7 @@ export class Headers {
     static getAuthTokenHeaders() {
         return {headers: new HttpHeaders(
             {'Content-Type': 'application/json',
-                'Authorization': `${AppSettings.TOKEN}`,
+                'Authorization': `"${AppSettings.TOKEN}"`,
                 'Csrf-Token': "nocheck"})};
     }
     static getJsonHeaders() {

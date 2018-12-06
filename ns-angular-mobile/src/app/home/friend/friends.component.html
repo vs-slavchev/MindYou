@@ -3,15 +3,28 @@
     <!-- >> tab-view-navigation-ng-html -->
     <TabView [(ngModel)]="tabSelectedIndex" (selectedIndexChanged)="onSelectedIndexChanged($event)">
         <StackLayout *tabItem="{title: 'Friends'}">
-            <StackLayout>
-                <Label [text]="tabSelectedIndexResult" class="h2 m-t-16 text-center" textWrap="true"></Label>
-                <Button text="Change Tab via ngModel" (tap)="changeTab()" class="btn btn-primary btn-active"></Button>
+            <StackLayout class="page">
+                <!--<Label [text]="tabSelectedIndexResult" class="h2 m-t-16 text-center" textWrap="true"></Label>-->
+                <!--<Button text="Change Tab via ngModel" (tap)="changeTab()" class="btn btn-primary btn-active"></Button>-->
+                <ListView [items]="users" class="list-group">
+                    <ng-template let-item="item">
+                        <Label [nsRouterLink]="['/friend', item.id]" [text]="item.name" class="list-group-item"></Label>
+                    </ng-template>
+                </ListView>
             </StackLayout>
         </StackLayout>
         <StackLayout *tabItem="{title: 'Users'}">
-            <StackLayout>
-                <Label [text]="tabSelectedIndexResult" class="h2 m-t-16 text-center" textWrap="true"></Label>
-                <Button text="Change Tab via ngModel" (tap)="changeTab()" class="btn btn-primary btn-active"></Button>
+            <StackLayout class="page">
+                <SearchBar hint="Search hint" [text]="searchPhrase" (textChange)="onTextChanged($event)"
+                           (submit)="onSubmit($event)" color="white" textFieldBackgroundColor="red"
+                           textFieldHintColor="white"></SearchBar>
+                <!--<Label [text]="tabSelectedIndexResult" class="h2 m-t-16 text-center" textWrap="true"></Label>-->
+                <!--<Button text="Change Tab via ngModel" (tap)="changeTab()" class="btn btn-primary btn-active"></Button>-->
+                <ListView [items]="users" class="list-group">
+                    <ng-template let-item="item">
+                        <Label [nsRouterLink]="['/friend', item.id]" [text]="item.name" class="list-group-item"></Label>
+                    </ng-template>
+                </ListView>
             </StackLayout>
         </StackLayout>
         <StackLayout *tabItem="{title: 'Feeds'}">

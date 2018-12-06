@@ -11,7 +11,7 @@ import {FriendDetailComponent} from "~/app/home/friend/friend-detail.component";
 import {AuthGuard} from "~/app/auth/auth.guard";
 
 const routes: Routes = [
-    { path: '',   redirectTo: '/home/items', pathMatch: 'full' },
+    { path: '',   redirectTo: '/home/friends', pathMatch: 'full' },
     // { path: 'home',   loadChildren: '~/app/home/home.module#HomeModule' },
     // { path: "login", loadChildren: "./auth/auth.module#AuthModule" },
     { path: "login", component: AuthComponent },
