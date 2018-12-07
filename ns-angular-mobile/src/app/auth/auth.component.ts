@@ -3,6 +3,8 @@ import {AppSettings} from "~/app/app-settings";
 import {Router} from "@angular/router";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 
+import {Headers} from "~/app/shared/headers";
+
 const firebase = require("nativescript-plugin-firebase");
 const httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -79,7 +81,7 @@ export class AuthComponent implements OnInit {
                                     "name": result.name
                                 };
                                 console.log(data);
-                                this.httpClient.post(this.url, data, httpOptions).subscribe();
+                                this.httpClient.post(this.url, data, Headers.getAuthTokenHeaders()).subscribe();
                             },
                             function (errorMessage) {
                                 console.log("Auth token retrieval error: " + errorMessage);
@@ -114,7 +116,7 @@ export class AuthComponent implements OnInit {
                                     "name": result.name
                                 };
                                 console.log(data);
-                                this.httpClient.post(this.url, data, httpOptions).subscribe();
+                                this.httpClient.post(this.url, data, Headers.getAuthTokenHeaders()).subscribe();
                             },
                             function (errorMessage) {
                                 console.log("Auth token retrieval error: " + errorMessage);

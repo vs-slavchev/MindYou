@@ -7,6 +7,8 @@ import { Item } from "./item";
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
+import {Headers} from "~/app/shared/headers";
+
 const httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
@@ -79,15 +81,15 @@ export class ItemService {
     }
 
     stopActivity(activityBlueprintId: number): Observable<Item> {
-        const url = `${this.activitiesUrl}/${AppSettings.TOKEN}/stop`;
-        return this.http.get<Item>(url).pipe(
+        const url = `${this.activitiesUrl}/stop`;
+        return this.http.get<Item>(url, Headers.getAuthTokenHeaders()).pipe(
             tap(_ => this.log(`stopped activity id=${activityBlueprintId}`)),
             catchError(this.handleError<Item>(`stopActivity id=${activityBlueprintId}`))
         );
     }
 
     startActivity (activity: any): Observable<any> {
-        return this.http.post<any>(this.activitiesUrlStart, activity, httpOptions).pipe(
+        return this.http.post<any>(`${this.activitiesUrl}/${activity.activity_id}/start`, {}, Headers.getAuthTokenHeaders()).pipe(
             tap((activity: any) => this.log(`started activity w/ id=${activity.activity_id}`)),
             catchError(this.handleError<any>('startActivity'))
         );

@@ -8,7 +8,8 @@
                 <!--<Button text="Change Tab via ngModel" (tap)="changeTab()" class="btn btn-primary btn-active"></Button>-->
                 <ListView [items]="received" class="list-group">
                     <ng-template let-item="item">
-                        <Label [nsRouterLink]="['/home/friend', item.id]" [text]="item.name" class="list-group-item"></Label>
+                        <!--<Label [nsRouterLink]="['/home/friend', item.id]" [text]="item.inviterUser.name" class="list-group-item"></Label>-->
+                        <Label (tap)="acceptFriendRequest(item.friendshipId)" [text]="item.inviterUser.name" class="list-group-item"></Label>
                     </ng-template>
                 </ListView>
                 <ListView [items]="friends" class="list-group">
@@ -27,7 +28,7 @@
                 <!--<Button text="Change Tab via ngModel" (tap)="changeTab()" class="btn btn-primary btn-active"></Button>-->
                 <ListView [items]="pending" class="list-group">
                     <ng-template let-item="item">
-                        <Label [nsRouterLink]="['/home/friend', item.id]" [text]="item.name" class="list-group-item"></Label>
+                        <Label [nsRouterLink]="['/home/friend', item.id]" [text]="item.inviteeUser.name" class="list-group-item"></Label>
                     </ng-template>
                 </ListView>
                 <ListView [items]="users" class="list-group">

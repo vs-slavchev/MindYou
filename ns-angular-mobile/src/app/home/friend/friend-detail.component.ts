@@ -20,21 +20,21 @@ export class FriendDetailComponent implements OnInit {
 
     ngOnInit(): void {
         const id: string = this.route.snapshot.params["id"];
-        // this.friendService.getItem(id).subscribe(friend => this.item = friend);
+        this.friendService.getItem(id).subscribe(friend => this.item = friend);
         // FIXME: server response 500 to get user
-        this.item = {"id":"JhuhxY6OwKd0Cw3ujvYuuejVzMG3","name":"Mirela Goranova"};
+        // this.item = {"id":"JhuhxY6OwKd0Cw3ujvYuuejVzMG3","name":"Mirela Goranova"};
     }
 
     addFriend(userId: string): void {
+        console.log("friend-detail " + userId);
         console.log(`adding friend ${userId} by ${AppSettings.TOKEN}`);
-        this.friendService.addFriend({
-            "inviter_id":AppSettings.TOKEN,"invitee_id":userId}).subscribe();
+        this.friendService.addFriend(userId).subscribe();
     }
 
     acceptFriend(userId: number): void {
+        console.log("friend-detail");
         // TODO: implement me
-        console.log(`adding friend ${userId} by ${AppSettings.USER_ID}`);
-        this.friendService.addFriend({
-            "inviter_id": AppSettings.USER_ID,"invitee_id":userId}).subscribe();
+        // console.log(`adding friend ${userId} by ${AppSettings.USER_ID}`);
+        // this.friendService.addFriend({"inviter_id": AppSettings.USER_ID,"invitee_id":userId}).subscribe();
     }
 }

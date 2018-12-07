@@ -7,6 +7,9 @@ import { Friend } from "./friend";
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {AppSettings} from "~/app/app-settings";
 
+import {Headers} from "~/app/shared/headers";
+import {Friendship} from "~/app/home/friend/friendship";
+
 const httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
 };
@@ -28,7 +31,7 @@ export class FriendService {
     constructor(private http: HttpClient) {}
 
     getUsers(): Observable<Friend[]> {
-        return this.http.get<Friend[]>(this.url, )
+        return this.http.get<Friend[]>(this.url)
             .pipe(
                 tap(users => this.log('fetched friends')),
                 catchError(this.handleError('getFriends', []))
@@ -36,25 +39,25 @@ export class FriendService {
     }
 
     getFriends(): Observable<Friend[]> {
-        return this.http.get<Friend[]>(`${this.urlFriends}/${AppSettings.TOKEN}`)
+        return this.http.get<Friend[]>(this.urlFriends, Headers.getAuthTokenHeaders())
             .pipe(
                 tap(users => this.log('fetched friends')),
                 catchError(this.handleError('getFriends', []))
             );
     }
 
-    getPendingRequests(): Observable<Friend[]> {
+    getPendingRequests(): Observable<Friendship[]> {
         // /friendships/123/sentRequests
-        return this.http.get<Friend[]>(`${this.urlFriends}/${AppSettings.TOKEN}/sentRequests`)
+        return this.http.get<Friendship[]>(`${this.urlFriends}/${AppSettings.TOKEN}/sentRequests`, Headers.getAuthTokenHeaders())
             .pipe(
                 tap(users => this.log('fetched friends')),
                 catchError(this.handleError('getFriends', []))
             );
     }
 
-    getReceivedRequests(): Observable<Friend[]> {
+    getReceivedRequests(): Observable<Friendship[]> {
         // /friendships/123/receivedRequests
-        return this.http.get<Friend[]>(`${this.urlFriends}/${AppSettings.TOKEN}/receivedRequests`)
+        return this.http.get<Friendship[]>(`${this.urlFriends}/${AppSettings.TOKEN}/receivedRequests`, Headers.getAuthTokenHeaders())
             .pipe(
                 tap(users => this.log('fetched friends')),
                 catchError(this.handleError('getFriends', []))
@@ -86,16 +89,17 @@ export class FriendService {
         );
     }
 
-    addFriend(friend: any): Observable<any> {
-        return this.http.post<any>(`${this.urlFriends}/create`, friend, httpOptions).pipe(
-            tap((friend: any) => this.log(`friend w/ id=${friend.friend_id}`)),
+    addFriend(userId: string): Observable<any> {
+        console.log(userId);
+        return this.http.post<any>(`${this.urlFriends}/invite/${userId}`, {}, Headers.getAuthTokenHeaders()).pipe(
+            tap((friend: any) => this.log(`friend w/ id=${userId}`)),
             catchError(this.handleError<any>('addFriend'))
         );
     }
 
     acceptFriendResuest(friendshipId: string): Observable<any> {
         // /friendships/123/accept/321
-        return this.http.put<any>(`${this.urlFriends}/${friendshipId}/accept/${AppSettings.TOKEN}`, {}, httpOptions).pipe(
+        return this.http.put<any>(`${this.urlFriends}/${friendshipId}/accept/${AppSettings.TOKEN}`, {}, Headers.getAuthTokenHeaders()).pipe(
             tap((friend: any) => this.log(`friend w/ id=${friendshipId}`)),
             catchError(this.handleError<any>('addFriend'))
         );
@@ -103,7 +107,7 @@ export class FriendService {
 
     declineFriendResuest(friendshipId: string): Observable<any> {
         // /friendships/123/decline/321
-        return this.http.put<any>(`${this.urlFriends}/${friendshipId}/decline/${AppSettings.TOKEN}`, {}, httpOptions).pipe(
+        return this.http.put<any>(`${this.urlFriends}/${friendshipId}/decline/${AppSettings.TOKEN}`, {}, Headers.getAuthTokenHeaders()).pipe(
             tap((friend: any) => this.log(`friend w/ id=${friendshipId}`)),
             catchError(this.handleError<any>('addFriend'))
         );

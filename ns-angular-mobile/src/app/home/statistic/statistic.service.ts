@@ -5,6 +5,7 @@ import {AppSettings} from "~/app/app-settings";
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Statistic} from "~/app/home/statistic/statistic";
+import {Headers} from "~/app/shared/headers";
 
 const httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -28,7 +29,8 @@ export class StatisticService {
 
     getStatistics(): Observable<Statistic[]> {
         console.log(AppSettings.API_URL, this.addAuthToken());
-        return this.http.get<Statistic[]>(`${this.url}${AppSettings.TOKEN}/recent`, )
+        // return this.http.get<Statistic[]>(`${this.url}${AppSettings.TOKEN}/recent`, )
+        return this.http.get<Statistic[]>(`${this.url}${AppSettings.TOKEN}/recent`, Headers.getAuthTokenHeaders())
             .pipe(
                 tap(statistics => this.log('fetched statistics')),
                 catchError(this.handleError('getActivities', []))

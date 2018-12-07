@@ -5,6 +5,7 @@ import { SearchBar } from "tns-core-modules/ui/search-bar";
 
 import { Friend } from "./friend";
 import { FriendService } from "./friend.service";
+import {Friendship} from "~/app/home/friend/friendship";
 
 
 @Component({
@@ -15,8 +16,8 @@ import { FriendService } from "./friend.service";
 export class FriendsComponent implements OnInit {
     users: Friend[];
     friends: Friend[];
-    pending: Friend[];
-    received: Friend[];
+    pending: Friendship[];
+    received: Friendship[];
     public tabSelectedIndex: number;
     public tabSelectedIndexResult: string;
     public searchPhrase: string;
@@ -79,5 +80,12 @@ export class FriendsComponent implements OnInit {
 
     searchUser(name: String): void {
         this.friendService.searchUser(name).subscribe(users => this.users = users);
+    }
+
+    acceptFriendRequest(friendshipId: string): void {
+        console.log(`accepting friendship ${friendshipId}`);
+        this.friendService.acceptFriendResuest(friendshipId).subscribe();
+        this.friendService.getReceivedRequests().subscribe(users => this.received = users);
+        this.friendService.getFriends().subscribe(users => this.friends = users);
     }
 }

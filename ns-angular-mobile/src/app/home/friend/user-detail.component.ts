@@ -8,7 +8,7 @@ import {AppSettings} from "~/app/app-settings";
 @Component({
     selector: "ns-details",
     moduleId: module.id,
-    templateUrl: "./friend-detail.component.html",
+    templateUrl: "./user-detail.component.html",
 })
 export class FriendDetailComponent implements OnInit {
     item: Friend;
@@ -23,10 +23,9 @@ export class FriendDetailComponent implements OnInit {
         this.friendService.getItem(id).subscribe(user => this.item = user);
     }
 
-    addFriend(userId: number): void {
+    addFriend(userId: string): void {
         console.log(`adding friend ${userId} by ${AppSettings.USER_ID}`);
-        this.friendService.addFriend({
-            "inviter_id":AppSettings.USER_ID,"invitee_id":userId}).subscribe();
+        this.friendService.addFriend(userId).subscribe();
     }
 
     acceptFriend(userId: number): void {
