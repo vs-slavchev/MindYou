@@ -6,6 +6,10 @@ import { Router } from "@angular/router";
 import {AppSettings} from "~/app/app-settings";
 import { Page } from "tns-core-modules/ui/page/page";
 
+import * as dialogs from "tns-core-modules/ui/dialogs";
+
+import * as utils from "utils/utils";
+
 
 const firebase = require("nativescript-plugin-firebase");
 
@@ -14,6 +18,7 @@ const firebase = require("nativescript-plugin-firebase");
     selector: "ns-items",
     moduleId: module.id,
     templateUrl: "./items.component.html",
+    styleUrls: ["./item.css"]
 })
 export class ItemsComponent implements OnInit {
     items: Item[];
@@ -51,14 +56,37 @@ export class ItemsComponent implements OnInit {
 
     onTapLogout(): void {
         firebase.logout();
+        console.log("Logout done");
         AppSettings.TOKEN = null;
         this.router.navigate(['/login']);
     }
 
     // Method that creates a custom activity
     onTapCreateActivity(): void{
+        // Make a POST request to create a custom activity 
         this.itemService.createCustomActivity(this.customActivity).subscribe();
         console.log("This is the custom activity " + this.customActivity);
+
+        // Displaying the alert that the activity was created
+        dialogs.alert({
+            title: "Alert",
+            message: "Your custom activity has been added successfully!",
+            okButtonText: "Got it!"
+        }).then(() => {
+            console.log("Dialog closed!");
+        });
+
+        // Clearing the custom activity text field
+        this.customActivity="";
+        // Making the POST request to refresh the list
+        this.getActivities();
+        // Removing the keyboard after pressing the "Got it!" button in the alert
+        this.dismissSoftKyeboard();
     }
+
+    dismissSoftKyeboard() {
+        utils.ad.dismissSoftInput();
+    }
+  
 }
 

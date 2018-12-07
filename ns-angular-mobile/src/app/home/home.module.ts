@@ -14,6 +14,7 @@ import {NativeScriptCommonModule} from "nativescript-angular/common";
 import {NativeScriptUIChartModule} from "nativescript-ui-chart/angular";
 import {NativeScriptUIListViewModule} from "nativescript-ui-listview/angular";
 import {NativeScriptFormsModule} from "nativescript-angular/forms"
+import {NativeScriptUISideDrawerModule} from "nativescript-ui-sidedrawer/angular";
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import {NativeScriptFormsModule} from "nativescript-angular/forms"
         NativeScriptUIListViewModule,
         // BottomBarModule,
         HomeRoutingModule,
-        NativeScriptFormsModule
+        NativeScriptFormsModule,
+        NativeScriptUISideDrawerModule
     ],
     providers: [
         ItemService,

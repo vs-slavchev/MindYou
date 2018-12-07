@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpTestService} from "./http-test.service";
+import { TouchSequence } from 'selenium-webdriver';
 
 @Component({
   selector: 'app-http-test',
@@ -10,11 +11,14 @@ import {HttpTestService} from "./http-test.service";
 export class HttpTestComponent implements OnInit {
 
   public activities=[];
+  public stats=[];
 
-  constructor(private actService: HttpTestService) { }
+  constructor(private actService: HttpTestService, private statsService: HttpTestService) { }
 
   ngOnInit() {
   this.actService.getActivities().subscribe(data =>this.activities = data);
+  
+  this.statsService.getStats().subscribe(datau=>this.stats=datau);
   }
 
 
