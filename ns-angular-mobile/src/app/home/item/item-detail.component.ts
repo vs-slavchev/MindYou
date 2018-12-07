@@ -1,15 +1,17 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, SystemJsNgModuleLoader} from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 
 import { Item } from "./item";
 import { ItemService } from "./item.service";
 import {AppSettings} from "~/app/app-settings";
+// import { Button } from "tns-core-modules/ui/button";
 
 
 @Component({
     selector: "ns-details",
     moduleId: module.id,
     templateUrl: "./item-detail.component.html",
+    styleUrls: ["./item.css"]
 })
 export class ItemDetailComponent implements OnInit {
     @Input() item: Item;
@@ -21,11 +23,13 @@ export class ItemDetailComponent implements OnInit {
 
     ngOnInit(): void {
         this.timerEnabled = false;
+        this.seconds = 0;
         this.getItem();
         this.id = setInterval(() => {
             if (this.timerEnabled) {
                 this.seconds += 1;
-            }}, 1000);
+            }
+        }, 1000);
     }
 
     getItem(): void {

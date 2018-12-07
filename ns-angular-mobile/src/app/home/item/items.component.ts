@@ -5,14 +5,9 @@ import { ItemService } from "./item.service";
 import { Router } from "@angular/router";
 import {AppSettings} from "~/app/app-settings";
 import { Page } from "tns-core-modules/ui/page/page";
-
 import * as dialogs from "tns-core-modules/ui/dialogs";
-
 import * as utils from "utils/utils";
-
-
 const firebase = require("nativescript-plugin-firebase");
-
 
 @Component({
     selector: "ns-items",
@@ -63,25 +58,37 @@ export class ItemsComponent implements OnInit {
 
     // Method that creates a custom activity
     onTapCreateActivity(): void{
-        // Make a POST request to create a custom activity 
-        this.itemService.createCustomActivity(this.customActivity).subscribe();
-        console.log("This is the custom activity " + this.customActivity);
+        if (this.customActivity != "") {
+            // Make a POST request to create a custom activity 
+            this.itemService.createCustomActivity(this.customActivity).subscribe();
+            console.log("This is the custom activity " + this.customActivity);
 
-        // Displaying the alert that the activity was created
+            // Displaying the alert that the activity was created
+            dialogs.alert({
+                title: "Alert",
+                message: "Your custom activity has been added successfully!",
+                okButtonText: "Got it!"
+            }).then(() => {
+                console.log("Dialog closed!");
+            });
+            // Making the POST request to refresh the list
+            this.getActivities();
+            // Removing the keyboard after pressing the "Got it!" button in the alert
+            this.dismissSoftKyeboard();
+         }
+    else{
+             // Displaying the alert that the activity is empty
         dialogs.alert({
             title: "Alert",
-            message: "Your custom activity has been added successfully!",
+            message: "Please provide the name for your custom activity!",
             okButtonText: "Got it!"
         }).then(() => {
             console.log("Dialog closed!");
         });
-
+     }
         // Clearing the custom activity text field
         this.customActivity="";
-        // Making the POST request to refresh the list
-        this.getActivities();
-        // Removing the keyboard after pressing the "Got it!" button in the alert
-        this.dismissSoftKyeboard();
+        
     }
 
     dismissSoftKyeboard() {
