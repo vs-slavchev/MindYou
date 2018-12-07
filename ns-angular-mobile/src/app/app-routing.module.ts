@@ -7,7 +7,6 @@ import {StatisticsComponent} from "~/app/home/statistic/statistics.component";
 import {FriendsComponent} from "~/app/home/friend/friends.component";
 import {HomeComponent} from "~/app/home/home.component";
 import {ItemDetailComponent} from "~/app/home/item/item-detail.component";
-import {StatisticDetailComponent} from "~/app/home/statistic/statistic-detail.component";
 import {FriendDetailComponent} from "~/app/home/friend/friend-detail.component";
 import {AuthGuard} from "~/app/auth/auth.guard";
 
@@ -24,7 +23,6 @@ const routes: Routes = [
             { path: "items", component: ItemsComponent },
             { path: "item/:id", component: ItemDetailComponent },
             { path: "statistics", component: StatisticsComponent },
-            { path: "statistic/:id", component: StatisticDetailComponent },
             { path: "friends", component: FriendsComponent },
             { path: "friend/:id", component: FriendDetailComponent }]}
 ];

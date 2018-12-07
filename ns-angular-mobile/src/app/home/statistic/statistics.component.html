@@ -6,7 +6,7 @@
         <Label text="Pie chart" id="Label"></Label>
         <Label textWrap="true" text="The following pie chart shows the activities that you have done in the past month." id="description"></Label>
         <!-- <GridLayout>        -->
-        <RadPieChart allowAnimation="true" row="0" id="pieChart" height="400">
+        <RadPieChart *ngIf="hasData" allowAnimation="true" row="0" id="pieChart" height="400">
             <DonutSeries tkPieSeries selectionMode="DataPoint" outerRadiusFactor="0.9" expandRadius="0.5" outerRadiusFactor="0.7" innerRadiusFactor="0.4"
                          [items]="pieSource" valueProperty="hours" legendLabel="activity_name" showLabels="true"></DonutSeries>
             <RadLegendView tkPieLegend position="Right"  title="Activities" offsetOrigin="TopRight" width="110" enableSelection="true"></RadLegendView>
@@ -19,7 +19,7 @@
             -->
         <Label text="Bar chart" id="Label"></Label>
         <Label textWrap="true" text="The following bar chart shows the activities that you have done in the past month." id="description"></Label>
-        <RadCartesianChart tkExampleTitle tkToggleNavButton height="400">
+        <RadCartesianChart *ngIf="hasData" tkExampleTitle tkToggleNavButton height="400">
             <LinearAxis tkCartesianHorizontalAxis labelTextColor="#6F5B54"></LinearAxis>
             <CategoricalAxis tkCartesianVerticalAxis labelTextColor="#6F5B54" labelSize="10" lineThickness="3" lineColor="#6F5B54"></CategoricalAxis>
             <BarSeries tkCartesianSeries seriesName="Bar" [items]="pieSource" categoryProperty="activity_name" valueProperty="hours"></BarSeries>

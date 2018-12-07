@@ -16,8 +16,10 @@ export class ItemService {
 
     private activitiesUrl = `${AppSettings.API_URL}/activities`;  // URL to web api
     // private activitiesUrl = `${AppSettings.API_URL}/activity`;  // URL to web api
-    private activitiesUrlTop = `${this.activitiesUrl}/top/10`;  // URL to web api
+    private activitiesUrlTop = `${this.activitiesUrl}/top/100`;  // URL to web api
     private activitiesUrlStart = `${this.activitiesUrl}/start`;  // URL to web api
+    private activitiesUrlStartCustom = `${this.activitiesUrl}/create`;  // URL to web api
+
 
 
     constructor(private http: HttpClient) {
@@ -37,6 +39,17 @@ export class ItemService {
                 tap(activities => this.log('fetched activities')),
                 catchError(this.handleError('getActivities', []))
             );
+    }
+
+    // method that makes the POST request to create a custom activity
+    createCustomActivity(activity: any): Observable<any>{
+        let data = {
+            "name": activity
+        };
+        return this.http.post(this.activitiesUrlStartCustom, data, httpOptions).pipe(
+            tap((activity: any) => this.log(`created custom activity`)),
+            catchError(this.handleError<any>('createCustomActivity'))
+        );
     }
 
     // createAccount(): Observable<any> {

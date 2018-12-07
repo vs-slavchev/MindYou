@@ -1,11 +1,15 @@
 from flask import Flask
 app = Flask(__name__)
 import psycopg2
-import logging
 import pandas
+import logging
 
-logging.basicConfig(level=logging.DEBUG)
-logging.debug('------------%s', 'started' )
+logger = logging.getLogger('myapp')
+hdlr = logging.FileHandler('/home/pi/statistics_service.log')
+formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+hdlr.setFormatter(formatter)
+logger.addHandler(hdlr) 
+logger.setLevel(logging.INFO)
 
 connection = psycopg2.connect(user = "youmind",
         password = "ksdjfj434ESADesFesafseFasdfae3",
@@ -17,6 +21,7 @@ connection = psycopg2.connect(user = "youmind",
 # hours spent on each activity, for last week, month, 3 months
 @app.route("/hours-per-activity/<user_id>/<number_units>/<unit>")
 def hours_per_activity(user_id, number_units, unit):
+    logger.info('received: /hours-per-activity/{}/{}/{}'.format(user_id, number_units, unit))
     query_str = '''
         select ab.name, trunc(sum(ta.duration_minutes) / 60, 2)
         from tracked_activity ta
@@ -32,11 +37,13 @@ def hours_per_activity(user_id, number_units, unit):
 
     list_of_jsons = list(map(lambda row: '{"activity_name":"' + str(row[0]) + '","hours":' + str(row[1]) + '}', result))
     records = '[' + ','.join(obj for obj in list_of_jsons) + ']'
+    logger.info('/hours-per-activity/{}/{}/{} ===> {}'.format(user_id, number_units, unit, records))
     return records
 
 # hours spent on activity per day
 @app.route("/hours-per-day/<user_id>/<activity_id>/<number_units>/<unit>")
 def hours_per_day(user_id, activity_id, number_units, unit):
+    logger.info('received: /hours-per-day/{}/{}/{}/{}'.format(user_id, activity_id, number_units, unit))
     query_str = '''
         select ta.time_start::date as date, trunc(sum(ta.duration_minutes) / 60, 2) as hours
         from tracked_activity ta
@@ -51,6 +58,7 @@ def hours_per_day(user_id, activity_id, number_units, unit):
 
     list_of_jsons = list(map(lambda row: '{"date":"' + str(row[0]) + '","hours":' + str(row[1]) + '}', result))
     records = '[' + ','.join(obj for obj in list_of_jsons) + ']'
+    logger.info('/hours-per-day/{}/{}/{}/{} ===> {}'.format(user_id, activity_id, number_units, unit, records))
     return records
 
 # cumulate distribution function for total time spent on an activity compared to other users

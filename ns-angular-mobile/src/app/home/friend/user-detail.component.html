@@ -6,14 +6,9 @@
             <StackLayout class="page">
                 <!--<Label [text]="tabSelectedIndexResult" class="h2 m-t-16 text-center" textWrap="true"></Label>-->
                 <!--<Button text="Change Tab via ngModel" (tap)="changeTab()" class="btn btn-primary btn-active"></Button>-->
-                <ListView [items]="received" class="list-group">
+                <ListView [items]="users" class="list-group">
                     <ng-template let-item="item">
-                        <Label [nsRouterLink]="['/home/friend', item.id]" [text]="item.name" class="list-group-item"></Label>
-                    </ng-template>
-                </ListView>
-                <ListView [items]="friends" class="list-group">
-                    <ng-template let-item="item">
-                        <Label [nsRouterLink]="['/home/friend', item.id]" [text]="item.name" class="list-group-item"></Label>
+                        <Label [nsRouterLink]="['/friend', item.id]" [text]="item.name" class="list-group-item"></Label>
                     </ng-template>
                 </ListView>
             </StackLayout>
@@ -25,14 +20,9 @@
                            textFieldHintColor="white"></SearchBar>
                 <!--<Label [text]="tabSelectedIndexResult" class="h2 m-t-16 text-center" textWrap="true"></Label>-->
                 <!--<Button text="Change Tab via ngModel" (tap)="changeTab()" class="btn btn-primary btn-active"></Button>-->
-                <ListView [items]="pending" class="list-group">
-                    <ng-template let-item="item">
-                        <Label [nsRouterLink]="['/home/friend', item.id]" [text]="item.name" class="list-group-item"></Label>
-                    </ng-template>
-                </ListView>
                 <ListView [items]="users" class="list-group">
                     <ng-template let-item="item">
-                        <Label [nsRouterLink]="['/home/friend', item.id]" [text]="item.name" class="list-group-item"></Label>
+                        <Label [nsRouterLink]="['/friend', item.id]" [text]="item.name" class="list-group-item"></Label>
                     </ng-template>
                 </ListView>
             </StackLayout>

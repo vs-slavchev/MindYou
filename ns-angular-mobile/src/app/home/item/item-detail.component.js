@@ -4,6 +4,7 @@ var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var item_service_1 = require("./item.service");
 var app_settings_1 = require("~/app/app-settings");
+// import { Button } from "tns-core-modules/ui/button";
 var ItemDetailComponent = /** @class */ (function () {
     function ItemDetailComponent(itemService, route) {
         this.itemService = itemService;
@@ -12,6 +13,7 @@ var ItemDetailComponent = /** @class */ (function () {
     ItemDetailComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.timerEnabled = false;
+        this.seconds = 0;
         this.getItem();
         this.id = setInterval(function () {
             if (_this.timerEnabled) {
@@ -52,6 +54,7 @@ var ItemDetailComponent = /** @class */ (function () {
             selector: "ns-details",
             moduleId: module.id,
             templateUrl: "./item-detail.component.html",
+            styleUrls: ["./item.css"]
         }),
         __metadata("design:paramtypes", [item_service_1.ItemService, router_1.ActivatedRoute])
     ], ItemDetailComponent);

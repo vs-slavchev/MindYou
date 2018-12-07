@@ -24,14 +24,54 @@ core theme, such as p-20, btn, h2, and list-group. You can view a full list of t
 class names available for styling your app at https://docs.nativescript.org/ui/theme.
 -->
 <ActionBar title="Activities" class="action-bar"></ActionBar>
-<StackLayout class="page">
-    <Button class="btn btn-primary btn-active" id="button" text="Login facebook" (tap)="onTapLogin()"></Button>
-    <Button class="btn btn-primary btn-active" id="button" text="Logout" (tap)="onTapLogout()"></Button>
 
-    <ListView [items]="items" class="list-group">
+<!-- <RadSideDrawer tkExampleTitle tkToggleNavButton>
+        <StackLayout tkDrawerContent class="sideStackLayout">
+            <StackLayout class="sideTitleStackLayout">
+                <Label text="Navigation Menu"></Label>
+            </StackLayout>
+            <StackLayout class="sideStackLayout">
+                <Label text="Primary" class="sideLabel sideLightGrayLabel"></Label>
+                <Label text="Social" class="sideLabel"></Label>
+                <Label text="Promotions" class="sideLabel"></Label>
+                <Label text="Labels" class="sideLabel sideLightGrayLabel"></Label>
+                <Label text="Important" class="sideLabel"></Label>
+                <Label text="Starred" class="sideLabel"></Label>
+                <Label text="Sent Mail" class="sideLabel"></Label>
+                <Label text="Drafts" class="sideLabel"></Label>
+            </StackLayout>
+            <Label text="Close Drawer" color="lightgray" padding="10" (tap)="onCloseDrawerTap()"></Label>
+        </StackLayout>
+        <StackLayout tkMainContent>
+            <Label [text]="mainContentText" textWrap="true" class="drawerContentText"></Label>
+            <Button text="OPEN DRAWER" (tap)="openDrawer()" class="drawerContentButton"></Button>
+        </StackLayout>
+    </RadSideDrawer> -->
+
+
+<StackLayout class="page">
+    <!-- <Button class="btn btn-primary btn-active" id="button" text="Login facebook" (tap)="onTapLogin()"></Button>-->
+    <!-- <Button class="btn btn-primary btn-active" id="button" text="Logout" (tap)="onTapLogout()"></Button>  -->
+    <Image src="res://icon" height="100" width="100" id="logo"></Image>
+    <!-- <ListView [items]="items" class="list-group">
         <ng-template let-item="item">
             <Label [nsRouterLink]="['/home/item', item.activityBlueprintId]" [text]="item.name"
                    class="list-group-item"></Label>
         </ng-template>
-    </ListView>
+    </ListView> -->
+
+    <TextField hint="Input the name of your custom activity" [(ngModel)]="customActivity"></TextField>
+    <Button class="btn btn-primary btn-active" id="button" text="Create my own activity" (tap)="onTapCreateActivity()"></Button>
+    <GridLayout tkExampleTitle tkToggleNavButton class="page">
+        <RadListView [items]="items">
+                <ng-template tkListItemTemplate let-item="item">
+                    <StackLayout orientation="vertical">
+                        <Label class="nameLabel" style=" text-align: center" [nsRouterLink]="['/home/item', item.activityBlueprintId]" [text]="item.name"></Label>
+                        <Label class="descriptionLabel" [text]="item.description"></Label>
+                    </StackLayout>
+                </ng-template>
+                <ListViewStaggeredLayout tkListViewLayout scrollDirection="Vertical" spanCount="3"></ListViewStaggeredLayout>
+            </RadListView>             
+</GridLayout>
 </StackLayout>
+

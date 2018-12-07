@@ -4,6 +4,7 @@ hooks
 tags
 **/*.js.map
 **/*.metadata.json
+**/ns-angular-mobile/src/app/*.js
 
 /nativescript-angular/**/*.d.ts
 /nativescript-angular/**/*.js

@@ -46,39 +46,102 @@ export class AuthComponent implements OnInit {
             // },
             // thisArg: this
         // });
+        
         console.log("Facebook login");
-        // firebase.addAuthStateListener(listener);
-        firebase.login({
-            type: firebase.LoginType.FACEBOOK,
-            // Optional
-            facebookOptions: {
-                scope: ['public_profile', 'email']
-            },
+        console.log("Firebase " + firebase);
+        console.log(`TOKEN: ${AppSettings.TOKEN}`);
 
-        }).then((result) => {
-                JSON.stringify(result);
-                firebase.getAuthToken({
-                    // default false, not recommended to set to true by Firebase but exposed for {N} devs nonetheless :)
-                    forceRefresh: false
-                }).then((token) => {
-                        console.log("Auth token retrieved: " + token);
-                        AppSettings.TOKEN = token;
-                        this._router.navigate(['/home/items']);
-                        let data = {
-                            "id": token,
-                            "name": result.name
-                        };
-                        console.log(data);
-                        this.httpClient.post(this.url, data, httpOptions).subscribe();
+        firebase.init({
+            // Optionally pass in properties for database, authentication and cloud messaging,
+            // see their respective docs.
+
+        }).then(
+            instance => {
+                console.log("firebase.init done");
+                instance.login({
+                    type: instance.LoginType.FACEBOOK,
+                    // Optional
+                    facebookOptions: {
+                        scope: ['public_profile', 'email']
+                    },
+
+                }).then((result) => {
+                        JSON.stringify(result);
+                        instance.getAuthToken({
+                            // default false, not recommended to set to true by Firebase but exposed for {N} devs nonetheless :)
+                            forceRefresh: false
+                        }).then((token) => {
+                                console.log("Auth token retrieved: " + token);
+                                AppSettings.TOKEN = token;
+                                this._router.navigate(['/home/items']);
+                                let data = {
+                                    "id": token,
+                                    "name": result.name
+                                };
+                                console.log(data);
+                                this.httpClient.post(this.url, data, httpOptions).subscribe();
+                            },
+                            function (errorMessage) {
+                                console.log("Auth token retrieval error: " + errorMessage);
+                            }
+                        );
                     },
                     function (errorMessage) {
-                        console.log("Auth token retrieval error: " + errorMessage);
+                        console.log(errorMessage);
                     }
                 );
             },
-            function (errorMessage) {
-                console.log(errorMessage);
+            error => {
+                console.log(`firebase.init error: ${error}`);
+                firebase.login({
+                    type: firebase.LoginType.FACEBOOK,
+                    // Optional
+                    facebookOptions: {
+                        scope: ['public_profile', 'email']
+                    },
+
+                }).then((result) => {
+                        JSON.stringify(result);
+                        firebase.getAuthToken({
+                            // default false, not recommended to set to true by Firebase but exposed for {N} devs nonetheless :)
+                            forceRefresh: false
+                        }).then((token) => {
+                                console.log("Auth token retrieved: " + token);
+                                AppSettings.TOKEN = token;
+                                this._router.navigate(['/home/items']);
+                                let data = {
+                                    "id": token,
+                                    "name": result.name
+                                };
+                                console.log(data);
+                                this.httpClient.post(this.url, data, httpOptions).subscribe();
+                            },
+                            function (errorMessage) {
+                                console.log("Auth token retrieval error: " + errorMessage);
+                            }
+                        );
+                    },
+                    function (errorMessage) {
+                        console.log(errorMessage);
+                    }
+                );
             }
         );
+
+        // firebase.getAuthToken({
+        //     // default false, not recommended to set to true by Firebase but exposed for {N} devs nonetheless :)
+        //     forceRefresh: true
+        // }).then((token) => {
+        //         console.log("Auth token retrieved: " + token);
+        //         AppSettings.TOKEN = token;
+        //     },
+        //     function (errorMessage) {
+        //         console.log("Auth token retrieval error: " + errorMessage);
+        //     }
+        // );
+
+        // firebase.addAuthStateListener(listener);
+
     }
 }
+
