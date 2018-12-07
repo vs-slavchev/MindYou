@@ -14,6 +14,9 @@ import { FriendService } from "./friend.service";
 })
 export class FriendsComponent implements OnInit {
     users: Friend[];
+    friends: Friend[];
+    pending: Friend[];
+    received: Friend[];
     public tabSelectedIndex: number;
     public tabSelectedIndexResult: string;
     public searchPhrase: string;
@@ -27,7 +30,10 @@ export class FriendsComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this.friendService.getPendingRequests().subscribe(users => this.pending = users);
+        this.friendService.getReceivedRequests().subscribe(users => this.received = users);
         this.friendService.getUsers().subscribe(users => this.users = users);
+        this.friendService.getFriends().subscribe(users => this.friends = users);
     }
 
     public onSubmit(args) {
