@@ -1,26 +1,44 @@
 
-<nav class="navbar navbar-expand-sm bg-light navbar-light">
-    <ul class="navbar-nav">
+<div  *ngIf="show; else notShow">
+    <nav class="navbar navbar-expand-sm bg-light navbar-light" >
+        <ul class="navbar-nav"  >
+                <a class="navbar-brand" href="home">
+                    <img alt="Brand" src="../assets/logo.png">
+                </a>
+            <li class="nav-item active">
+                <a class="nav-link" routerLink="/home" routerLinkActive="active">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"  routerLink="/statistics" routerLinkActive="active">Statistics</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"  routerLink="/profile" routerLinkActive="active">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"  routerLink="/contact" routerLinkActive="active">Contact</a>
+            </li>
+        </ul>
+    </nav>
+    </div>
+    
+<ng-template #notShow>
+<nav class="navbar navbar-expand-sm bg-light navbar-light" >
+    <ul class="navbar-nav"  >
             <a class="navbar-brand" href="home">
                 <img alt="Brand" src="../assets/logo.png">
             </a>
         <li class="nav-item active">
             <a class="nav-link" routerLink="/home" routerLinkActive="active">Home</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link"  routerLink="/statistics" routerLinkActive="active">Statistics</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link"  routerLink="/profile" routerLinkActive="active">Profile</a>
-        </li>
+        </li>        
         <li class="nav-item">
             <a class="nav-link"  routerLink="/contact" routerLinkActive="active">Contact</a>
         </li>
         <li class="nav-item">
             <a class="nav-link"  routerLink="/login" routerLinkActive="active">Log In</a>
         </li>
-
     </ul>
 </nav>
-<router-outlet></router-outlet>
+</ng-template>
 
+
+<router-outlet></router-outlet>
