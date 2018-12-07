@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 @ImplementedBy(JPATrackedActivityRepository.class)
 public interface TrackedActivityRepository {
 
-    CompletionStage<TrackedActivity> createTrackedActivity(String activityBlueprintId, String verifiedUserId);
+    CompletionStage<TrackedActivity> createTrackedActivity(Long activityBlueprintId, String verifiedUserId);
 
     CompletionStage<TrackedActivity> stopTracking(String userId);
 

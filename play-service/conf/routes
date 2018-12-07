@@ -44,7 +44,7 @@ GET           /friendships                                                 contr
 
 # start tracking activity with activity_id and user_id provided in json format
 # ex: {"activity_id":123,"user_id":321}
-POST          /activities/:activity_id/start                               controllers.TrackedActivityController.startActivity(activity_id: String)
+POST          /activities/:activity_id/start                               controllers.TrackedActivityController.startActivity(activity_id: Long)
 
 # as param give the id of the user
 # ex: /activities/123/stop

@@ -38,7 +38,7 @@ public class TrackedActivityController extends Controller implements WSBodyReada
         this.trackedActivityRepository = trackedActivityRepository;
     }
 
-    public CompletionStage<Result> startActivity(String activity_id) {
+    public CompletionStage<Result> startActivity(Long activity_id) {
 
         String verifiedUserId;
         try {

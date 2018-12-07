@@ -33,7 +33,7 @@ public class JPATrackedActivityRepository implements TrackedActivityRepository {
     /**
      * Construct a TrackedActivity instance from the DTO.
      */
-    public CompletionStage<TrackedActivity> createTrackedActivity(String activityBlueprintId, String verifiedUserId) {
+    public CompletionStage<TrackedActivity> createTrackedActivity(Long activityBlueprintId, String verifiedUserId) {
         return supplyAsync(() -> wrap(em -> {
 
             ActivityBlueprint activityBlueprint = em.find(ActivityBlueprint.class,
