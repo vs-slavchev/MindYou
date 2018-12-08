@@ -1,25 +1,27 @@
 package controllers;
 
-import models.activityblueprint.ActivityBlueprintRepository;
 import models.appuser.AppUser;
+import models.appuser.AppUserDTO;
 import models.appuser.AppUserRepository;
 import play.Logger;
-import play.data.FormFactory;
 import play.libs.Json;
 import play.libs.concurrent.HttpExecutionContext;
 import play.libs.ws.WSBodyReadables;
 import play.libs.ws.WSBodyWritables;
-import play.libs.ws.WSClient;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
-import utils.AppUserBodyParser;
+import utils.AppUserDTOBodyParser;
+import utils.AuthorizationException;
 import utils.FirebaseInit;
 
 import javax.inject.Inject;
+import java.util.Optional;
 import java.util.concurrent.CompletionStage;
 import java.util.stream.Collectors;
+
+import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 /**
  * This controller contains an action to handle HTTP requests
@@ -27,30 +29,26 @@ import java.util.stream.Collectors;
  */
 public class AppUserController extends Controller implements WSBodyReadables, WSBodyWritables {
 
-    private final WSClient ws;
     private HttpExecutionContext httpExecutionContext;
 
-    private final FormFactory formFactory;
     private final AppUserRepository appUserRepository;
-    private final ActivityBlueprintRepository activityBlueprintRepository;
 
     private final Logger.ALogger appUserLogger = Logger.of("appUser");
 
     @Inject
-    public AppUserController(WSClient ws, FormFactory formFactory, HttpExecutionContext ec,
-                             AppUserRepository appUserRepository,
-                             ActivityBlueprintRepository activityBlueprintRepository) {
-        this.ws = ws;
+    public AppUserController(HttpExecutionContext ec, AppUserRepository appUserRepository) {
         this.httpExecutionContext = ec;
-        this.formFactory = formFactory;
         this.appUserRepository = appUserRepository;
-        this.activityBlueprintRepository = activityBlueprintRepository;
     }
 
-    public CompletionStage<Result> getFriendList(String userId) {
+    public CompletionStage<Result> getFriendList() {
 
-        // change token to id
-        String verifiedUserId = FirebaseInit.tokenToUserId(userId);
+        String verifiedUserId;
+        try {
+            verifiedUserId = FirebaseInit.getVerifiedUserIdFromRequestHeader(request());
+        } catch (AuthorizationException ae) {
+            return supplyAsync(() -> badRequest(ae.getMessage()));
+        }
 
         return appUserRepository.getAllFriends(verifiedUserId)
                 .thenApplyAsync(friendListStream -> ok(Json.toJson(friendListStream
@@ -71,18 +69,24 @@ public class AppUserController extends Controller implements WSBodyReadables, WS
     }
 
     public CompletionStage<Result> showUser(String userId) {
-        String verifiedUserId = FirebaseInit.tokenToUserId(userId);
-        return appUserRepository.getUser(verifiedUserId)
+        return appUserRepository.getUser(userId)
                 .thenApplyAsync(ta -> ok(Json.toJson(ta)), httpExecutionContext.current());
     }
 
-    @BodyParser.Of(AppUserBodyParser.class)
+    @BodyParser.Of(AppUserDTOBodyParser.class)
     public CompletionStage<Result> createAppUser() {
         Http.RequestBody body = request().body();
-        AppUser appUser = body.as(AppUser.class);
+        AppUserDTO appUserDTO = body.as(AppUserDTO.class);
 
-        // change token to id
-        appUser.setId(FirebaseInit.tokenToUserId(appUser.getId()));
+        String verifiedUserId;
+        try {
+            verifiedUserId = FirebaseInit.getVerifiedUserIdFromRequestHeader(request());
+        } catch (AuthorizationException ae) {
+            return supplyAsync(() -> badRequest(ae.getMessage()));
+        }
+
+        // build user instance from verified id and data from json body
+        AppUser appUser = new AppUser(verifiedUserId, appUserDTO.getName());
 
         appUserLogger.debug(appUser.toString());
         return appUserRepository.add(appUser)
