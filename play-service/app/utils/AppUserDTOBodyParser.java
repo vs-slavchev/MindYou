@@ -15,11 +15,11 @@ import java.util.concurrent.Executor;
 
 public class AppUserDTOBodyParser implements BodyParser<AppUserDTO> {
 
-    private Json jsonParser;
+    private BodyParser.Json jsonParser;
     private Executor executor;
 
     @Inject
-    public AppUserDTOBodyParser(Json jsonParser, Executor executor) {
+    public AppUserDTOBodyParser(BodyParser.Json jsonParser, Executor executor) {
         this.jsonParser = jsonParser;
         this.executor = executor;
     }
