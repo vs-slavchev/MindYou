@@ -5,7 +5,7 @@ import pandas
 import logging
 
 logger = logging.getLogger('myapp')
-hdlr = logging.FileHandler('/home/pi/statistics_service.log')
+hdlr = logging.FileHandler('./statistics_service.log')
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 hdlr.setFormatter(formatter)
 logger.addHandler(hdlr) 

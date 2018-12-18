@@ -5,18 +5,18 @@ volumes:
 
 
 services:
-        #  statistics_service:
-        #    build:
-        #      context: .
-        #      dockerfile: ./compose/local/statistics/Dockerfile
-        #    image: statistics_service
-        #    command: python3 app.py
-        #    volumes:
-        #    - ./statistics-service:/code
-        #    ports:
-        #    - "5000:5000"
-        #    depends_on:
-        #      - postgres
+  statistics_service:
+    build:
+      context: .
+      dockerfile: ./compose/local/statistics/Dockerfile
+    image: statistics_service
+    command: ./start.sh
+    volumes:
+    - ./statistics-service:/code
+    ports:
+    - "5000:5000"
+    depends_on:
+      - postgres
 
   postgres:
     build:
