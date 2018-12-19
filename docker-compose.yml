@@ -10,11 +10,14 @@ services:
       context: .
       dockerfile: ./compose/local/statistics/Dockerfile
     image: statistics_service
-    command: ./start.sh
+    command: flask run --host=0.0.0.0
     volumes:
     - ./statistics-service:/code
     ports:
     - "5000:5000"
+    env_file:
+    - ./.envs/.local/.postgres
+    - ./.envs/.local/.flask
     depends_on:
       - postgres
 
@@ -29,4 +32,3 @@ services:
     - ./.envs/.local/.postgres
     ports:
     - "5432:5432"
-
