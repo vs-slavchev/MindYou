@@ -43,7 +43,7 @@ public class StatisticsController extends Controller implements WSBodyReadables,
         timePeriods.put("longterm", "1/year");
     }
 
-    public CompletionStage<Result> hoursPerActivity(String userId, String time) {
+    public CompletionStage<Result> hoursPerActivity(String time) {
         String verifiedUserId;
         try {
             verifiedUserId = FirebaseInit.getVerifiedUserIdFromRequestHeader(request());
@@ -56,7 +56,7 @@ public class StatisticsController extends Controller implements WSBodyReadables,
         return makeStatisticsRequest(path, time);
     }
 
-    public CompletionStage<Result> hoursPerDay(String userId, String activityId, String time) {
+    public CompletionStage<Result> hoursPerDay(String activityId, String time) {
         String verifiedUserId;
         try {
             verifiedUserId = FirebaseInit.getVerifiedUserIdFromRequestHeader(request());
@@ -69,7 +69,7 @@ public class StatisticsController extends Controller implements WSBodyReadables,
         return makeStatisticsRequest(path, time);
     }
 
-    public CompletionStage<Result> percentileRank(String userId, String activityId, String time) {
+    public CompletionStage<Result> percentileRank(String activityId, String time) {
         String verifiedUserId;
         try {
             verifiedUserId = FirebaseInit.getVerifiedUserIdFromRequestHeader(request());
