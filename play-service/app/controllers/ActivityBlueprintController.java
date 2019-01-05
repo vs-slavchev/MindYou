@@ -51,17 +51,14 @@ public class ActivityBlueprintController extends Controller implements WSBodyRea
 
     public CompletionStage<Result> createActivityBlueprint() {
 
-
-        Optional<JsonNode> json = Optional.of(request().body().asJson());
+        Optional<JsonNode> json = Optional.ofNullable(request().body().asJson());
         String name = "";
 
         if (json.isPresent()) {
             name = json.get().findPath("name").textValue();
-            /*if(name == null) {
-                return badRequest("Missing parameter [name]");
-            } else {
-                return ok("Hello " + name);
-            }*/
+            if(name == null || name.equals("")) {
+                throw new RuntimeException("invalid activity name");
+            }
         }
 
         ActivityBlueprint blueprint = new ActivityBlueprint();
