@@ -28,10 +28,4 @@ export class FriendDetailComponent implements OnInit {
         this.friendService.addFriend(userId).subscribe();
     }
 
-    acceptFriend(userId: number): void {
-        // TODO: implement me
-        console.log(`adding friend ${userId} by ${AppSettings.USER_ID}`);
-        this.friendService.addFriend({
-            "inviter_id": AppSettings.USER_ID,"invitee_id":userId}).subscribe();
-    }
 }

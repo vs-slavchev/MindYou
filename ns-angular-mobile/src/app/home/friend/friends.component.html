@@ -4,14 +4,6 @@
     <TabView [(ngModel)]="tabSelectedIndex" (selectedIndexChanged)="onSelectedIndexChanged($event)">
         <StackLayout *tabItem="{title: 'Friends'}">
             <StackLayout class="page">
-                <!--<Label [text]="tabSelectedIndexResult" class="h2 m-t-16 text-center" textWrap="true"></Label>-->
-                <!--<Button text="Change Tab via ngModel" (tap)="changeTab()" class="btn btn-primary btn-active"></Button>-->
-                <ListView [items]="received" class="list-group">
-                    <ng-template let-item="item">
-                        <!--<Label [nsRouterLink]="['/home/friend', item.id]" [text]="item.inviterUser.name" class="list-group-item"></Label>-->
-                        <Label (tap)="acceptFriendRequest(item.friendshipId)" [text]="item.inviterUser.name" class="list-group-item"></Label>
-                    </ng-template>
-                </ListView>
                 <ListView [items]="friends" class="list-group">
                     <ng-template let-item="item">
                         <Label [nsRouterLink]="['/home/friend', item.id]" [text]="item.name" class="list-group-item"></Label>
@@ -21,25 +13,33 @@
         </StackLayout>
         <StackLayout *tabItem="{title: 'Users'}">
             <StackLayout class="page">
-                <SearchBar hint="Search hint" [text]="searchPhrase" (textChange)="onTextChanged($event)"
+                <SearchBar hint="Search ..." [text]="searchPhrase" (textChange)="onTextChanged($event)"
                            (submit)="onSubmit($event)" color="white" textFieldBackgroundColor="red"
                            textFieldHintColor="white"></SearchBar>
-                <!--<Label [text]="tabSelectedIndexResult" class="h2 m-t-16 text-center" textWrap="true"></Label>-->
-                <!--<Button text="Change Tab via ngModel" (tap)="changeTab()" class="btn btn-primary btn-active"></Button>-->
-                <ListView [items]="pending" class="list-group">
-                    <ng-template let-item="item">
-                        <Label [nsRouterLink]="['/home/friend', item.id]" [text]="item.inviteeUser.name" class="list-group-item"></Label>
-                    </ng-template>
-                </ListView>
                 <ListView [items]="users" class="list-group">
                     <ng-template let-item="item">
-                        <Label [nsRouterLink]="['/home/friend', item.id]" [text]="item.name" class="list-group-item"></Label>
+                        <!--<Label [nsRouterLink]="['/home/friend', item.id]" [text]="item.name" [class.friend]="item.isFriend" class="list-group-item friend"></Label>-->
+                        <Label [text]="item.name" [ngClass]="{'friend': item.isFriend, 'pending': item.requested}" (tap)="addFriend(item)" class="list-group-item"></Label>
                     </ng-template>
                 </ListView>
             </StackLayout>
         </StackLayout>
         <StackLayout *tabItem="{title: 'Feeds'}">
             <StackLayout>
+                <ListView [items]="received" class="list-group">
+                    <ng-template let-item="item" horizontalAlignment="stretch">
+                        <StackLayout orientation="horizontal" horizontalAlignment="stretch" class="list-group-item">
+                            <!--<Label (tap)="acceptFriendRequest(item.friendshipId)" [text]="item.inviterUser.name" class="list-group-item"></Label>-->
+                            <Label [text]="item.inviterUser.name"></Label>
+                            <Button text="Accept" class="list-btn friend" (tap)="acceptFriendRequest(item.friendshipId)"></Button>
+                            <Button text="Decline" class="list-btn decline" horizontalAlignment="right" (tap)="declineFriendRequest(item.friendshipId)"></Button>
+                        </StackLayout>
+                    </ng-template>
+
+                    <!--<ListView.itemTemplate>-->
+
+                    <!--</ListView.itemTemplate>-->
+                </ListView>
                 <Label [text]="tabSelectedIndexResult" class="h2 m-t-16 text-center" textWrap="true"></Label>
                 <Button text="Change Tab via ngModel" (tap)="changeTab()" class="btn btn-primary btn-active"></Button>
             </StackLayout>

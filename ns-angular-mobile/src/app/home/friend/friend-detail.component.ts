@@ -25,12 +25,6 @@ export class FriendDetailComponent implements OnInit {
         // this.item = {"id":"JhuhxY6OwKd0Cw3ujvYuuejVzMG3","name":"Mirela Goranova"};
     }
 
-    addFriend(userId: string): void {
-        console.log("friend-detail " + userId);
-        console.log(`adding friend ${userId} by ${AppSettings.TOKEN}`);
-        this.friendService.addFriend(userId).subscribe();
-    }
-
     acceptFriend(userId: number): void {
         console.log("friend-detail");
         // TODO: implement me

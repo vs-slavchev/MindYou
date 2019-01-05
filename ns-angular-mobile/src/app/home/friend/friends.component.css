@@ -1,0 +1,21 @@
+.friend {
+    background-color: #54BA76;
+    /*color: #54BA76;*/
+    color: green;
+}
+
+.decline {
+    background-color: red;
+    /*color: #54BA76;*/
+    /*color: red;*/
+}
+
+.pending {
+    background-color: #E0CBA0;
+    /*color: #E0CBA0;*/
+}
+
+.list-btn {
+    horizontal-align: right;
+    align: right;
+}

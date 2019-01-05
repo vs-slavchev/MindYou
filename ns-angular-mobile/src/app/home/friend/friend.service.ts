@@ -72,14 +72,6 @@ export class FriendService {
             );
     }
 
-    // getItem(id: number): Observable<Friend> {
-    //     return this.http.get<Friend>(`${this.url}/${id}`)
-    //         .pipe(
-    //             tap(users => this.log('fetched firend')),
-    //             catchError(this.handleError('getItem', {}))
-    //         );
-    // }
-
     getItem(id: string): Observable<Friend> {
         const url = `${this.url}/${id}`;
         console.log(url);
@@ -107,7 +99,7 @@ export class FriendService {
 
     declineFriendResuest(friendshipId: string): Observable<any> {
         // /friendships/123/decline/321
-        return this.http.put<any>(`${this.urlFriends}/${friendshipId}/decline`, {}, Headers.getAuthTokenHeaders()).pipe(
+        return this.http.delete<any>(`${this.urlFriends}/${friendshipId}/decline`, Headers.getAuthTokenHeaders()).pipe(
             tap((friend: any) => this.log(`friend w/ id=${friendshipId}`)),
             catchError(this.handleError<any>('addFriend'))
         );
