@@ -129,7 +129,13 @@ export class ItemsComponent implements OnInit {
     // Method for selected item -> change color to orange when selected and start the activity
     public onItemSelected(args: ListViewEventData) {
       console.log("Item is selected");
+      console.log("Args index " + args.index);
 
+      // Assign the the selected item from the radListView to the ()Input item
+      this.item = this.items[args.index];
+
+      console.log(this.item);
+   
       // Changing the color of the selected item to orange.
       args.view.backgroundColor = new Color("#FF7816");  
 
@@ -137,8 +143,8 @@ export class ItemsComponent implements OnInit {
       if (!this.seconds) {
           this.seconds = 0;
       }
-    //   this.itemService.startActivity({
-    //       "activity_id": this.item.activityBlueprintId, "user_id": AppSettings.TOKEN}).subscribe();
+      this.itemService.startActivity({
+          "activity_id": this.item.activityBlueprintId, "user_id": AppSettings.TOKEN}).subscribe();
        this.timerEnabled = true;
        this.isVisible = true;
     }
@@ -147,13 +153,17 @@ export class ItemsComponent implements OnInit {
     public onItemDeselected(args: ListViewEventData) {
         console.log("Item is deselected");
 
+         // Assign the the selected item from the radListView to the ()Input item
+         this.item = this.items[args.index];
+
         // Changing the color of the deselected item to white.
         args.view.backgroundColor = new Color("#ffffff");
 
         console.log("Stop timer");
-        // this.itemService.stopActivity(this.item.activityBlueprintId).subscribe();
+        this.itemService.stopActivity(this.item.activityBlueprintId).subscribe();
         this.timerEnabled = false;
         this.isVisible = false;
     } 
 }
+
 
