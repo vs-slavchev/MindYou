@@ -62,7 +62,7 @@ class names available for styling your app at https://docs.nativescript.org/ui/t
 
     <TextField hint="Input the name of your custom activity" [(ngModel)]="customActivity"></TextField>
     <Button class="btn btn-primary btn-active" id="button" text="Create my own activity" (tap)="onTapCreateActivity()"></Button>
-    <Label *ngIf="isVisible" id="timer" [text]="'Time spent: ' + seconds"></Label>
+    <Label *ngIf="isVisible" id="timer" [text]="'Time spent: ' + hours + ' h ' + minutes + ' min '  + second + ' sec'"></Label>
     <GridLayout tkExampleTitle tkToggleNavButton class="page">
         <RadListView [items]="items" selectionBehavior="Press" (itemSelected)="onItemSelected($event)" (itemDeselected)="onItemDeselected($event)" >
                 <ng-template tkListItemTemplate let-item="item">

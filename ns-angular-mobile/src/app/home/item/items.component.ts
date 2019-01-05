@@ -27,7 +27,10 @@ export class ItemsComponent implements OnInit {
 
     @Input() item: Item;
     public timerEnabled: boolean;
+    public second: number;
     public seconds: number;
+    public minutes: number;
+    public hours: number;
     public id;
 
     // This pattern makes use of Angular’s dependency injection implementation to inject an instance of the FriendService service into this class.
@@ -61,6 +64,9 @@ export class ItemsComponent implements OnInit {
         this.id = setInterval(() => {
             if (this.timerEnabled) {
                 this.seconds += 1;
+                this.second = this.seconds % 60;
+                this.minutes = Math.floor(this.seconds / 60);
+                this.hours = Math.floor(this.seconds / 3600);
             }
         }, 1000);                    
     }
