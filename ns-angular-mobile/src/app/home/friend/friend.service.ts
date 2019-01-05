@@ -48,7 +48,7 @@ export class FriendService {
 
     getPendingRequests(): Observable<Friendship[]> {
         // /friendships/123/sentRequests
-        return this.http.get<Friendship[]>(`${this.urlFriends}/${AppSettings.TOKEN}/sentRequests`, Headers.getAuthTokenHeaders())
+        return this.http.get<Friendship[]>(`${this.urlFriends}/sentRequests`, Headers.getAuthTokenHeaders())
             .pipe(
                 tap(users => this.log('fetched friends')),
                 catchError(this.handleError('getFriends', []))
@@ -57,7 +57,7 @@ export class FriendService {
 
     getReceivedRequests(): Observable<Friendship[]> {
         // /friendships/123/receivedRequests
-        return this.http.get<Friendship[]>(`${this.urlFriends}/${AppSettings.TOKEN}/receivedRequests`, Headers.getAuthTokenHeaders())
+        return this.http.get<Friendship[]>(`${this.urlFriends}/receivedRequests`, Headers.getAuthTokenHeaders())
             .pipe(
                 tap(users => this.log('fetched friends')),
                 catchError(this.handleError('getFriends', []))
@@ -99,7 +99,7 @@ export class FriendService {
 
     acceptFriendResuest(friendshipId: string): Observable<any> {
         // /friendships/123/accept/321
-        return this.http.put<any>(`${this.urlFriends}/${friendshipId}/accept/${AppSettings.TOKEN}`, {}, Headers.getAuthTokenHeaders()).pipe(
+        return this.http.put<any>(`${this.urlFriends}/${friendshipId}/accept`, {}, Headers.getAuthTokenHeaders()).pipe(
             tap((friend: any) => this.log(`friend w/ id=${friendshipId}`)),
             catchError(this.handleError<any>('addFriend'))
         );
@@ -107,7 +107,7 @@ export class FriendService {
 
     declineFriendResuest(friendshipId: string): Observable<any> {
         // /friendships/123/decline/321
-        return this.http.put<any>(`${this.urlFriends}/${friendshipId}/decline/${AppSettings.TOKEN}`, {}, Headers.getAuthTokenHeaders()).pipe(
+        return this.http.put<any>(`${this.urlFriends}/${friendshipId}/decline`, {}, Headers.getAuthTokenHeaders()).pipe(
             tap((friend: any) => this.log(`friend w/ id=${friendshipId}`)),
             catchError(this.handleError<any>('addFriend'))
         );
