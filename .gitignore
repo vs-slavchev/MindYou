@@ -62,7 +62,7 @@ tsconfig.esm.json
 **/.idea/**/usage.statistics.xml
 **/.idea/**/dictionaries
 **/.idea/**/shelf
-
+statistics-service/.idea/
 # Generated files
 **/.idea/**/contentModel.xml
 

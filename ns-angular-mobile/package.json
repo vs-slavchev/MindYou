@@ -27,6 +27,7 @@
     "nativescript-ui-chart": "^3.10.0",
     "nativescript-ui-listview": "^5.0.0",
     "nativescript-ui-sidedrawer": "^5.0.0",
+    "nativescript-unit-test-runner": "^0.3.4",
     "reflect-metadata": "~0.1.8",
     "rxjs": "~6.3.0",
     "tns-core-modules": "~5.0.2",
@@ -34,12 +35,16 @@
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
+    "@angular/compiler-cli": "~7.0.0",
     "@nativescript/schematics": "~0.4.0",
+    "@ngtools/webpack": "~7.0.0",
+    "@types/jasmine": "^3.3.5",
+    "karma": "3.1.4",
+    "karma-jasmine": "2.0.1",
+    "karma-nativescript-launcher": "0.4.0",
     "nativescript-dev-typescript": "~0.7.0",
     "nativescript-dev-webpack": "~0.18.0",
-    "typescript": "^3.1.6",
-    "@angular/compiler-cli": "~7.0.0",
-    "@ngtools/webpack": "~7.0.0"
+    "typescript": "^3.1.6"
   },
   "readme": "NativeScript Application"
 }

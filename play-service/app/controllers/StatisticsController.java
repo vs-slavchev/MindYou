@@ -38,12 +38,13 @@ public class StatisticsController extends Controller implements WSBodyReadables,
         this.ws = ws;
         this.httpExecutionContext = ec;
 
-        timePeriods.put("recent", "1/week");
-        timePeriods.put("soon", "3/month");
-        timePeriods.put("longterm", "1/year");
+        timePeriods.put("week", "1/week");
+        timePeriods.put("month", "1/month");
+        timePeriods.put("quarter", "3/month");
+        timePeriods.put("year", "1/year");
     }
 
-    public CompletionStage<Result> hoursPerActivity(String userId, String time) {
+    public CompletionStage<Result> hoursPerActivity(String time) {
         String verifiedUserId;
         try {
             verifiedUserId = FirebaseInit.getVerifiedUserIdFromRequestHeader(request());
@@ -56,7 +57,7 @@ public class StatisticsController extends Controller implements WSBodyReadables,
         return makeStatisticsRequest(path, time);
     }
 
-    public CompletionStage<Result> hoursPerDay(String userId, String activityId, String time) {
+    public CompletionStage<Result> hoursPerDay(String activityId, String time) {
         String verifiedUserId;
         try {
             verifiedUserId = FirebaseInit.getVerifiedUserIdFromRequestHeader(request());
@@ -69,7 +70,7 @@ public class StatisticsController extends Controller implements WSBodyReadables,
         return makeStatisticsRequest(path, time);
     }
 
-    public CompletionStage<Result> percentileRank(String userId, String activityId, String time) {
+    public CompletionStage<Result> percentileRank(String activityId, String time) {
         String verifiedUserId;
         try {
             verifiedUserId = FirebaseInit.getVerifiedUserIdFromRequestHeader(request());

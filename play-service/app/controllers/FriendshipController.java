@@ -48,13 +48,11 @@ public class FriendshipController extends Controller implements WSBodyReadables,
             return supplyAsync(() -> badRequest(ae.getMessage()));
         }
 
-        //friendshipRequestLogger.debug(friendshipRequestDTO.toString());
-
         return friendshipRepository.createFriendRequest(invitee_id, verifiedUserId)
                 .thenApplyAsync(p -> ok("friendRequest sent"), httpExecutionContext.current());
     }
 
-    public CompletionStage<Result> acceptFriendRequest(String friendship_id, String invitee_id) {
+    public CompletionStage<Result> acceptFriendRequest(String friendship_id) {
         String verifiedInviteeId;
         try {
             verifiedInviteeId = FirebaseInit.getVerifiedUserIdFromRequestHeader(request());
@@ -66,7 +64,7 @@ public class FriendshipController extends Controller implements WSBodyReadables,
                 .thenApplyAsync(p -> ok("friendRequest accepted"), httpExecutionContext.current());
     }
 
-    public CompletionStage<Result> declineFriendRequest(String friendship_id, String invitee_id){
+    public CompletionStage<Result> declineFriendRequest(String friendship_id){
         String verifiedInviteeId;
         try {
             verifiedInviteeId = FirebaseInit.getVerifiedUserIdFromRequestHeader(request());
@@ -78,7 +76,7 @@ public class FriendshipController extends Controller implements WSBodyReadables,
                 .thenApplyAsync(p -> ok("friendRequest declined"), httpExecutionContext.current());
     }
 
-    public CompletionStage<Result> getReceivedFriendRequests(String userId) {
+    public CompletionStage<Result> getReceivedFriendRequests() {
         String verifiedUserId;
         try {
             verifiedUserId = FirebaseInit.getVerifiedUserIdFromRequestHeader(request());
@@ -91,7 +89,7 @@ public class FriendshipController extends Controller implements WSBodyReadables,
                         .collect(Collectors.toList()))), httpExecutionContext.current());
     }
 
-    public CompletionStage<Result> getSentFriendRequests(String userId) {
+    public CompletionStage<Result> getSentFriendRequests() {
         String verifiedUserId;
         try {
             verifiedUserId = FirebaseInit.getVerifiedUserIdFromRequestHeader(request());

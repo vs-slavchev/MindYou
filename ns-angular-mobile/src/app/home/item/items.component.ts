@@ -1,13 +1,16 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input,ViewChild, ElementRef } from "@angular/core";
 
 import { Item } from "./item";
 import { ItemService } from "./item.service";
 import { Router } from "@angular/router";
 import {AppSettings} from "~/app/app-settings";
-import { Page } from "tns-core-modules/ui/page/page";
+import { Page, Color } from "tns-core-modules/ui/page/page";
 import * as dialogs from "tns-core-modules/ui/dialogs";
 import * as utils from "utils/utils";
+import { ListViewEventData, RadListView } from "nativescript-ui-listview";
 const firebase = require("nativescript-plugin-firebase");
+
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
     selector: "ns-items",
@@ -20,13 +23,26 @@ export class ItemsComponent implements OnInit {
     reponse: any;
     public bottomBarShow = true;
     customActivity="";
+    isVisible: any;
+
+    @Input() item: Item;
+    public timerEnabled: boolean;
+    public second: number;
+    public seconds: number;
+    public minutes: number;
+    public hours: number;
+    public id;
+
     // This pattern makes use of Angular’s dependency injection implementation to inject an instance of the FriendService service into this class.
     // Angular knows about this service because it is included in your app’s main NgModule, defined in app.module.ts.
-    constructor(private itemService: ItemService, private router: Router) {
+    constructor(private itemService: ItemService, private router: Router, private route: ActivatedRoute) {
         // bottomBarShow
         console.log("Items are loading...");
         console.log("Custom activity"+ this.customActivity);
-    }
+       
+        //setting the visibility of the timer to false
+        this.isVisible = false;       
+    }  
 
     ngOnInit(): void {
         this.getActivities();
@@ -41,8 +57,28 @@ export class ItemsComponent implements OnInit {
                 console.log("Auth token retrieval error: " + errorMessage);
             }
         );
+
+        this.timerEnabled = false;
+        this.seconds = 0;
+        this.getItem();
+        this.id = setInterval(() => {
+            if (this.timerEnabled) {
+                this.seconds += 1;
+                this.second = this.seconds % 60;
+                this.minutes = Math.floor(this.seconds / 60);
+                this.hours = Math.floor(this.seconds / 3600);
+            }
+        }, 1000);                    
     }
 
+    getItem(): void {
+        const id = +this.route.snapshot.paramMap.get('id');
+        this.itemService.getItem(id)
+            .subscribe((item) => {
+                this.item = item;
+                // this.item.time = 0;
+            });
+    }
 
     getActivities(): void {
         this.itemService.getActivities().subscribe(activities => this.items = activities);
@@ -91,9 +127,49 @@ export class ItemsComponent implements OnInit {
         
     }
 
+    // Method to hide the keyboard
     dismissSoftKyeboard() {
         utils.ad.dismissSoftInput();
     }
-  
+
+    // Method for selected item -> change color to orange when selected and start the activity
+    public onItemSelected(args: ListViewEventData) {
+      console.log("Item is selected");
+      console.log("Args index " + args.index);
+
+      // Assign the the selected item from the radListView to the ()Input item
+      this.item = this.items[args.index];
+
+      console.log(this.item);
+   
+      // Changing the color of the selected item to orange.
+      args.view.backgroundColor = new Color("#FF7816");  
+
+      console.log("Start timer");
+      if (!this.seconds) {
+          this.seconds = 0;
+      }
+      this.itemService.startActivity({
+          "activity_id": this.item.activityBlueprintId, "user_id": AppSettings.TOKEN}).subscribe();
+       this.timerEnabled = true;
+       this.isVisible = true;
+    }
+
+    // Method for deselecting the item - > change color to white when deselect and stop the activity
+    public onItemDeselected(args: ListViewEventData) {
+        console.log("Item is deselected");
+
+         // Assign the the selected item from the radListView to the ()Input item
+         this.item = this.items[args.index];
+
+        // Changing the color of the deselected item to white.
+        args.view.backgroundColor = new Color("#ffffff");
+
+        console.log("Stop timer");
+        this.itemService.stopActivity(this.item.activityBlueprintId).subscribe();
+        this.timerEnabled = false;
+        this.isVisible = false;
+    } 
 }
+
 

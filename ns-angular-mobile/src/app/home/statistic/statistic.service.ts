@@ -30,7 +30,7 @@ export class StatisticService {
     getStatistics(): Observable<Statistic[]> {
         console.log(AppSettings.API_URL, this.addAuthToken());
         // return this.http.get<Statistic[]>(`${this.url}${AppSettings.TOKEN}/recent`, )
-        return this.http.get<Statistic[]>(`${this.url}${AppSettings.TOKEN}/recent`, Headers.getAuthTokenHeaders())
+        return this.http.get<Statistic[]>(`${this.url}week`, Headers.getAuthTokenHeaders())
             .pipe(
                 tap(statistics => this.log('fetched statistics')),
                 catchError(this.handleError('getActivities', []))
