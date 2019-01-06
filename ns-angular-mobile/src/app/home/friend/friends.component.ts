@@ -1,14 +1,15 @@
-import { Component, OnInit } from "@angular/core";
-import { alert } from "tns-core-modules/ui/dialogs";
-import { SelectedIndexChangedEventData } from "tns-core-modules/ui/tab-view";
-import { SearchBar } from "tns-core-modules/ui/search-bar";
+import {Component, OnInit} from "@angular/core";
+import {alert} from "tns-core-modules/ui/dialogs";
+import {SelectedIndexChangedEventData} from "tns-core-modules/ui/tab-view";
+import {SearchBar} from "tns-core-modules/ui/search-bar";
 
-import { Friend } from "./friend";
-import { FriendService } from "./friend.service";
+import {Friend} from "./friend";
+import {FriendService} from "./friend.service";
 import {Friendship} from "~/app/home/friend/friendship";
 import {forEach} from "@angular/router/src/utils/collection";
 import {AppSettings} from "~/app/app-settings";
 import {Item} from "~/app/home/item/item";
+import {ActivatedRoute} from "@angular/router";
 
 
 @Component({
@@ -25,17 +26,26 @@ export class FriendsComponent implements OnInit {
     public tabSelectedIndex: number;
     public tabSelectedIndexResult: string;
     public searchPhrase: string;
+    private sub: any;
 
 
     // This pattern makes use of Angular’s dependency injection implementation to inject an instance of the FriendService service into this class.
     // Angular knows about this service because it is included in your app’s main NgModule, defined in app.module.ts.
-    constructor(private friendService: FriendService) {
+    constructor(private friendService: FriendService, private route: ActivatedRoute) {
         this.tabSelectedIndex = 0;
         // this.tabSelectedIndexResult = "Profile Tab (tabSelectedIndex = 0 )";
     }
 
     ngOnInit(): void {
         this.refreshUsers();
+        this.sub = this.route.queryParams.subscribe(params => {
+            // Defaults to 0 if no query param provided.
+            console.log(params);
+            if ("page" in params) {
+                this.tabSelectedIndex = 1;
+                this.changeTab();
+            }
+        });
     }
 
     public onSubmit(args) {
@@ -66,11 +76,11 @@ export class FriendsComponent implements OnInit {
         if (args.oldIndex !== -1) {
             const newIndex = args.newIndex;
             if (newIndex === 0) {
-                // this.tabSelectedIndexResult = "Profile Tab (tabSelectedIndex = 0 )";
+                this.tabSelectedIndexResult = "Profile Tab (tabSelectedIndex = 0 )";
             } else if (newIndex === 1) {
-                // this.tabSelectedIndexResult = "Stats Tab (tabSelectedIndex = 1 )";
+                this.tabSelectedIndexResult = "Stats Tab (tabSelectedIndex = 1 )";
             } else if (newIndex === 2) {
-                // this.tabSelectedIndexResult = "Settings Tab (tabSelectedIndex = 2 )";
+                this.tabSelectedIndexResult = "Settings Tab (tabSelectedIndex = 2 )";
             }
             // alert(`Selected index has changed ( Old index: ${args.oldIndex} New index: ${args.newIndex} )`)
             //     .then(() => {
@@ -87,7 +97,7 @@ export class FriendsComponent implements OnInit {
     initUsers(users: Friend[]): Friend[] {
         let _users = [];
         users.forEach((user) => {
-           _users.push(new Friend(user.id, user.name))
+            _users.push(new Friend(user.id, user.name))
         });
         return _users
     }
@@ -101,7 +111,9 @@ export class FriendsComponent implements OnInit {
     declineFriendRequest(friendshipId: string): void {
         console.log(`declining friendship ${friendshipId}`);
         this.friendService.declineFriendResuest(friendshipId).subscribe(
-            () => {this.refreshUsers();}
+            () => {
+                this.refreshUsers();
+            }
         );
     }
 
@@ -115,19 +127,41 @@ export class FriendsComponent implements OnInit {
     }
 
     addFriend(user: Friend): void {
-        if (user.isFriend) { return; }
-        if (user.isRequesting) { return; }
-        if (user.requested) { return; }
+        if (user.isFriend) {
+            return;
+        }
+        if (user.isRequesting) {
+            return;
+        }
+        if (user.requested) {
+            return;
+        }
         console.log("friend-detail " + user.id);
         console.log(`adding friend ${user.id} by ${AppSettings.TOKEN}`);
-        this.friendService.addFriend(user.id).subscribe(()=> {this.refreshUsers()});
+        this.friendService.addFriend(user.id).subscribe(() => {
+            this.refreshUsers()
+        });
     }
 
     refreshUsers(doNotReloadUsers?: boolean): void {
-        this.friendService.getPendingRequests().subscribe(users => {this.pending = users; this.annotateUsers()});
-        this.friendService.getReceivedRequests().subscribe(users => {this.received = users; this.annotateUsers()});
-        if (doNotReloadUsers) { this.friendService.getUsers().subscribe(users => {this.users = this.initUsers(users); this.annotateUsers()}); }
-        this.friendService.getFriends().subscribe(users => {this.friends = users; this.annotateUsers()});
+        this.friendService.getPendingRequests().subscribe(users => {
+            this.pending = users;
+            this.annotateUsers()
+        });
+        this.friendService.getReceivedRequests().subscribe(users => {
+            this.received = users;
+            this.annotateUsers()
+        });
+        if (doNotReloadUsers) {
+            this.friendService.getUsers().subscribe(users => {
+                this.users = this.initUsers(users);
+                this.annotateUsers()
+            });
+        }
+        this.friendService.getFriends().subscribe(users => {
+            this.friends = users;
+            this.annotateUsers()
+        });
     }
 
     annotateUsers(): void {
@@ -148,5 +182,9 @@ export class FriendsComponent implements OnInit {
             }
         });
 
+    }
+
+    ngOnDestroy() {
+        this.sub.unsubscribe();
     }
 }

@@ -19,3 +19,16 @@
     horizontal-align: right;
     align: right;
 }
+
+.notificationAndroid{
+    background: red;
+    width:22;
+    height: 22;
+    margin-top: 12%;
+    margin-left: 25;
+    border-radius:30;
+    z-index:100;
+    color: #fff;
+    font-size: 13;
+    padding-top: 1;
+}

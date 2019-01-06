@@ -1,9 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, NgZone} from '@angular/core';
 import {AppSettings} from "~/app/app-settings";
-import {Router} from "@angular/router";
+import {NavigationExtras, Router} from "@angular/router";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 import {Headers} from "~/app/shared/headers";
+import {firestore, Message} from "nativescript-plugin-firebase";
+import * as dialogs from "tns-core-modules/ui/dialogs";
 
 const firebase = require("nativescript-plugin-firebase");
 const httpOptions = {
@@ -21,41 +23,54 @@ export class AuthComponent implements OnInit {
 
     private url = `${AppSettings.API_URL}/users/create`;
 
-    constructor(public _router: Router, private httpClient: HttpClient) {
+    constructor(public _router: Router, private httpClient: HttpClient, private ngZone: NgZone) {
     }
 
     ngOnInit() {
-        // firebase.init({
-        //     onAuthStateChanged: function(data) { // optional but useful to immediately re-logon the user when he re-visits your app
-        //         console.log(data.loggedIn ? "Logged in to firebase" : "Logged out from firebase");
-        //         if (data.loggedIn) {
-        //             console.log("user's email address: " + (data.user.email ? data.user.email : "N/A"));
-        //             _router.
-        //         }
-        //     }
-        // });
+
     }
 
     onTapLogin(): void {
-    //     var listener = {
-    //         onAuthStateChanged((data) => {
-    //             console.log(data.loggedIn ? "Logged in to firebase" : "Logged out from firebase");
-    //             if (data.loggedIn) {
-    //                 console.log("User info", data.user);
-    //                 firebase.removeAuthStateListener(listener);
-    //                 this._ro
-                // }
-            // },
-            // thisArg: this
-        // });
-        
-        console.log("Facebook login");
-        console.log("Firebase " + firebase);
+        firebase.getCurrentPushToken().then((token: string) => {
+            // may be null if not known yet
+            console.log(`Current push token: ${token}`);
+            AppSettings.DEVICE_PUSH_TOKEN = token;
+        });
+
+        // console.log("Facebook login");
+        // console.log("Firebase " + firebase);
         console.log(`TOKEN: ${AppSettings.TOKEN}`);
 
         firebase.init({
             // Optionally pass in properties for database, authentication and cloud messaging,
             // see their respective docs.
+            showNotificationsWhenInForeground: true,
+            onMessageReceivedCallback: (message: Message) => {
+                console.log(`Title: ${message.title}`);
+                console.log(`Body: ${message.body}`);
+                // if your server passed a custom property called 'running', then do this:
+                console.log(`Value of 'running': ${message.data.running}`);
+
+                dialogs.confirm({
+                    title: `Title: ${message.title}`,
+                    message: `Body: ${message.body}`,
+                    okButtonText: "Open",
+                    cancelButtonText: "Cancel",
+                    // neutralButtonText: "Neutral text"
+                }).then(result => {
+                    // result argument is boolean
+                    console.log("Dialog result: " + result);
+                    if (!result) {
+                        return;
+                    }
+                    let navigationExtras: NavigationExtras = {
+                        queryParams: { page: "feeds" }
+                    };
+                    console.log('navigate to friends');
+                    this.ngZone.run(() => this._router.navigate(['/home/friends'], navigationExtras));
+
+                });
+            }
 
         }).then(
             instance => {
@@ -78,7 +93,8 @@ export class AuthComponent implements OnInit {
                                 this._router.navigate(['/home/items']);
                                 let data = {
                                     "id": token,
-                                    "name": result.name
+                                    "name": result.name,
+                                    "device_push_token": AppSettings.DEVICE_PUSH_TOKEN
                                 };
                                 console.log(data);
                                 this.httpClient.post(this.url, data, Headers.getAuthTokenHeaders()).subscribe();
@@ -113,7 +129,8 @@ export class AuthComponent implements OnInit {
                                 this._router.navigate(['/home/items']);
                                 let data = {
                                     "id": token,
-                                    "name": result.name
+                                    "name": result.name,
+                                    "device_push_token": AppSettings.DEVICE_PUSH_TOKEN
                                 };
                                 console.log(data);
                                 this.httpClient.post(this.url, data, Headers.getAuthTokenHeaders()).subscribe();
@@ -129,20 +146,6 @@ export class AuthComponent implements OnInit {
                 );
             }
         );
-
-        // firebase.getAuthToken({
-        //     // default false, not recommended to set to true by Firebase but exposed for {N} devs nonetheless :)
-        //     forceRefresh: true
-        // }).then((token) => {
-        //         console.log("Auth token retrieved: " + token);
-        //         AppSettings.TOKEN = token;
-        //     },
-        //     function (errorMessage) {
-        //         console.log("Auth token retrieval error: " + errorMessage);
-        //     }
-        // );
-
-        // firebase.addAuthStateListener(listener);
 
     }
 }
