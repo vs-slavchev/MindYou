@@ -3,13 +3,10 @@ import {Observable, of} from 'rxjs';
 import {catchError, map, tap} from 'rxjs/operators';
 import {AppSettings} from "~/app/app-settings";
 
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Statistic} from "~/app/home/statistic/statistic";
 import {Headers} from "~/app/shared/headers";
 
-const httpOptions = {
-    headers: new HttpHeaders({'Content-Type': 'application/json'})
-};
 
 @Injectable()
 export class StatisticService {
@@ -21,16 +18,9 @@ export class StatisticService {
         console.log('init activities service');
     }
 
-    addAuthToken() {
-        let httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json',
-                'Authorization': AppSettings.TOKEN})};
-        return httpOptions
-    }
-
-    getStatistics(): Observable<Statistic[]> {
-        console.log(AppSettings.API_URL, this.addAuthToken());
-        // return this.http.get<Statistic[]>(`${this.url}${AppSettings.TOKEN}/recent`, )
-        return this.http.get<Statistic[]>(`${this.url}week`, Headers.getAuthTokenHeaders())
+    getStatistics(period: string): Observable<Statistic[]> {
+        console.log(AppSettings.API_URL, Headers.getAuthTokenHeaders());
+        return this.http.get<Statistic[]>(`${this.url}${period}`, Headers.getAuthTokenHeaders())
             .pipe(
                 tap(statistics => this.log('fetched statistics')),
                 catchError(this.handleError('getActivities', []))

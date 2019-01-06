@@ -3,6 +3,7 @@
 
 <ScrollView id="ScrollView">
     <StackLayout>
+        <ListPicker [items]="periods" selectedIndex="0" (selectedIndexChange)="selectedIndexChanged($event)" class="p-15"></ListPicker>
         <Label text="Pie chart" id="Label"></Label>
         <Label textWrap="true" text="The following pie chart shows the activities that you have done in the past month." id="description"></Label>
         <!-- <GridLayout>        -->
