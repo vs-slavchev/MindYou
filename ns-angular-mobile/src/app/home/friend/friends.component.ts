@@ -37,7 +37,6 @@ export class FriendsComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.refreshUsers();
         this.sub = this.route.queryParams.subscribe(params => {
             // Defaults to 0 if no query param provided.
             console.log(params);
@@ -46,6 +45,7 @@ export class FriendsComponent implements OnInit {
                 this.changeTab();
             }
         });
+        this.refreshUsers();
     }
 
     public onSubmit(args) {

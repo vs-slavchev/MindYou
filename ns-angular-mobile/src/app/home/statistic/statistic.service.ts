@@ -19,7 +19,6 @@ export class StatisticService {
     }
 
     getStatistics(period: string): Observable<Statistic[]> {
-        console.log(AppSettings.API_URL, Headers.getAuthTokenHeaders());
         return this.http.get<Statistic[]>(`${this.url}${period}`, Headers.getAuthTokenHeaders())
             .pipe(
                 tap(statistics => this.log('fetched statistics')),
