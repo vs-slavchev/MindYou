@@ -74,16 +74,27 @@ POST          /activities/create                                           contr
 # time can be : week, month, quarter, year
 # ex. /statistics/hours-per-activity/month
 # provide authorization token in the authorization header of the request;
-GET           /statistics/hours-per-activity/:time                 controllers.StatisticsController.hoursPerActivity(time)
+GET           /statistics/hours-per-activity/:time                         controllers.StatisticsController.hoursPerActivity(time)
 
 # for a specific activity get how many hours it was done for every day
 # time can be : week, month, quarter, year
 # ex. /statistics/hours-per-day/5/month
 # provide authorization token in the authorization header of the request;
-GET           /statistics/hours-per-day/:activityId/:time          controllers.StatisticsController.hoursPerDay(activityId, time)
+GET           /statistics/hours-per-day/:activityId/:time                  controllers.StatisticsController.hoursPerDay(activityId, time)
 
 # for the most done activities show the percentile rank of the user among other users
 # time can be : week, month, quarter, year
 # ex. /statistics/percentile-rank/5/month
 # provide authorization token in the authorization header of the request;
-GET           /statistics/percentile-rank/:activityId/:time        controllers.StatisticsController.percentileRank(activityId, time)
+GET           /statistics/percentile-rank/:activityId/:time                controllers.StatisticsController.percentileRank(activityId, time)
+
+
+# retrieve the most popular activities
+# time can be: week, month, quarter, year
+# ex. /statistics/top-activities/year
+GET           /statistics/top-activities/:time                             controllers.StatisticsController.topActivities(time)
+
+
+# get a suggestion which is a single random activity that has never been done by the user
+# provide authorization token in the authorization header of the request
+GET           /statistics/suggestion                                       controllers.StatisticsController.suggestion()
