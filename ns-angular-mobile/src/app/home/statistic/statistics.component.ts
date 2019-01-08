@@ -1,5 +1,9 @@
 import { Component, OnInit } from "@angular/core";
+import { Observable, Subject } from 'rxjs';
 
+import {
+    debounceTime, distinctUntilChanged, switchMap
+} from 'rxjs/operators';
 import { Statistic } from "./statistic";
 import { StatisticService } from "./statistic.service";
 import { AppSettings } from "~/app/app-settings";
@@ -17,11 +21,11 @@ import { ListPicker } from "tns-core-modules/ui/list-picker";
 
 })
 export class StatisticsComponent implements OnInit {
-    statistics: Statistic[];
     hasData: boolean = false;
     public bottomBarShow = true;
     public periods: string[] = ["Week", "Month", "Quarter", "Year"];
     public picked: string;
+    private pickedTerms = new Subject<string>();
 
     pieSource: Statistic[];
 
@@ -31,16 +35,23 @@ export class StatisticsComponent implements OnInit {
     
     ngOnInit(): void {
         this.picked = "week";
-        this.getStatistics();
+        // this.getStatistics();
+        // this.statistics = this.pickedTerms.pipe(
+        //     // wait 300ms after each keystroke before considering the term
+        //     debounceTime(300),
+        //
+        //     // ignore new term if same as previous term
+        //     distinctUntilChanged(),
+        //
+        //     // switch to new search observable each time the term changes
+        //     switchMap((term: string) => this.statisticService.getStatistics(term)),
+        // );
     }
 
     getStatistics() {
         this.hasData = false;
-        this.statistics = [];
+        this.pieSource = [];
         this.statisticService.getStatistics(this.picked.toLowerCase()).subscribe((statistics) => {
-            console.log('statistics response');
-            console.log(statistics);
-            this.statistics = statistics;
             this.pieSource = statistics;
             this.hasData=true;
         });

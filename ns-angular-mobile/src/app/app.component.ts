@@ -17,6 +17,11 @@ export class AppComponent {
     public bottomBar: boolean;
     constructor () {
         this.bottomBar = AppSettings.showBottomBar;
+        firebase.getCurrentPushToken().then((token: string) => {
+            // may be null if not known yet
+            console.log(`Current push token: ${token}`);
+            AppSettings.DEVICE_PUSH_TOKEN = token;
+        });
         firebase.init({
             // Optionally pass in properties for database, authentication and cloud messaging,
             // see their respective docs.
@@ -48,10 +53,6 @@ export class AppComponent {
             },
 
         );
-        firebase.getCurrentPushToken().then((token: string) => {
-            // may be null if not known yet
-            console.log(`Current push token: ${token}`);
-        });
     }
 
     onItemLoading(args: any) {

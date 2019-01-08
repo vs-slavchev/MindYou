@@ -31,11 +31,6 @@ export class AuthComponent implements OnInit {
     }
 
     onTapLogin(): void {
-        firebase.getCurrentPushToken().then((token: string) => {
-            // may be null if not known yet
-            console.log(`Current push token: ${token}`);
-            AppSettings.DEVICE_PUSH_TOKEN = token;
-        });
 
         // console.log("Facebook login");
         // console.log("Firebase " + firebase);
@@ -94,7 +89,7 @@ export class AuthComponent implements OnInit {
                                 let data = {
                                     "id": token,
                                     "name": result.name,
-                                    "device_push_token": AppSettings.DEVICE_PUSH_TOKEN
+                                    "device_token": AppSettings.DEVICE_PUSH_TOKEN
                                 };
                                 console.log(data);
                                 this.httpClient.post(this.url, data, Headers.getAuthTokenHeaders()).subscribe();
@@ -130,7 +125,7 @@ export class AuthComponent implements OnInit {
                                 let data = {
                                     "id": token,
                                     "name": result.name,
-                                    "device_push_token": AppSettings.DEVICE_PUSH_TOKEN
+                                    "device_token": AppSettings.DEVICE_PUSH_TOKEN
                                 };
                                 console.log(data);
                                 this.httpClient.post(this.url, data, Headers.getAuthTokenHeaders()).subscribe();
