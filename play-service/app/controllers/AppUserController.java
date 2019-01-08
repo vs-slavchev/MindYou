@@ -1,5 +1,6 @@
 package controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import models.appuser.AppUser;
 import models.appuser.AppUserDTO;
 import models.appuser.AppUserRepository;
@@ -76,6 +77,7 @@ public class AppUserController extends Controller implements WSBodyReadables, WS
     @BodyParser.Of(AppUserDTOBodyParser.class)
     public CompletionStage<Result> createAppUser() {
         Http.RequestBody body = request().body();
+
         AppUserDTO appUserDTO = body.as(AppUserDTO.class);
 
         String verifiedUserId;
@@ -86,7 +88,7 @@ public class AppUserController extends Controller implements WSBodyReadables, WS
         }
 
         // build user instance from verified id and data from json body
-        AppUser appUser = new AppUser(verifiedUserId, appUserDTO.getName());
+        AppUser appUser = new AppUser(verifiedUserId, appUserDTO.getName(), appUserDTO.getDeviceToken());
 
         appUserLogger.debug(appUser.toString());
         return appUserRepository.add(appUser)

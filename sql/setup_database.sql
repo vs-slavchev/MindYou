@@ -7,7 +7,8 @@ DROP TABLE IF EXISTS app_user;
 
 CREATE TABLE app_user (
 user_id varchar(64) primary key,
-name varchar(64) NOT NULL
+name varchar(64) NOT NULL,
+device_token varchar(255) NULL
 );
 
 CREATE TABLE activity_blueprint (
@@ -31,10 +32,10 @@ invitee_user_id varchar(64) references app_user(user_id) ON DELETE NO ACTION ON 
 accepted boolean DEFAULT false
 );
 
-INSERT INTO app_user (user_id, name) VALUES ('lXjpqtpXb6aImbfxaP7wzNa8nsB3', 'Ann Vesnenok');
-INSERT INTO app_user (user_id, name) VALUES ('JhuhxY6OwKd0Cw3ujvYuuejVzMG3', 'Mirela Goranova');
-INSERT INTO app_user (user_id, name) VALUES ('YC3FEaY113ft4sLtiuqVtrhv8G43', 'Iana Florea');
-INSERT INTO app_user (user_id, name) VALUES ('JuiR58vYTtWEnIoORLxv3OCxgF32', 'Veselin Slavchev');
+INSERT INTO app_user (user_id, name, device_token) VALUES ('lXjpqtpXb6aImbfxaP7wzNa8nsB3', 'Ann Vesnenok', null);
+INSERT INTO app_user (user_id, name, device_token) VALUES ('JhuhxY6OwKd0Cw3ujvYuuejVzMG3', 'Mirela Goranova', null);
+INSERT INTO app_user (user_id, name, device_token) VALUES ('YC3FEaY113ft4sLtiuqVtrhv8G43', 'Iana Florea', null);
+INSERT INTO app_user (user_id, name, device_token) VALUES ('JuiR58vYTtWEnIoORLxv3OCxgF32', 'Veselin Slavchev',null);
 
 INSERT INTO activity_blueprint (name) VALUES ('swimming');
 INSERT INTO activity_blueprint (name) VALUES ('cooking');

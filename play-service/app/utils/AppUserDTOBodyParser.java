@@ -35,6 +35,7 @@ public class AppUserDTOBodyParser implements BodyParser<AppUserDTO> {
                 try {
                     AppUserDTO appUserDTO = play.libs.Json
                             .fromJson(json, AppUserDTO.class);
+                    appUserDTO.setDeviceToken(json.get("device_token").asText());
                     return F.Either.Right(appUserDTO);
                 } catch (Exception e) {
                     return F.Either.Left(Results.badRequest(

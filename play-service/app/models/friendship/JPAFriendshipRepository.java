@@ -5,6 +5,7 @@ import models.activityblueprint.ActivityBlueprint;
 import models.appuser.AppUser;
 import models.trackedactivity.TrackedActivity;
 import play.db.jpa.JPAApi;
+import play.libs.ws.WSClient;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -22,13 +23,15 @@ import static java.util.concurrent.CompletableFuture.supplyAsync;
  */
 public class JPAFriendshipRepository implements FriendshipRepository {
 
+    private WSClient ws;
     private final JPAApi jpaApi;
     private final DatabaseExecutionContext executionContext;
 
     @Inject
-    public JPAFriendshipRepository(JPAApi jpaApi, DatabaseExecutionContext executionContext) {
+    public JPAFriendshipRepository(JPAApi jpaApi, DatabaseExecutionContext executionContext, WSClient ws) {
         this.jpaApi = jpaApi;
         this.executionContext = executionContext;
+        this.ws = ws;
     }
 
     @Override
@@ -50,6 +53,11 @@ public class JPAFriendshipRepository implements FriendshipRepository {
                     friendship = new Friendship(inviter, invitee);
                 }
             }
+            String jsonString = String.format("{\"notification\":{\"title\": \"Title MindYou\", \"text\": \"You receive a friend request\", \"badge\": \"1\", \"sound\": \"default\"}, \"data\":{\"running\": \"2 hours\"}, \"priority\": \"High\", \"to\": \"%s\"}", friendship.getInviteeUser().getDeviceToken());
+            ws.url("https://fcm.googleapis.com/fcm/send")
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("Authorization", "key=AAAA7_KxZwU:APA91bGOysZbGFO-grloUHj50HfIgYJfeleOYygSBxZRdV4Fmnd60Gvj5MQlCA_zh2PcuQRhvsMnUS0BlU5LrZKO_xGIJMcIapv6WDbeJ6UdTg2GXs5JgSbc4n46ypvHwjahpyIWyWGc")
+                    .post(jsonString);
             return insert(em, friendship);
         }), executionContext);
     }
