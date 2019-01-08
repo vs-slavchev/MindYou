@@ -3,6 +3,7 @@ import psycopg2
 import pandas
 import logging
 import os
+import datetime
 
 app = Flask(__name__)
 
@@ -13,13 +14,18 @@ hdlr.setFormatter(formatter)
 logger.addHandler(hdlr)
 logger.setLevel(logging.INFO)
 
-
+# database connection
 connection = psycopg2.connect(
     user=os.environ.get('POSTGRES_USER', "youmind"),
     password=os.environ.get('POSTGRES_PASSWORD', "ksdjfj434ESADesFesafseFasdfae3"),
     host=os.environ.get('DATABASE_URL', '127.0.0.1'),
     port="5432",
     database=os.environ.get('POSTGRES_DB', "mindyou"), )
+
+# intializing dataframes using pandas
+activities = pandas.read_sql_query('select * from activity_blueprint', connection)
+tracked_activities = pandas.read_sql_query('select * from tracked_activity', connection)
+users = pandas.read_sql_query('select * from app_user', connection)
 
 
 # hours spent on each activity, for last week, month, 3 months
@@ -38,7 +44,6 @@ def hours_per_activity(user_id, number_units, unit):
         '''
     time_interval = "'{} {}'".format(str(number_units), str(unit))
     result = query(query_str, (user_id, time_interval))
-
     list_of_jsons = list(map(lambda row: '{"activity_name":"' + str(row[0]) + '","hours":' + str(row[1]) + '}', result))
     records = '[' + ','.join(obj for obj in list_of_jsons) + ']'
     logger.info('/hours-per-activity/{}/{}/{} ===> {}'.format(user_id, number_units, unit, records))
@@ -86,6 +91,30 @@ def percentile_rank(user_id, activity_id, number_units, unit):
 
     less_user_minutes = user_minutes[user_minutes['sum'] < current_user_value]
     return str(100.0 * less_user_minutes.size / user_minutes.size)
+
+
+# determine most popular activities in last day, week, month or quarter
+@app.route("/top-activities/<number_unit>/<unit>")
+def get_top_activities(number_unit, unit):
+    if unit == 'day':
+        top_activities = pandas.merge(activities, tracked_activities, left_on='activity_blueprint_id', right_on='activity_blueprint_id', how='inner')[tracked_activities.time_start > (datetime.datetime.now() - datetime.timedelta(days=int(number_unit)))].groupby(['name'])['duration_minutes'].sum().reset_index()[['name', 'duration_minutes']].sort_values('duration_minutes', ascending = False).head(10)
+    elif unit == 'week':
+        top_activities = pandas.merge(activities, tracked_activities, left_on='activity_blueprint_id', right_on='activity_blueprint_id', how='inner')[tracked_activities.time_start > (datetime.datetime.now() - datetime.timedelta(weeks=int(number_unit)))].groupby(['name'])['duration_minutes'].sum().reset_index()[['name', 'duration_minutes']].sort_values('duration_minutes', ascending = False).head(10)
+    elif unit == 'month':
+        top_activities = pandas.merge(activities, tracked_activities, left_on='activity_blueprint_id', right_on='activity_blueprint_id', how='inner')[tracked_activities.time_start > (datetime.datetime.now() - datetime.timedelta(days=30*int(number_unit)))].groupby(['name'])['duration_minutes'].sum().reset_index()[['name', 'duration_minutes']].sort_values('duration_minutes', ascending = False).head(10)
+    elif unit == 'year':
+        top_activities = pandas.merge(activities, tracked_activities, left_on='activity_blueprint_id', right_on='activity_blueprint_id', how='inner')[tracked_activities.time_start > (datetime.datetime.now() - datetime.timedelta(days=365*int(number_unit)))].groupby(['name'])['duration_minutes'].sum().reset_index()[['name', 'duration_minutes']].sort_values('duration_minutes', ascending = False).head(10)
+    results = top_activities.to_json(orient='values')
+    return results
+
+
+#single random suggestion
+@app.route("/suggestion/<user_id>")
+def suggest(user_id):
+    tracked_activities_with_user = tracked_activities[(tracked_activities.user_id == user_id)][['activity_blueprint_id']].drop_duplicates()
+    untracked_activities = activities[(~activities.activity_blueprint_id.isin(tracked_activities_with_user.activity_blueprint_id))]
+    result = untracked_activities.sample().to_json(orient='values')
+    return result
 
 
 def query(query_sql, params_tuple):

@@ -169,6 +169,14 @@ export class ItemsComponent implements OnInit {
         this.itemService.stopActivity(this.item.activityBlueprintId).subscribe();
         this.timerEnabled = false;
         this.isVisible = false;
+
+        dialogs.alert({
+            title: "Alert",
+            message: "The activity has been stoppen! Time spent on the activity: " + this.hours + " h " + this.minutes + " min " + this.seconds + " sec.",
+            okButtonText: "Got it!"
+        }).then(() => {
+            console.log("Dialog closed!");
+        });
     } 
 }
 
