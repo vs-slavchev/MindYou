@@ -96,12 +96,12 @@ def percentile_rank(user_id, activity_id, number_units, unit):
 # determine most popular activities in last day, week, month or quarter
 @app.route("/top-activities/<number_unit>/<unit>")
 def get_top_activities(number_unit, unit):
-    if unit == 'day':
-        top_activities = pandas.merge(activities, tracked_activities, left_on='activity_blueprint_id', right_on='activity_blueprint_id', how='inner')[tracked_activities.time_start > (datetime.datetime.now() - datetime.timedelta(days=int(number_unit)))].groupby(['name'])['duration_minutes'].sum().reset_index()[['name', 'duration_minutes']].sort_values('duration_minutes', ascending = False).head(10)
-    elif unit == 'week':
-        top_activities = pandas.merge(activities, tracked_activities, left_on='activity_blueprint_id', right_on='activity_blueprint_id', how='inner')[tracked_activities.time_start > (datetime.datetime.now() - datetime.timedelta(weeks=int(number_unit)))].groupby(['name'])['duration_minutes'].sum().reset_index()[['name', 'duration_minutes']].sort_values('duration_minutes', ascending = False).head(10)
+    if unit == 'week':
+        top_activities = pandas.merge(activities, tracked_activities, left_on='activity_blueprint_id', right_on='activity_blueprint_id', how='inner')[tracked_activities.time_start > (datetime.datetime.now() - datetime.timedelta(days=7*int(number_unit)))].groupby(['name'])['duration_minutes'].sum().reset_index()[['name', 'duration_minutes']].sort_values('duration_minutes', ascending = False).head(10)
     elif unit == 'month':
         top_activities = pandas.merge(activities, tracked_activities, left_on='activity_blueprint_id', right_on='activity_blueprint_id', how='inner')[tracked_activities.time_start > (datetime.datetime.now() - datetime.timedelta(days=30*int(number_unit)))].groupby(['name'])['duration_minutes'].sum().reset_index()[['name', 'duration_minutes']].sort_values('duration_minutes', ascending = False).head(10)
+    elif unit == 'quarter':
+        top_activities = pandas.merge(activities, tracked_activities, left_on='activity_blueprint_id', right_on='activity_blueprint_id', how='inner')[tracked_activities.time_start > (datetime.datetime.now() - datetime.timedelta(days=90*int(number_unit)))].groupby(['name'])['duration_minutes'].sum().reset_index()[['name', 'duration_minutes']].sort_values('duration_minutes', ascending=False).head(10)
     elif unit == 'year':
         top_activities = pandas.merge(activities, tracked_activities, left_on='activity_blueprint_id', right_on='activity_blueprint_id', how='inner')[tracked_activities.time_start > (datetime.datetime.now() - datetime.timedelta(days=365*int(number_unit)))].groupby(['name'])['duration_minutes'].sum().reset_index()[['name', 'duration_minutes']].sort_values('duration_minutes', ascending = False).head(10)
     results = top_activities.to_json(orient='values')

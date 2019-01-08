@@ -38,12 +38,14 @@ public class StatisticsController extends Controller implements WSBodyReadables,
         this.ws = ws;
         this.httpExecutionContext = ec;
 
-        timePeriods.put("recent", "1/week");
-        timePeriods.put("soon", "3/month");
-        timePeriods.put("longterm", "1/year");
+        timePeriods.put("week", "1/week");
+        timePeriods.put("month", "1/month");
+        timePeriods.put("quarter", "3/month");
+        timePeriods.put("year", "1/year");
+        timePeriods.put("", "");
     }
 
-    public CompletionStage<Result> hoursPerActivity(String userId, String time) {
+    public CompletionStage<Result> hoursPerActivity(String time) {
         String verifiedUserId;
         try {
             verifiedUserId = FirebaseInit.getVerifiedUserIdFromRequestHeader(request());
@@ -56,7 +58,7 @@ public class StatisticsController extends Controller implements WSBodyReadables,
         return makeStatisticsRequest(path, time);
     }
 
-    public CompletionStage<Result> hoursPerDay(String userId, String activityId, String time) {
+    public CompletionStage<Result> hoursPerDay(String activityId, String time) {
         String verifiedUserId;
         try {
             verifiedUserId = FirebaseInit.getVerifiedUserIdFromRequestHeader(request());
@@ -69,7 +71,7 @@ public class StatisticsController extends Controller implements WSBodyReadables,
         return makeStatisticsRequest(path, time);
     }
 
-    public CompletionStage<Result> percentileRank(String userId, String activityId, String time) {
+    public CompletionStage<Result> percentileRank(String activityId, String time) {
         String verifiedUserId;
         try {
             verifiedUserId = FirebaseInit.getVerifiedUserIdFromRequestHeader(request());
@@ -80,6 +82,27 @@ public class StatisticsController extends Controller implements WSBodyReadables,
         String path = String.format("percentile-rank/%s/%s/", verifiedUserId, activityId);
 
         return makeStatisticsRequest(path, time);
+    }
+
+    public CompletionStage<Result> topActivities(String time) {
+
+        String path = String.format("top-activities/");
+
+        return makeStatisticsRequest(path, time);
+    }
+
+    public CompletionStage<Result> suggestion(){
+
+        String verifiedUserId;
+        try {
+            verifiedUserId = FirebaseInit.getVerifiedUserIdFromRequestHeader(request());
+        } catch (AuthorizationException ae) {
+            return supplyAsync(() -> badRequest(ae.getMessage()));
+        }
+
+        String path = String.format("suggestion/%s", verifiedUserId);
+
+        return makeStatisticsRequest(path, "");
     }
 
     private CompletionStage<Result> makeStatisticsRequest(String path, String time) {
@@ -96,5 +119,4 @@ public class StatisticsController extends Controller implements WSBodyReadables,
                         httpExecutionContext.current()
                 );
     }
-
 }
