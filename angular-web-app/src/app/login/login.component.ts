@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
       //console.log("2222"+this.httpObject);
   }
 
-  private curl:string ='http://62.108.10.166:9000/users/create';
+  private curl:string ='http://145.116.46.119:9000/users/create';
 
   LogIn(){
       var provider=new firebase.auth.FacebookAuthProvider();
@@ -52,20 +52,20 @@ export class LoginComponent implements OnInit {
                     "id": data,
                     "name":firebase.auth().currentUser.displayName
                 };
-                //console.log(this.httpObject);
-                this.httpObject.post('http://62.108.10.166:9000/users/create',datau, httpOptions).subscribe(HttpResponse=>console.log(HttpResponse));
+                console.log(this.httpObject);
+                this.httpObject.post('http://145.116.46.119:9000/users/create',datau, httpOptions).subscribe(HttpResponse=>console.log(HttpResponse));
                 
             })
           
         } else {
-            console.log('didnt work')
+            console.log('the on auth state changed didnt work')
         }
         })
 }
 
     LogOut(){
       firebase.auth().signOut();
-      console.log("sucess");
+      console.log("sucessful logout");
     }
   ngOnInit() {
   }

@@ -1,0 +1,30 @@
+img {
+    width: 450px;
+    height:100px;
+    padding-right: 5px;
+}
+.jumbotron{
+    padding-left: 25%;
+    padding-right: 25%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #FDD65C;
+}
+button{
+    width: 300px !important;
+    font-size: 16px !important;
+    line-height: 30px !important;
+    padding: 3px 8px !important;
+    background-color: #3b5998 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center !important;
+}
+
+p{
+    font-size: 12pt;
+    padding: 20px;
+    padding-bottom: 0;
+    text-align: center;
+    text-justify: auto;
+}

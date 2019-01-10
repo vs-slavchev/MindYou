@@ -7,6 +7,7 @@ import {ContactComponent} from "./contact/contact.component";
 import {UserProfileComponent} from "./user-profile/user-profile.component";
 import {HttpTestComponent} from "./http-test/http-test.component";
 import { LoginComponent } from './login/login.component';
+import { NewstatsComponent } from './newstats/newstats.component';
 
 const routes:Routes=[
      {path:'home', component: HomeComponent},
@@ -16,7 +17,8 @@ const routes:Routes=[
      {path:'profile', component:UserProfileComponent},
      //{path:'timeline', component:UserTimelineComponent},
     {path:'testcp',component: HttpTestComponent},
-    {path:'login', component:LoginComponent}
+    {path:'login', component:LoginComponent},
+   {path:'newstats', component:NewstatsComponent}
     ];
 @NgModule({
   declarations: [],
