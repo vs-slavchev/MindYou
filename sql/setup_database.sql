@@ -4,11 +4,18 @@ DROP TABLE IF EXISTS friendship;
 DROP TABLE IF EXISTS tracked_activity;
 DROP TABLE IF EXISTS activity_blueprint;
 DROP TABLE IF EXISTS app_user;
+DROP TABLE IF EXISTS suggestion_settings;
 
 CREATE TABLE app_user (
 user_id varchar(64) primary key,
 name varchar(64) NOT NULL,
 device_token varchar(255) NULL
+);
+
+CREATE TABLE suggestion_settings (
+id SERIAL PRIMARY KEY,
+interval number NOT NULL,
+active boolean NULL
 );
 
 CREATE TABLE activity_blueprint (
@@ -36,6 +43,8 @@ INSERT INTO app_user (user_id, name, device_token) VALUES ('lXjpqtpXb6aImbfxaP7w
 INSERT INTO app_user (user_id, name, device_token) VALUES ('JhuhxY6OwKd0Cw3ujvYuuejVzMG3', 'Mirela Goranova', null);
 INSERT INTO app_user (user_id, name, device_token) VALUES ('YC3FEaY113ft4sLtiuqVtrhv8G43', 'Iana Florea', null);
 INSERT INTO app_user (user_id, name, device_token) VALUES ('JuiR58vYTtWEnIoORLxv3OCxgF32', 'Veselin Slavchev',null);
+
+INSERT INTO suggestion_settings (interval, active) VALUES (15, true);
 
 INSERT INTO activity_blueprint (name) VALUES ('swimming');
 INSERT INTO activity_blueprint (name) VALUES ('cooking');
