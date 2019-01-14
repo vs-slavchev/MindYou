@@ -65,4 +65,17 @@ public class TrackedActivityController extends Controller implements WSBodyReada
 
     }
 
+    public CompletionStage<Result> currentActivity(){
+        String verifiedUserId;
+        try {
+            verifiedUserId = FirebaseInit.getVerifiedUserIdFromRequestHeader(request());
+        } catch (AuthorizationException ae) {
+            return supplyAsync(() -> badRequest(ae.getMessage()));
+        }
+
+        return trackedActivityRepository.getCurrentActivity(verifiedUserId)
+                .thenApplyAsync(ta -> ok(Json.toJson(ta)), httpExecutionContext.current());
+
+    }
+
 }

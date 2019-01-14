@@ -56,6 +56,11 @@ POST          /activities/:activity_id/start                               contr
 # provide authorization token in the authorization header of the request;
 GET           /activities/stop                                             controllers.TrackedActivityController.stopActivity
 
+# get currently running activity
+# ex: /activities/activated
+# provide authorization token in the authorization header of the request;
+GET           /activities/activated                                        controllers.TrackedActivityController.currentActivity
+
 # get details about an activty blueprint
 # ex: /activities/5
 GET           /activities/:id                                              controllers.ActivityBlueprintController.getActivityBlueprint(id: String)
