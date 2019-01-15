@@ -13,9 +13,13 @@ public class AppUser {
     @Column(name = "name", nullable = false)
     private String name;
 
-    public AppUser(String id, String name) {
+    @Column(name = "device_token")
+    private String deviceToken;
+
+    public AppUser(String id, String name, String deviceToken) {
         this.id = id;
         this.name = name;
+        this.deviceToken = deviceToken;
     }
 
     public AppUser() {}
@@ -36,11 +40,16 @@ public class AppUser {
         this.name = name;
     }
 
+    public String getDeviceToken() { return deviceToken; }
+
+    public void setDeviceToken(String deviceToken) { this.deviceToken = deviceToken; }
+
     @Override
     public String toString() {
         return "AppUser{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", name=" + name +
+                ", deviceToken=" + deviceToken +
                 '}';
     }
 }

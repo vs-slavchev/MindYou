@@ -7,11 +7,13 @@ public class AppUserDTO {
 
     private String name;
 
-    public AppUserDTO() {
-    }
+    private String deviceToken;
 
-    public AppUserDTO(String name) {
+    public AppUserDTO() {}
+
+    public AppUserDTO(String name, String deviceToken) {
         this.name = name;
+        this.deviceToken = deviceToken;
     }
 
     public String getName() {
@@ -22,10 +24,19 @@ public class AppUserDTO {
         this.name = name;
     }
 
+    public String getDeviceToken() {
+        return deviceToken;
+    }
+
+    public void setDeviceToken(String deviceToken) {
+        this.deviceToken = deviceToken;
+    }
+
     @Override
     public String toString() {
         return "AppUserDTO{" +
-                ", name=" + name +
+                "name=" + name +
+                ", device_token=" + deviceToken +
                 '}';
     }
 }

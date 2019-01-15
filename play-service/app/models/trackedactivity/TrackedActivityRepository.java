@@ -17,4 +17,6 @@ public interface TrackedActivityRepository {
     CompletionStage<TrackedActivity> stopTracking(String userId);
 
     CompletionStage<Stream<TrackedActivity>> list();
+
+    CompletionStage<TrackedActivity> getCurrentActivity(String userId);
 }

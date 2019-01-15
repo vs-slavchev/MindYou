@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 import * as firebase from 'firebase';
-import { tokenKey } from '@angular/core/src/view';
-import { getToken } from '@angular/router/src/utils/preactivation';
 
 @Component({
   selector: 'app-root',
@@ -37,7 +35,11 @@ export class AppComponent {
         }
       });
 
-          }
+ }
+
+ LogOut(){
+  firebase.auth().signOut();
+ }
 
 
 }

@@ -48,10 +48,7 @@ export class UserProfileComponent implements OnInit {
       
   }
   
-  LogOut(){
-    firebase.auth().signOut();
-    this._router.navigate(['/']);
-  }
+ 
   ngOnInit() {
   }
 

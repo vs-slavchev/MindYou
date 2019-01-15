@@ -4,6 +4,10 @@ import pandas
 import logging
 import os
 import datetime
+import time
+import requests
+import json
+from threading import Thread
 
 app = Flask(__name__)
 
@@ -13,6 +17,9 @@ formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 hdlr.setFormatter(formatter)
 logger.addHandler(hdlr)
 logger.setLevel(logging.INFO)
+
+FIREBASE_PUSH_URL = "https://fcm.googleapis.com/fcm/send"
+FIREBASE_PUSH_KEY = "key=AAAA7_KxZwU:APA91bGOysZbGFO-grloUHj50HfIgYJfeleOYygSBxZRdV4Fmnd60Gvj5MQlCA_zh2PcuQRhvsMnUS0BlU5LrZKO_xGIJMcIapv6WDbeJ6UdTg2GXs5JgSbc4n46ypvHwjahpyIWyWGc"
 
 # database connection
 connection = psycopg2.connect(
@@ -96,19 +103,40 @@ def percentile_rank(user_id, activity_id, number_units, unit):
 # determine most popular activities in last day, week, month or quarter
 @app.route("/top-activities/<number_unit>/<unit>")
 def get_top_activities(number_unit, unit):
-    if unit == 'day':
-        top_activities = pandas.merge(activities, tracked_activities, left_on='activity_blueprint_id', right_on='activity_blueprint_id', how='inner')[tracked_activities.time_start > (datetime.datetime.now() - datetime.timedelta(days=int(number_unit)))].groupby(['name'])['duration_minutes'].sum().reset_index()[['name', 'duration_minutes']].sort_values('duration_minutes', ascending = False).head(10)
-    elif unit == 'week':
-        top_activities = pandas.merge(activities, tracked_activities, left_on='activity_blueprint_id', right_on='activity_blueprint_id', how='inner')[tracked_activities.time_start > (datetime.datetime.now() - datetime.timedelta(weeks=int(number_unit)))].groupby(['name'])['duration_minutes'].sum().reset_index()[['name', 'duration_minutes']].sort_values('duration_minutes', ascending = False).head(10)
+    top_activities = pandas.merge(activities, tracked_activities, left_on='activity_blueprint_id', right_on='activity_blueprint_id', how='inner')
+    if unit == 'week':
+        top_activities = top_activities[top_activities.time_start > (datetime.datetime.now() - datetime.timedelta(days=7*int(number_unit)))]
+        top_activities = top_activities.groupby(['name'])['duration_minutes'].sum().reset_index()
+        top_activities = top_activities[['name', 'duration_minutes']].sort_values('duration_minutes', ascending=False).head(10)
     elif unit == 'month':
-        top_activities = pandas.merge(activities, tracked_activities, left_on='activity_blueprint_id', right_on='activity_blueprint_id', how='inner')[tracked_activities.time_start > (datetime.datetime.now() - datetime.timedelta(days=30*int(number_unit)))].groupby(['name'])['duration_minutes'].sum().reset_index()[['name', 'duration_minutes']].sort_values('duration_minutes', ascending = False).head(10)
+        top_activities = top_activities[top_activities.time_start > (datetime.datetime.now() - datetime.timedelta(days=30*int(number_unit)))]
+        top_activities = top_activities.groupby(['name'])['duration_minutes'].sum().reset_index()
+        top_activities = top_activities[['name', 'duration_minutes']].sort_values('duration_minutes', ascending=False).head(10)
+    elif unit == 'quarter':
+        top_activities = top_activities[top_activities.time_start > (datetime.datetime.now() - datetime.timedelta(days=90*int(number_unit)))]
+        top_activities = top_activities.groupby(['name'])['duration_minutes'].sum().reset_index()
+        top_activities = top_activities[['name', 'duration_minutes']].sort_values('duration_minutes', ascending=False).head(10)
     elif unit == 'year':
-        top_activities = pandas.merge(activities, tracked_activities, left_on='activity_blueprint_id', right_on='activity_blueprint_id', how='inner')[tracked_activities.time_start > (datetime.datetime.now() - datetime.timedelta(days=365*int(number_unit)))].groupby(['name'])['duration_minutes'].sum().reset_index()[['name', 'duration_minutes']].sort_values('duration_minutes', ascending = False).head(10)
+        top_activities = top_activities[top_activities.time_start > (datetime.datetime.now() - datetime.timedelta(days=365*int(number_unit)))]
+        top_activities = top_activities.groupby(['name'])['duration_minutes'].sum().reset_index()
+        top_activities = top_activities[['name', 'duration_minutes']].sort_values('duration_minutes', ascending=False).head(10)
     results = top_activities.to_json(orient='values')
     return results
 
 
-#single random suggestion
+# time spent on an activity in 4 different weeks (last 4 weeks)
+def four_weeks_activity(activity_id):
+    days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    four_weeks = pandas.merge(activities, tracked_activities, left_on='activity_blueprint_id', right_on='activity_blueprint_id', how='inner')
+    four_weeks = four_weeks[(four_weeks['activity_blueprint_id'] == activity_id) & (four_weeks['time_start'] > (datetime.datetime.now() - datetime.timedelta(weeks=4)))]
+    four_weeks = four_weeks.groupby(four_weeks['time_start'].dt.date)['duration_minutes'].sum().reindex(days).reset_index()
+    four_weeks = four_weeks[['time_start', 'duration_minutes']]
+    results = four_weeks.to_json(orient='values')
+    print(results)
+    return results
+
+
+# single random suggestion
 @app.route("/suggestion/<user_id>")
 def suggest(user_id):
     tracked_activities_with_user = tracked_activities[(tracked_activities.user_id == user_id)][['activity_blueprint_id']].drop_duplicates()
@@ -124,7 +152,52 @@ def query(query_sql, params_tuple):
         result = cursor.fetchall()
         return result
     except (Exception, psycopg2.Error) as error:
-        print ("Error while connecting to PostgreSQL", error)
+        print("Error while connecting to PostgreSQL", error)
     finally:
-        if (connection):
+        if connection:
             cursor.close()
+
+
+def send_suggestion():
+    interval = 15
+    active = True
+    settings_id = None
+    device_tokens = None
+    while True:
+        query_str = "select * from suggestion_settings limit 1"
+        query(query_str, (settings_id, interval, active))
+
+        if not active:
+            time.sleep(interval*60)
+            continue
+        query_device_tokens = "select(device_token) from app_user where device_token NOTNULL and " \
+                              "device_token not like ''"
+        res = query(query_device_tokens, device_tokens)
+        headers = {
+            "Authorization": FIREBASE_PUSH_KEY,
+            "Content-Type": "application/json"
+        }
+        for token_tuple in res:
+            data = {
+                "notification": {
+                    "title": "Time to refresh",
+                    "text": "Check out new activity suggestion delivered specially for you!",
+                    "badge": 1,
+                    "sound": "default"
+                },
+                "data": {},
+                "priority": "High",
+                "to": token_tuple[0]
+            }
+            data = json.dumps(data)
+            print(data)
+            r = requests.post(FIREBASE_PUSH_URL, data=data, headers=headers)
+            print(r)
+            print(r.content)
+
+        time.sleep(interval*60)
+
+
+suggestion_thread = Thread(target=send_suggestion, args=())
+suggestion_thread.start()
+# send_suggestion()

@@ -8,15 +8,31 @@
             <li class="nav-item active">
                 <a class="nav-link" routerLink="/home" routerLinkActive="active">Home</a>
             </li>
+
             <li class="nav-item">
                 <a class="nav-link"  routerLink="/statistics" routerLinkActive="active">Statistics</a>
             </li>
+
             <li class="nav-item">
                 <a class="nav-link"  routerLink="/profile" routerLinkActive="active">Profile</a>
             </li>
+
+            <!-- <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle"  id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Profile
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" (click)="LogOut()" routerLink="/home">Log Out</a>
+                  </div>
+            </li> -->
+
             <li class="nav-item">
                 <a class="nav-link"  routerLink="/contact" routerLinkActive="active">Contact</a>
             </li>
+            
+            <li class="nav-item">
+                    <a class="form-control mr-sm-2" (click)="LogOut()" routerLink="/home" routerLinkActive="active">Log Out</a>
+                </li>
         </ul>
     </nav>
     </div>
@@ -39,6 +55,4 @@
     </ul>
 </nav>
 </ng-template>
-
-
 <router-outlet></router-outlet>

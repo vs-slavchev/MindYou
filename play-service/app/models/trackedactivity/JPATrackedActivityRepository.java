@@ -86,6 +86,21 @@ public class JPATrackedActivityRepository implements TrackedActivityRepository {
         return supplyAsync(() -> wrap(em -> list(em)), executionContext);
     }
 
+    @Override
+    public CompletionStage<TrackedActivity> getCurrentActivity(String userId) {
+        return supplyAsync(() -> wrap(em -> {
+
+            String sqlString = "select *" +
+                    " from tracked_activity" +
+                    " where user_id = '" + userId + "'" +
+                    " and duration_minutes is null";
+            Query query = em.createNativeQuery(sqlString, TrackedActivity.class);
+            Object singleResult = query.getSingleResult();
+            TrackedActivity currentActivity = (TrackedActivity) singleResult;
+            return currentActivity;
+        }), executionContext);
+    }
+
     private <T> T wrap(Function<EntityManager, T> function) {
         return jpaApi.withTransaction(function);
     }

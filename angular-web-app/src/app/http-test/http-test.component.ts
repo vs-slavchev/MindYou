@@ -17,6 +17,7 @@ export class HttpTestComponent implements OnInit {
 
   ngOnInit() {
   this.actService.getActivities().subscribe(data =>this.activities = data);
+  console.log("data: "+ this.activities);
   
   this.statsService.getStats().subscribe(datau=>this.stats=datau);
   }

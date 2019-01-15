@@ -12,8 +12,8 @@ export class HttpTestService{
 
 
     constructor(private http:HttpClient, private http2:HttpClient) { }
-    private curl:string ='http://62.108.10.166:9000/activities/top/10';
-    private url:string ='http://62.108.10.166:9000/statistics/hours-per-activity/6/recent';
+    private curl:string ='http://145.116.46.119:9000/activities/top/10';
+    private url:string ='http://145.116.46.119:9000/statistics/hours-per-activity/week';
 
     getActivities(): Observable<IActivity[]>{
         return this.http.get<IActivity[]>(this.curl, httpOptions);

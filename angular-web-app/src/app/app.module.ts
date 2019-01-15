@@ -9,7 +9,9 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpTestComponent } from './http-test/http-test.component';
 import { LoginComponent } from './login/login.component';
-
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import {TokenInterceptor} from './login/TokenInterceptor';
+import { NewstatsComponent } from './newstats/newstats.component';
 
 @NgModule({
   declarations: [
@@ -20,13 +22,19 @@ import { LoginComponent } from './login/login.component';
     UserProfileComponent,
     HttpTestComponent,
     LoginComponent,
+    NewstatsComponent,
+ 
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
       HttpClientModule
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptor,
+      multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

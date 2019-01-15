@@ -42,6 +42,7 @@ public class StatisticsController extends Controller implements WSBodyReadables,
         timePeriods.put("month", "1/month");
         timePeriods.put("quarter", "3/month");
         timePeriods.put("year", "1/year");
+        timePeriods.put("", "");
     }
 
     public CompletionStage<Result> hoursPerActivity(String time) {
@@ -83,6 +84,27 @@ public class StatisticsController extends Controller implements WSBodyReadables,
         return makeStatisticsRequest(path, time);
     }
 
+    public CompletionStage<Result> topActivities(String time) {
+
+        String path = String.format("top-activities/");
+
+        return makeStatisticsRequest(path, time);
+    }
+
+    public CompletionStage<Result> suggestion(){
+
+        String verifiedUserId;
+        try {
+            verifiedUserId = FirebaseInit.getVerifiedUserIdFromRequestHeader(request());
+        } catch (AuthorizationException ae) {
+            return supplyAsync(() -> badRequest(ae.getMessage()));
+        }
+
+        String path = String.format("suggestion/%s", verifiedUserId);
+
+        return makeStatisticsRequest(path, "");
+    }
+
     private CompletionStage<Result> makeStatisticsRequest(String path, String time) {
 
         String pathTimePeriod = timePeriods.get(time);
@@ -97,5 +119,4 @@ public class StatisticsController extends Controller implements WSBodyReadables,
                         httpExecutionContext.current()
                 );
     }
-
 }
