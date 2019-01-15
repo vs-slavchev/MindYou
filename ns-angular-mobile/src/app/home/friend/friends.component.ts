@@ -9,7 +9,8 @@ import {Friendship} from "~/app/home/friend/friendship";
 import {forEach} from "@angular/router/src/utils/collection";
 import {AppSettings} from "~/app/app-settings";
 import {Item} from "~/app/home/item/item";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, NavigationExtras, Router} from "@angular/router";
+import {Suggestion} from "~/app/home/friend/Suggestion";
 
 
 @Component({
@@ -23,6 +24,7 @@ export class FriendsComponent implements OnInit {
     friends: Friend[];
     pending: Friendship[];
     received: Friendship[];
+    suggestion: Suggestion;
     public tabSelectedIndex: number;
     public tabSelectedIndexResult: string;
     public searchPhrase: string;
@@ -31,7 +33,7 @@ export class FriendsComponent implements OnInit {
 
     // This pattern makes use of Angular’s dependency injection implementation to inject an instance of the FriendService service into this class.
     // Angular knows about this service because it is included in your app’s main NgModule, defined in app.module.ts.
-    constructor(private friendService: FriendService, private route: ActivatedRoute) {
+    constructor(private friendService: FriendService, private route: ActivatedRoute, private router: Router) {
         this.tabSelectedIndex = 0;
         // this.tabSelectedIndexResult = "Profile Tab (tabSelectedIndex = 0 )";
     }
@@ -46,6 +48,30 @@ export class FriendsComponent implements OnInit {
             }
         });
         this.refreshUsers();
+        this.getSuggestion();
+    }
+
+    getSuggestion(): void {
+        this.friendService.getSuggestion().subscribe((suggestion) => {
+            // console.log("suggestion response");
+            // console.log(suggestion);
+            this.suggestion = new Suggestion(suggestion[0][0], suggestion[0][1]);
+        });
+    }
+
+    acceptSuggestion(): void {
+        console.log(`Accepted activity suggestion: ${this.suggestion.activityId} ${this.suggestion.name}`);
+        //TODO: navigate
+        // this.ngZone.run(() => this._router.navigate(['/home/friends'], navigationExtras));
+        let navigationExtras: NavigationExtras = {
+            queryParams: { page: this.suggestion.activityId }
+        };
+        this.router.navigate(['/home/items'], navigationExtras);
+    }
+
+    denySuggestion(): void {
+        console.log(`Deny activity suggestion: ${this.suggestion.activityId} ${this.suggestion.name}`);
+        this.suggestion = null;
     }
 
     public onSubmit(args) {

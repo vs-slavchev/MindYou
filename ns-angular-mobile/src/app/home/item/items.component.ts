@@ -2,7 +2,7 @@ import { Component, OnInit, Input,ViewChild, ElementRef } from "@angular/core";
 
 import { Item } from "./item";
 import { ItemService } from "./item.service";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 import {AppSettings} from "~/app/app-settings";
 import { Page, Color } from "tns-core-modules/ui/page/page";
 import * as dialogs from "tns-core-modules/ui/dialogs";
@@ -10,7 +10,6 @@ import * as utils from "utils/utils";
 import { ListViewEventData, RadListView } from "nativescript-ui-listview";
 const firebase = require("nativescript-plugin-firebase");
 
-import { ActivatedRoute } from "@angular/router";
 
 @Component({
     selector: "ns-items",
@@ -19,7 +18,7 @@ import { ActivatedRoute } from "@angular/router";
     styleUrls: ["./item.css"]
 })
 export class ItemsComponent implements OnInit {
-    items: Item[];
+    public items: Item[];
     reponse: any;
     public bottomBarShow = true;
     customActivity="";
@@ -42,7 +41,21 @@ export class ItemsComponent implements OnInit {
        
         //setting the visibility of the timer to false
         this.isVisible = false;       
-    }  
+    }
+
+    helloWorld(): String {
+        return "Davaaaj!";
+    }
+
+    initRunningActivity(): void {
+        this.itemService.getActivity().subscribe((activity: any) => {
+            console.log(activity);
+            if (!activity) { return; }
+            this.seconds = new Date().getTime() - activity.time_start;
+            this.timerEnabled = true;
+            this.isVisible = true;
+        })
+    }
 
     ngOnInit(): void {
         this.getActivities();
@@ -68,7 +81,22 @@ export class ItemsComponent implements OnInit {
                 this.minutes = Math.floor(this.seconds / 60);
                 this.hours = Math.floor(this.seconds / 3600);
             }
-        }, 1000);                    
+        }, 1000);
+
+        this.route.queryParams.subscribe(params => {
+            // Defaults to 0 if no query param provided.
+            if ("page" in params) {
+                console.log("Activate activity on init from param");
+                console.log(params);
+                this.activateActivity(params["page"]);
+            }
+        });
+    }
+
+    activateActivity(id: number) {
+        // Activating activity
+        console.log(`Activating activity ${id}`);
+        // TODO: activate activity
     }
 
     getItem(): void {
@@ -81,7 +109,10 @@ export class ItemsComponent implements OnInit {
     }
 
     getActivities(): void {
-        this.itemService.getActivities().subscribe(activities => this.items = activities);
+        this.itemService.getActivities().subscribe(activities => {
+            this.items = activities;
+            this.initRunningActivity();
+        });
         // this.itemService.createAccount().subscribe(response => this.reponse = response)
     }
 

@@ -22,20 +22,12 @@ export class ItemService {
     private activitiesUrlStart = `${this.activitiesUrl}/start`;  // URL to web api
     private activitiesUrlStartCustom = `${this.activitiesUrl}/create`;  // URL to web api
 
-
-
     constructor(private http: HttpClient) {
         console.log('init activities service');
     }
 
-    addAuthToken() {
-        let httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json',
-                'Authorization': AppSettings.TOKEN})};
-        return httpOptions
-    }
-
     getActivities(): Observable<Item[]> {
-        console.log(AppSettings.API_URL, this.addAuthToken());
+        console.log(AppSettings.API_URL, Headers.getAuthTokenHeaders());
         return this.http.get<Item[]>(this.activitiesUrlTop, )
             .pipe(
                 tap(activities => this.log('fetched activities')),
@@ -54,10 +46,12 @@ export class ItemService {
         );
     }
 
-    // createAccount(): Observable<any> {
-    //     return this.http.post(`${AppSettings.API_URL}/users/create`, {"id": AppSettings.TOKEN},
-    //         this.addAuthToken());
-    // }
+    getActivity(): Observable<any>{
+        return this.http.get(`${this.activitiesUrl}/activated`, Headers.getAuthTokenHeaders()).pipe(
+            tap((activity: any) => {this.log(activity)}),
+            catchError(this.handleError<any>('getActivity'))
+        );
+    }
 
     getItemNo404<Data>(activityBlueprintId: number): Observable<Item> {
         const url = `${this.activitiesUrl}/${activityBlueprintId}`;

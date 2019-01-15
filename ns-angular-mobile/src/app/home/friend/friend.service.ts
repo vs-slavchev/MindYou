@@ -123,4 +123,13 @@ export class FriendService {
             return of(result as T);
         };
     }
+
+    getSuggestion(): Observable<any> {
+
+        return this.http.get<any>(`${AppSettings.API_URL}/statistics/suggestion`, Headers.getAuthTokenHeaders())
+            .pipe(
+                tap(suggestions => this.log('fetched suggestions')),
+                catchError(this.handleError('getSuggestions', {}))
+            );
+    }
 }
