@@ -102,7 +102,7 @@ GET           /statistics/top-activities/:time                             contr
 
 # retrieve the records of an activity in the last four weeks
 # ex. /statistics/four-weeks-activity/3
-GET           /statistics/four-weeks-activity/:activityId/:time            controllers.StatisticsController.fourWeeksActivity(activityId)
+GET           /statistics/four-weeks-activity/:activityId                  controllers.StatisticsController.fourWeeksActivity(activityId)
 
 
 # retrieve the top six activities with their record of a particular user
