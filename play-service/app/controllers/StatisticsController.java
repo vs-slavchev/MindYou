@@ -86,9 +86,37 @@ public class StatisticsController extends Controller implements WSBodyReadables,
 
     public CompletionStage<Result> topActivities(String time) {
 
-        String path = String.format("top-activities/");
+        String path = "top-activities/";
 
         return makeStatisticsRequest(path, time);
+    }
+
+    public CompletionStage<Result> fourWeeksActivity(String activityId){
+
+        String verifiedUserId;
+        try {
+            verifiedUserId = FirebaseInit.getVerifiedUserIdFromRequestHeader(request());
+        } catch (AuthorizationException ae) {
+            return supplyAsync(() -> badRequest(ae.getMessage()));
+        }
+
+        String path = String.format("four-weeks-activity/%s/%s/", verifiedUserId, activityId);
+
+        return makeStatisticsRequest(path, "");
+    }
+
+    public CompletionStage<Result> topSixActivities(){
+
+        String verifiedUserId;
+        try {
+            verifiedUserId = FirebaseInit.getVerifiedUserIdFromRequestHeader(request());
+        } catch (AuthorizationException ae) {
+            return supplyAsync(() -> badRequest(ae.getMessage()));
+        }
+
+        String path = String.format("top-six-activities/%s", verifiedUserId);
+
+        return makeStatisticsRequest(path, "");
     }
 
     public CompletionStage<Result> suggestion(){

@@ -125,15 +125,45 @@ def get_top_activities(number_unit, unit):
 
 
 # time spent on an activity in 4 different weeks (last 4 weeks)
-def four_weeks_activity(activity_id):
+@app.route("four-weeks-activity/<user_id>/<activity_id>")
+def four_weeks_activity(activity_id, user_id):
     days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    four_weeks = pandas.merge(activities, tracked_activities, left_on='activity_blueprint_id', right_on='activity_blueprint_id', how='inner')
-    four_weeks = four_weeks[(four_weeks['activity_blueprint_id'] == activity_id) & (four_weeks['time_start'] > (datetime.datetime.now() - datetime.timedelta(weeks=4)))]
-    four_weeks = four_weeks.groupby(four_weeks['time_start'].dt.date)['duration_minutes'].sum().reindex(days).reset_index()
-    four_weeks = four_weeks[['time_start', 'duration_minutes']]
-    results = four_weeks.to_json(orient='values')
-    print(results)
+
+    merger = pandas.merge(activities, tracked_activities, left_on='activity_blueprint_id', right_on='activity_blueprint_id', how='inner')
+    merger = merger[(merger['user_id'] == user_id) & (merger['activity_blueprint_id'] == activity_id)]
+
+    last_week_1 = merger[(merger['time_start'] > (datetime.datetime.now() - datetime.timedelta(weeks=1)))]
+    last_week_1 = last_week_1.groupby(merger['time_start'].dt.weekday_name)['duration_minutes'].sum().reindex(days).reset_index()
+    last_week_1 = last_week_1[['time_start', 'duration_minutes']]
+
+    last_week_2 = merger[(merger['time_start'] > (datetime.datetime.now() - datetime.timedelta(weeks=2))) & (merger['time_start'] < (datetime.datetime.now() - datetime.timedelta(weeks=1)))]
+    last_week_2 = last_week_2.groupby(merger['time_start'].dt.weekday_name)['duration_minutes'].sum().reindex(days).reset_index()
+    last_week_2 = last_week_2[['time_start', 'duration_minutes']]
+
+    last_week_3 = merger[(merger['time_start'] > (datetime.datetime.now() - datetime.timedelta(weeks=3))) & (merger['time_start'] < (datetime.datetime.now() - datetime.timedelta(weeks=2)))]
+    last_week_3 = last_week_3.groupby(merger['time_start'].dt.weekday_name)['duration_minutes'].sum().reindex(days).reset_index()
+    last_week_3 = last_week_3[['time_start', 'duration_minutes']]
+
+    last_week_4 = merger[(merger['time_start'] > (datetime.datetime.now() - datetime.timedelta(weeks=4))) & (merger['time_start'] < (datetime.datetime.now() - datetime.timedelta(weeks=3)))]
+    last_week_4 = last_week_4.groupby(merger['time_start'].dt.weekday_name)['duration_minutes'].sum().reindex(days).reset_index()
+    last_week_4 = last_week_4[['time_start', 'duration_minutes']]
+
+    results = pandas.concat([last_week_1, last_week_2, last_week_3, last_week_4], ignore_index=True)
+    results = results.to_json(orient='values')
     return results
+
+
+# Top 6 activities of a particular user
+@app.route("top-six-activities/<user_id>")
+def top_six_activities(user_id):
+    merger = pandas.merge(activities, tracked_activities, left_on='activity_blueprint_id', right_on='activity_blueprint_id', how='inner')
+    merger = merger[(merger['user_id'] == user_id)]
+
+    weeks_per_activity = merger.groupby(['name'])['time_start'].size().reset_index()
+    time_spent_per_activity = merger.groupby(['name'])['duration_minutes'].sum().reset_index()
+    top_activities = pandas.merge(weeks_per_activity, time_spent_per_activity, left_on='name', right_on='name')
+    top_activities = top_activities[['name', 'time_start', 'duration_minutes']].sort_values('duration_minutes', ascending=False).head(6)
+    return top_activities
 
 
 # single random suggestion
@@ -185,19 +215,15 @@ def send_suggestion():
                     "badge": 1,
                     "sound": "default"
                 },
-                "data": {},
+                "data": {"type": "suggestion"},
                 "priority": "High",
                 "to": token_tuple[0]
             }
             data = json.dumps(data)
-            print(data)
-            r = requests.post(FIREBASE_PUSH_URL, data=data, headers=headers)
-            print(r)
-            print(r.content)
+            requests.post(FIREBASE_PUSH_URL, data=data, headers=headers)
 
         time.sleep(interval*60)
 
 
 suggestion_thread = Thread(target=send_suggestion, args=())
 suggestion_thread.start()
-# send_suggestion()
