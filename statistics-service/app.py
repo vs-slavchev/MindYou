@@ -99,30 +99,30 @@ def percentile_rank(user_id, activity_id, number_units, unit):
     less_user_minutes = user_minutes[user_minutes['sum'] < current_user_value]
     return str(100.0 * less_user_minutes.size / user_minutes.size)
 
+# convert a number of a time unit to a number of days
+def time_unit_word_to_number_days(number_unit, time_unit_word):
+    number_days = int(number_unit)
+    if time_unit_word == 'day':
+        return number_days
+    elif time_unit_word == 'week':
+        return 7*number_days
+    elif time_unit_word == 'month':
+        return 30*number_days
+    elif time_unit_word == 'quarter':
+        return 90*number_days
+    elif time_unit_word == 'year':
+        return 365*number_days
 
 # determine most popular activities in last day, week, month or quarter
 @app.route("/top-activities/<number_unit>/<unit>")
 def get_top_activities(number_unit, unit):
     top_activities = pandas.merge(activities, tracked_activities, left_on='activity_blueprint_id', right_on='activity_blueprint_id', how='inner')
-    if unit == 'week':
-        top_activities = top_activities[top_activities.time_start > (datetime.datetime.now() - datetime.timedelta(days=7*int(number_unit)))]
-        top_activities = top_activities.groupby(['name'])['duration_minutes'].sum().reset_index()
-        top_activities = top_activities[['name', 'duration_minutes']].sort_values('duration_minutes', ascending=False).head(10)
-    elif unit == 'month':
-        top_activities = top_activities[top_activities.time_start > (datetime.datetime.now() - datetime.timedelta(days=30*int(number_unit)))]
-        top_activities = top_activities.groupby(['name'])['duration_minutes'].sum().reset_index()
-        top_activities = top_activities[['name', 'duration_minutes']].sort_values('duration_minutes', ascending=False).head(10)
-    elif unit == 'quarter':
-        top_activities = top_activities[top_activities.time_start > (datetime.datetime.now() - datetime.timedelta(days=90*int(number_unit)))]
-        top_activities = top_activities.groupby(['name'])['duration_minutes'].sum().reset_index()
-        top_activities = top_activities[['name', 'duration_minutes']].sort_values('duration_minutes', ascending=False).head(10)
-    elif unit == 'year':
-        top_activities = top_activities[top_activities.time_start > (datetime.datetime.now() - datetime.timedelta(days=365*int(number_unit)))]
-        top_activities = top_activities.groupby(['name'])['duration_minutes'].sum().reset_index()
-        top_activities = top_activities[['name', 'duration_minutes']].sort_values('duration_minutes', ascending=False).head(10)
+    number_days = time_unit_word_to_number_days(number_unit, unit)
+    top_activities = top_activities[top_activities.time_start > (datetime.datetime.now() - datetime.timedelta(days=number_days))]
+    top_activities = top_activities.groupby(['name'])['duration_minutes'].sum().reset_index()
+    top_activities = top_activities[['name', 'duration_minutes']].sort_values('duration_minutes', ascending=False).head(10)
     results = top_activities.to_json(orient='values')
     return results
-
 
 # time spent on an activity in 4 different weeks (last 4 weeks)
 @app.route("/four-weeks-activity/<user_id>/<activity_id>")

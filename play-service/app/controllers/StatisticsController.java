@@ -38,6 +38,7 @@ public class StatisticsController extends Controller implements WSBodyReadables,
         this.ws = ws;
         this.httpExecutionContext = ec;
 
+        timePeriods.put("day", "1/day");
         timePeriods.put("week", "1/week");
         timePeriods.put("month", "1/month");
         timePeriods.put("quarter", "3/month");
