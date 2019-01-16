@@ -125,7 +125,7 @@ def get_top_activities(number_unit, unit):
 
 
 # time spent on an activity in 4 different weeks (last 4 weeks)
-@app.route("four-weeks-activity/<user_id>/<activity_id>")
+@app.route("/four-weeks-activity/<user_id>/<activity_id>")
 def four_weeks_activity(activity_id, user_id):
     days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
@@ -154,7 +154,7 @@ def four_weeks_activity(activity_id, user_id):
 
 
 # Top 6 activities of a particular user
-@app.route("top-six-activities/<user_id>")
+@app.route("/top-six-activities/<user_id>")
 def top_six_activities(user_id):
     merger = pandas.merge(activities, tracked_activities, left_on='activity_blueprint_id', right_on='activity_blueprint_id', how='inner')
     merger = merger[(merger['user_id'] == user_id)]
