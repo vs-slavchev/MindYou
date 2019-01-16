@@ -14,7 +14,7 @@ device_token varchar(255) NULL
 
 CREATE TABLE suggestion_settings (
 id SERIAL PRIMARY KEY,
-interval number NOT NULL,
+interval integer NOT NULL,
 active boolean NULL
 );
 
