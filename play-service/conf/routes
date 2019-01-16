@@ -75,6 +75,18 @@ GET           /activities/top/:number                                      contr
 # ex: {"name":"debugging"}
 POST          /activities/create                                           controllers.ActivityBlueprintController.createActivityBlueprint
 
+
+# send invitation for activity
+POST          /activities/invitation/create/:activityId/:inviteeId         controllers.ActivityInvitationController.sendInvitation(inviteeId, activityId)
+
+
+# accept invitation for activity
+PUT           /activities/invitation/:invitationId/accept                  controllers.ActivityInvitationController.acceptInvitation(invitationId)
+
+
+# decline invitation for activity
+DELETE        /activities/invitation/:invitationId/decline                 controllers.ActivityInvitationController.declineInvitation(invitationId)
+
 # get the total hours spent on an activity, for all activities done
 # time can be : week, month, quarter, year
 # ex. /statistics/hours-per-activity/month
