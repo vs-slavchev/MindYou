@@ -25,7 +25,7 @@ name varchar(32) NOT NULL UNIQUE
 
 CREATE TABLE activity_invitation (
 invitation_id SERIAL PRIMARY KEY,
-activity_id integer references activity_blueprint(activity_blueprint_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+activity_blueprint_id integer references activity_blueprint(activity_blueprint_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
 inviter_user_id varchar(64) references app_user(user_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
 invitee_user_id varchar(64) references app_user(user_id) ON DELETE NO ACTION ON UPDATE NO ACTION,
 accepted boolean DEFAULT false
