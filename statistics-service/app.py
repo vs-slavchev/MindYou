@@ -18,8 +18,10 @@ hdlr.setFormatter(formatter)
 logger.addHandler(hdlr)
 logger.setLevel(logging.INFO)
 
+
 FIREBASE_PUSH_URL = "https://fcm.googleapis.com/fcm/send"
 FIREBASE_PUSH_KEY = "key=AAAA7_KxZwU:APA91bGOysZbGFO-grloUHj50HfIgYJfeleOYygSBxZRdV4Fmnd60Gvj5MQlCA_zh2PcuQRhvsMnUS0BlU5LrZKO_xGIJMcIapv6WDbeJ6UdTg2GXs5JgSbc4n46ypvHwjahpyIWyWGc"
+
 
 # database connection
 connection = psycopg2.connect(
@@ -28,6 +30,7 @@ connection = psycopg2.connect(
     host=os.environ.get('DATABASE_URL', '127.0.0.1'),
     port="5432",
     database=os.environ.get('POSTGRES_DB', "mindyou"), )
+
 
 # intializing dataframes using pandas
 activities = pandas.read_sql_query('select * from activity_blueprint', connection)
@@ -99,6 +102,7 @@ def percentile_rank(user_id, activity_id, number_units, unit):
     less_user_minutes = user_minutes[user_minutes['sum'] < current_user_value]
     return str(100.0 * less_user_minutes.size / user_minutes.size)
 
+
 # convert a number of a time unit to a number of days
 def time_unit_word_to_number_days(number_unit, time_unit_word):
     number_days = int(number_unit)
@@ -113,6 +117,7 @@ def time_unit_word_to_number_days(number_unit, time_unit_word):
     elif time_unit_word == 'year':
         return 365*number_days
 
+
 # determine most popular activities in last day, week, month or quarter
 @app.route("/top-activities/<number_unit>/<unit>")
 def get_top_activities(number_unit, unit):
@@ -123,6 +128,7 @@ def get_top_activities(number_unit, unit):
     top_activities = top_activities[['name', 'duration_minutes']].sort_values('duration_minutes', ascending=False).head(10)
     results = top_activities.to_json(orient='values')
     return results
+
 
 # time spent on an activity in 4 different weeks (last 4 weeks)
 @app.route("/four-weeks-activity/<user_id>/<activity_id>")
@@ -163,7 +169,8 @@ def top_six_activities(user_id):
     time_spent_per_activity = merger.groupby(['name'])['duration_minutes'].sum().reset_index()
     top_activities = pandas.merge(weeks_per_activity, time_spent_per_activity, left_on='name', right_on='name')
     top_activities = top_activities[['name', 'time_start', 'duration_minutes']].sort_values('duration_minutes', ascending=False).head(6)
-    return top_activities
+    results = top_activities.to_json(orient='values')
+    return results
 
 
 # single random suggestion
