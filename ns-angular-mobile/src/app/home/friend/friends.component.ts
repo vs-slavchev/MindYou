@@ -9,14 +9,8 @@ import {Friendship} from "~/app/home/friend/friendship";
 import {forEach} from "@angular/router/src/utils/collection";
 import {AppSettings} from "~/app/app-settings";
 import {Item} from "~/app/home/item/item";
-import {ActivatedRoute} from "@angular/router";
-import { Button } from "tns-core-modules/ui/button";
-//import { EventData } from "tns-core-modules/ui/page/page";
-import { EventData } from "tns-core-modules/data/observable/observable";
-import * as dialogs from "tns-core-modules/ui/dialogs";
-import { ItemService } from "../item/item.service";
-
-
+import {ActivatedRoute, NavigationExtras, Router} from "@angular/router";
+import {Suggestion} from "~/app/home/friend/Suggestion";
 
 
 @Component({
@@ -30,21 +24,17 @@ export class FriendsComponent implements OnInit {
     friends: Friend[];
     pending: Friendship[];
     received: Friendship[];
+    suggestion: Suggestion;
     public tabSelectedIndex: number;
     public tabSelectedIndexResult: string;
     public searchPhrase: string;
     private sub: any;
-    
-    public items: Item[];
-
-    buttonClicked: boolean = false;
 
 
     // This pattern makes use of Angular’s dependency injection implementation to inject an instance of the FriendService service into this class.
     // Angular knows about this service because it is included in your app’s main NgModule, defined in app.module.ts.
-    constructor(private friendService: FriendService, private itemService: ItemService, private route: ActivatedRoute) {
+    constructor(private friendService: FriendService, private route: ActivatedRoute, private router: Router) {
         this.tabSelectedIndex = 0;
-        this.getActivities();
         // this.tabSelectedIndexResult = "Profile Tab (tabSelectedIndex = 0 )";
     }
 
@@ -58,6 +48,30 @@ export class FriendsComponent implements OnInit {
             }
         });
         this.refreshUsers();
+        this.getSuggestion();
+    }
+
+    getSuggestion(): void {
+        this.friendService.getSuggestion().subscribe((suggestion) => {
+            // console.log("suggestion response");
+            // console.log(suggestion);
+            this.suggestion = new Suggestion(suggestion[0][0], suggestion[0][1]);
+        });
+    }
+
+    acceptSuggestion(): void {
+        console.log(`Accepted activity suggestion: ${this.suggestion.activityId} ${this.suggestion.name}`);
+        //TODO: navigate
+        // this.ngZone.run(() => this._router.navigate(['/home/friends'], navigationExtras));
+        let navigationExtras: NavigationExtras = {
+            queryParams: { page: this.suggestion.activityId }
+        };
+        this.router.navigate(['/home/items'], navigationExtras);
+    }
+
+    denySuggestion(): void {
+        console.log(`Deny activity suggestion: ${this.suggestion.activityId} ${this.suggestion.name}`);
+        this.suggestion = null;
     }
 
     public onSubmit(args) {
@@ -194,73 +208,6 @@ export class FriendsComponent implements OnInit {
             }
         });
 
-    }
-
-    /* INVITATION FOR THE ACTIVITY */
-
-    //invit a friend for an activity
-   // /activities/invitation/create/:activityId/:inviteeId
-    sendInvitation(user: Friend,args: EventData): void {
-        user.invitationShared=true;
-        console.log("change button color to red");
-
-        const b = args.object as Button;     
-        console.log("Friend button: " + args.object);
-        b.set('text', 'Pending');
-          
-        dialogs.action({
-            message: "Choose the activity to share",
-            cancelButtonText: "Invite",
-            actions: this.items.map(function(el){return el.name})
-        }).then(result => {
-            console.log("Dialog result: " + result);
-            
-            for (var i in this.items)
-            {
-                if (this.items[i].name == result)
-                {
-                 console.log("Item name: " + this.items[i].name);
-                  this.friendService.sendInvitation(this.items[i].activityBlueprintId,user.id).subscribe();
-                }
-            }
-
-
-            // if(result == "Option1"){
-            //     //Do action1
-            //      console.log("Option1");
-            // }else if(result == "Option2"){
-            //     //Do action2
-            //     console.log("Option2");
-
-            // }
-        });
-
-       // this.friendService.sendInvitation(activityID.activityBlueprintId.toString(),user.id).subscribe();
-      
-    }
-
-   
-    //accept the invitation
-    ///activities/invitation/:invitationId/accept
-    acceptInvitation(): void {
-        // console.log(`accepting friendship ${friendshipId}`);
-        // this.friendService.acceptFriendResuest(friendshipId).subscribe();
-        // this.refreshUsers();
-    }
-    //decline the invitation   
-    declineInivitation(): void {
-        // console.log(`declining friendship ${friendshipId}`);
-        // this.friendService.declineFriendResuest(friendshipId).subscribe(
-        //     () => {
-        //         this.refreshUsers();
-        //     }
-        // );
-    }
-
-    getActivities(): void {
-        this.itemService.getActivities().subscribe(activities => {
-            this.items = activities;
-        });
     }
 
     ngOnDestroy() {

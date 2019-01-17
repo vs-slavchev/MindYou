@@ -5,13 +5,10 @@
         <StackLayout *tabItem="{title: 'Friends'}">
             <StackLayout class="page">
                 <ListView [items]="friends" class="list-group">
-                    <ng-template let-item="item" horizontalAlignment="stretch">
-                        <StackLayout orientation="horizontal" horizontalAlignment="stretch" class="list-group-item">
+                    <ng-template let-item="item">
                         <Label [nsRouterLink]="['/home/friend', item.id]" [text]="item.name" class="list-group-item"></Label>
-                        <Button id = "InviteButton" text="Invite for activity"  class="list-btn friend" [ngClass]="{'shared': item.invitationShared}"  horizontalAlignment="right" [class.button-clicked]="buttonClicked" (tap)="sendInvitation(item,$event)"></Button>
                         <!--<Label text="1" class="notificationAndroid"></Label>-->
                         <!--<Label text="" style="font-size:25;margin-top:-15" class="font-awesome"/</ng-template>-->
-                       </StackLayout>
                     </ng-template>
                 </ListView>
             </StackLayout>
