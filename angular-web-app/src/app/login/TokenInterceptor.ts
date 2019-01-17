@@ -17,7 +17,7 @@ export class TokenInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         
         firebase.auth().currentUser.getIdToken().then((data)=>{
-             console.log("the token interceptor: "+ data);
+            // console.log("the token interceptor: "+ data);
              this.tokenID=data;
           });
     request = request.clone({

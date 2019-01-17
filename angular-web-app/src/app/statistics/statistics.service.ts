@@ -14,10 +14,10 @@ export class StatisticsService {
   fURL:string;
   fullURL:string
   UrlM:string;
-  url:string ='http://145.93.90.196:9000/statistics/hours-per-activity/';
+  url:string ='http://145.93.88.222:9000/statistics/hours-per-activity/';
 
   constructor(private http:HttpClient) { 
-    this.fullURL=this.url.concat('week');
+    this.fullURL=this.url.concat('day');
     firebase.auth().currentUser.getIdToken().then((data)=>{
       //console.log("token id: "+ data);
       this.tokenID=data;

@@ -8,6 +8,9 @@ import { Page, Color } from "tns-core-modules/ui/page/page";
 import * as dialogs from "tns-core-modules/ui/dialogs";
 import * as utils from "utils/utils";
 import { ListViewEventData, RadListView } from "nativescript-ui-listview";
+import {ObservableArray} from "tns-core-modules/data/observable-array";
+import {DataItem} from "~/app/home/item/DataItem";
+import {topmost} from "tns-core-modules/ui/frame";
 const firebase = require("nativescript-plugin-firebase");
 
 
@@ -18,11 +21,16 @@ const firebase = require("nativescript-plugin-firebase");
     styleUrls: ["./item.css"]
 })
 export class ItemsComponent implements OnInit {
+
+    private radListView: RadListView;
+    private suggestedActivityId = -1;
+
     public items: Item[];
     reponse: any;
     public bottomBarShow = true;
     customActivity="";
     isVisible: any;
+    private _dataItems: ObservableArray<DataItem>;
 
     @Input() item: Item;
     public timerEnabled: boolean;
@@ -44,10 +52,11 @@ export class ItemsComponent implements OnInit {
     }
 
     helloWorld(): String {
-        return "Davaaaj!";
+        return "Hi world!";
     }
 
     initRunningActivity(): void {
+        // selectItemAt
         this.itemService.getActivity().subscribe((activity: any) => {
             console.log(activity);
             if (!activity) { return; }
@@ -58,6 +67,16 @@ export class ItemsComponent implements OnInit {
     }
 
     ngOnInit(): void {
+        this._dataItems = new ObservableArray<DataItem>();
+        this.route.queryParams.subscribe(params => {
+            // Defaults to 0 if no query param provided.
+            if ("page" in params) {
+                // console.log("Activate activity on init from param");
+                // console.log(params);
+                this.suggestedActivityId = params["page"];
+            }
+        });
+
         this.getActivities();
         firebase.getAuthToken({
             // default false, not recommended to set to true by Firebase but exposed for {N} devs nonetheless :)
@@ -83,14 +102,6 @@ export class ItemsComponent implements OnInit {
             }
         }, 1000);
 
-        this.route.queryParams.subscribe(params => {
-            // Defaults to 0 if no query param provided.
-            if ("page" in params) {
-                console.log("Activate activity on init from param");
-                console.log(params);
-                this.activateActivity(params["page"]);
-            }
-        });
     }
 
     activateActivity(id: number) {
@@ -111,10 +122,25 @@ export class ItemsComponent implements OnInit {
     getActivities(): void {
         this.itemService.getActivities().subscribe(activities => {
             this.items = activities;
+            for (let i = 0; i < this.items.length; i++) {
+                let item = this.items[i];
+                let dataItem = new DataItem(i, item.activityBlueprintId, 0, item.name, null, null, item.name, null, false, null, null, null, null, false);
+                if (item.activityBlueprintId == this.suggestedActivityId) {
+                    dataItem.suggested = true;
+                }
+                this._dataItems.push(dataItem);
+            }
+
             this.initRunningActivity();
         });
         // this.itemService.createAccount().subscribe(response => this.reponse = response)
     }
+
+    // get myFilteringFunc(): (item: any) => boolean {
+    //     return (item: DataItem) => {
+    //         return item.itemName.includes("Special Item");
+    //     };
+    // }
 
     onTapLogout(): void {
         firebase.logout();
@@ -210,5 +236,3 @@ export class ItemsComponent implements OnInit {
         });
     } 
 }
-
-

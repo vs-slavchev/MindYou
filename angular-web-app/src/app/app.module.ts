@@ -12,7 +12,8 @@ import { LoginComponent } from './login/login.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import {TokenInterceptor} from './login/TokenInterceptor';
 import { NewstatsComponent } from './newstats/newstats.component';
-
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { MonthlyStatsComponent } from './monthly-stats/monthly-stats.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,12 +24,14 @@ import { NewstatsComponent } from './newstats/newstats.component';
     HttpTestComponent,
     LoginComponent,
     NewstatsComponent,
+    MonthlyStatsComponent,
  
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-      HttpClientModule
+      HttpClientModule,
+      NgbModule.forRoot()
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

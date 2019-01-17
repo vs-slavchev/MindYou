@@ -155,76 +155,9 @@ export class NewstatsComponent implements OnInit {
     
 
 
-    new Chart(document.getElementById("bubble-chart"), {
-      type: 'bubble',
-      data:{
-        datasets: [{
-        label: ['Deer Population'],
-        data: [{
-          x: 100,
-          y: 0,
-          r: 10
-        }, {
-          x: 60,
-          y: 30,
-          r: 20
-        }, {
-          x: 40,
-          y: 60,
-          r: 25
-        }, {
-          x: 80,
-          y: 80,
-          r: 50
-        }, {
-          x: 20,
-          y: 30,
-          r: 25
-        }, {
-          x: 0,
-          y: 100,
-          r: 5
-        }],
-        backgroundColor: "#FF7816",
-        
-      }]}
-    });
-
+   
     
 
-    new Chart(document.getElementById("single-activity-chart"), {
-    type: 'bar',
-			data: {
-				labels: ['Apr 1','Apr 2','Apr 3','Apr 4','Apr 5','Apr 6','Apr 7','Apr 8','Apr 9','Apr 10','Apr 11','Apr 12','Apr 13','Apr 14','Apr 15','Apr 16','Apr 17','Apr 18','Apr 19','Apr 20','Apr 21','Apr 22','Apr 23'],
-				datasets: [{
-					label: 'Whole Month daily chart',
-					backgroundColor: '#54BA76',
-					borderColor: '#78FCF8',
-					data: [30, 24, 32, 12, 25, 27, 23, 20, 37, 34, 39, 42, 45, 23, 40, 21, 25, 38, 26, 29, 34, 31, 20, 19],
-					type: 'line',
-					pointRadius: 0,
-					fill: false,
-					lineTension: 0,
-					borderWidth: 2
-				}]
-			},
-			options: {
-				scales: {
-					xAxes: [{
-						
-						distribution: 'series',
-						ticks: {
-							source: 'labels'
-						}
-					}],
-					yAxes: [{
-						scaleLabel: {
-							display: true,
-							labelString: 'Number of hours'
-						}
-					}]
-				}
-			}
-		});
+    
   };
   }

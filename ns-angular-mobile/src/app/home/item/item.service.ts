@@ -8,6 +8,7 @@ import { Item } from "./item";
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 import {Headers} from "~/app/shared/headers";
+import {ObservableArray} from "tns-core-modules/data/observable-array";
 
 const httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -34,6 +35,17 @@ export class ItemService {
                 catchError(this.handleError('getActivities', []))
             );
     }
+
+    // _getActivities(): ObservableArray<Item> {
+    //
+    //
+    //     console.log(AppSettings.API_URL, Headers.getAuthTokenHeaders());
+    //     // return this.http.get<Item[]>(this.activitiesUrlTop, );
+    //     return this.http.get<Item>(this.activitiesUrlTop, ).pipe(
+    //             tap(activities => this.log('fetched activities')),
+    //             catchError(this.handleError('getActivities', {}))
+    //         );
+    // }
 
     // method that makes the POST request to create a custom activity
     createCustomActivity(activity: any): Observable<any>{
