@@ -25,6 +25,16 @@ var ItemService = /** @class */ (function () {
         return this.http.get(this.activitiesUrlTop)
             .pipe(operators_1.tap(function (activities) { return _this.log('fetched activities'); }), operators_1.catchError(this.handleError('getActivities', [])));
     };
+    // _getActivities(): ObservableArray<Item> {
+    //
+    //
+    //     console.log(AppSettings.API_URL, Headers.getAuthTokenHeaders());
+    //     // return this.http.get<Item[]>(this.activitiesUrlTop, );
+    //     return this.http.get<Item>(this.activitiesUrlTop, ).pipe(
+    //             tap(activities => this.log('fetched activities')),
+    //             catchError(this.handleError('getActivities', {}))
+    //         );
+    // }
     // method that makes the POST request to create a custom activity
     ItemService.prototype.createCustomActivity = function (activity) {
         var _this = this;

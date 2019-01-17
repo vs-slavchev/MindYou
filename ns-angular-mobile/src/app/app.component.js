@@ -7,6 +7,7 @@ var app_settings_1 = require("~/app/app-settings");
 var dialogs = require("tns-core-modules/ui/dialogs");
 var AppComponent = /** @class */ (function () {
     function AppComponent() {
+        this.counter = 16;
         this.bottomBar = app_settings_1.AppSettings.showBottomBar;
         firebase.getCurrentPushToken().then(function (token) {
             // may be null if not known yet
@@ -38,6 +39,18 @@ var AppComponent = /** @class */ (function () {
             console.log("firebase.init error: " + error);
         });
     }
+    Object.defineProperty(AppComponent.prototype, "message", {
+        get: function () {
+            if (this.counter > 0) {
+                return this.counter + " taps left";
+            }
+            else {
+                return "Hoorraaay! \nYou are ready to start building!";
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
     AppComponent.prototype.onItemLoading = function (args) {
         if (application_1.ios) {
             var cell = args.ios;

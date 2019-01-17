@@ -7,6 +7,8 @@ var app_settings_1 = require("~/app/app-settings");
 var page_1 = require("tns-core-modules/ui/page/page");
 var dialogs = require("tns-core-modules/ui/dialogs");
 var utils = require("utils/utils");
+var observable_array_1 = require("tns-core-modules/data/observable-array");
+var DataItem_1 = require("~/app/home/item/DataItem");
 var firebase = require("nativescript-plugin-firebase");
 var ItemsComponent = /** @class */ (function () {
     // This pattern makes use of Angular’s dependency injection implementation to inject an instance of the FriendService service into this class.
@@ -15,6 +17,7 @@ var ItemsComponent = /** @class */ (function () {
         this.itemService = itemService;
         this.router = router;
         this.route = route;
+        this.suggestedActivityId = 5;
         this.bottomBarShow = true;
         this.customActivity = "";
         // bottomBarShow
@@ -40,6 +43,15 @@ var ItemsComponent = /** @class */ (function () {
     };
     ItemsComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this._dataItems = new observable_array_1.ObservableArray();
+        this.route.queryParams.subscribe(function (params) {
+            // Defaults to 0 if no query param provided.
+            if ("page" in params) {
+                // console.log("Activate activity on init from param");
+                // console.log(params);
+                _this.suggestedActivityId = params["page"];
+            }
+        });
         this.getActivities();
         firebase.getAuthToken({
             // default false, not recommended to set to true by Firebase but exposed for {N} devs nonetheless :)
@@ -91,6 +103,11 @@ var ItemsComponent = /** @class */ (function () {
         });
         // this.itemService.createAccount().subscribe(response => this.reponse = response)
     };
+    // get myFilteringFunc(): (item: any) => boolean {
+    //     return (item: DataItem) => {
+    //         return item.itemName.includes("Special Item");
+    //     };
+    // }
     ItemsComponent.prototype.onTapLogout = function () {
         firebase.logout();
         console.log("Logout done");
