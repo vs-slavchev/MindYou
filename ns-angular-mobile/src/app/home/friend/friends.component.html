@@ -26,12 +26,17 @@
                 </ListView>
             </StackLayout>
         </StackLayout>
-        <StackLayout *tabItem="{title: 'Feeds'}">
+        <StackLayout *tabItem="{title: 'Feed'}">
             <StackLayout>
-                <StackLayout *ngIf="suggestion" orientation="horizontal" horizontalAlignment="stretch" class="list-group-item">
+                <StackLayout  orientation="horizontal" horizontalAlignment="stretch" class="list-group-item">
                     <Label [text]="suggestion.toString()"></Label>
                     <Button text="Accept" class="list-btn friend" (tap)="acceptSuggestion()"></Button>
                     <Button text="Decline" class="list-btn decline" horizontalAlignment="right" (tap)="denySuggestion()"></Button>
+                </StackLayout>
+                <StackLayout *ngIf="invitation" orientation="horizontal" horizontalAlignment="stretch" class="list-group-item">
+                    <Label [text]="invitation.toString()"></Label>
+                    <Button text="Accept" class="list-btn friend" (tap)="acceptInvitation(invitation.invitationId)"></Button>
+                    <Button text="Decline" class="list-btn decline" horizontalAlignment="right" (tap)="declineInivitation(invitation.invitationId)"></Button>
                 </StackLayout>
                 <ListView [items]="received" class="list-group">
                     <ng-template let-item="item" horizontalAlignment="stretch">

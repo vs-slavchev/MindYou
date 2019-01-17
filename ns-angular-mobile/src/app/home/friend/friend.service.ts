@@ -19,7 +19,10 @@ export class FriendService {
 
     private url = `${AppSettings.API_URL}/users`;
     private urlFriends = `${AppSettings.API_URL}/friendships`;
+    private urlInvitation = `${AppSettings.API_URL}/activities/invitation/create`;
+    private urlAcceptDeclineInvitation = `${AppSettings.API_URL}/activities/invitation`;
 
+  
     // private items = new Array<Friend>(
     //     { id: 1, name: "user 1", role: "Goalkeeper" },
     //     { id: 3, name: "user 2", role: "Defender" },
@@ -102,6 +105,33 @@ export class FriendService {
         return this.http.delete<any>(`${this.urlFriends}/${friendshipId}/decline`, Headers.getAuthTokenHeaders()).pipe(
             tap((friend: any) => this.log(`friend w/ id=${friendshipId}`)),
             catchError(this.handleError<any>('addFriend'))
+        );
+    }
+
+    //ACTIVITY INVITATION
+
+        //send invitation for an activity
+    // /activities/invitation/create/:activityId/:inviteeId
+    sendInvitation(activityId: number, inviteeId: string): Observable<any> {
+        console.log("activityID " + activityId);
+        return this.http.post<any>(`${this.urlInvitation}/${activityId}/${inviteeId}`, {}, Headers.getAuthTokenHeaders()).pipe(
+            catchError(this.handleError<any>('sendInvitation'))
+        );
+    }
+
+    //accept invitation
+     ///activities/invitation/:invitationId/accept
+     acceptInvitation(invitationId: number): Observable<any> {
+        return this.http.put<any>(`${this.urlAcceptDeclineInvitation}/${invitationId}/accept`, {}, Headers.getAuthTokenHeaders()).pipe(
+            catchError(this.handleError<any>('acceptInvitation'))
+        );
+     }
+
+     //decline invitation
+     //  /activities/invitation/:invitationId/decline
+     declineInvitation(invitationId: number): Observable<any> {
+        return this.http.delete<any>(`${this.urlAcceptDeclineInvitation}/${invitationId}/decline`, Headers.getAuthTokenHeaders()).pipe(
+            catchError(this.handleError<any>('declineInvitation'))
         );
     }
 

@@ -210,6 +210,53 @@ export class FriendsComponent implements OnInit {
 
     }
 
+    /* INVITATION FOR THE ACTIVITY */
+
+    //invit a friend for an activity
+   // /activities/invitation/create/:activityId/:inviteeId
+    sendInvitation(user: Friend,args: EventData): void {
+        user.invitationShared=true;
+        console.log("change button color to red");
+
+        const b = args.object as Button;     
+        console.log("Friend button: " + args.object);
+        b.set('text', 'Pending');
+          
+        dialogs.action({
+            message: "Choose the activity to share",
+            cancelButtonText: "Invite",
+            actions: this.items.map(function(el){return el.name})
+        }).then(result => {
+            console.log("Dialog result: " + result);
+            
+            for (var i in this.items)
+            {
+                if (this.items[i].name == result)
+                {
+                 console.log("Item name: " + this.items[i].name);
+                  this.friendService.sendInvitation(this.items[i].activityBlueprintId,user.id).subscribe();
+                }
+            }
+        });      
+    }
+ 
+    //accept the invitation
+    ///activities/invitation/:invitationId/accept
+    acceptInvitation(invitationId: number): void {
+        this.friendService.acceptInvitation(invitationId).subscribe();
+    }
+    //decline the invitation   
+    ///activities/invitation/:invitationId/decline
+    declineInivitation(inivitationId: number): void {
+        this.friendService.declineInvitation(inivitationId).subscribe();
+    }
+
+    getActivities(): void {
+        this.itemService.getActivities().subscribe(activities => {
+            this.items = activities;
+        });
+    }
+
     ngOnDestroy() {
         this.sub.unsubscribe();
     }
