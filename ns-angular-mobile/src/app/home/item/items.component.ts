@@ -23,7 +23,7 @@ const firebase = require("nativescript-plugin-firebase");
 export class ItemsComponent implements OnInit {
 
     private radListView: RadListView;
-    private suggestedActivityId = 5;
+    private suggestedActivityId = -1;
 
     public items: Item[];
     reponse: any;
