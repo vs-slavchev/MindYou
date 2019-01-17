@@ -101,7 +101,7 @@ public class StatisticsController extends Controller implements WSBodyReadables,
             return supplyAsync(() -> badRequest(ae.getMessage()));
         }
 
-        String path = String.format("four-weeks-activity/%s/%s/", verifiedUserId, activityId);
+        String path = String.format("four-weeks-activity/%s/%s", activityId, verifiedUserId);
 
         return makeStatisticsRequest(path, "");
     }

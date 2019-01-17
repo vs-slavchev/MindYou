@@ -5,14 +5,17 @@ GET           /users                                                       contr
 # ex: /users/search?name=linh
 GET           /users/search                                                controllers.AppUserController.searchUsers(name: String)
 
+
 # get a user by the user_id
 # ex: /users/123
 GET           /users/:id                                                   controllers.AppUserController.showUser(id: String)
+
 
 # create a new user with name provided in json format
 # ex: {"name":"Andrea"}
 # provide authorization token in the authorization header of the request;
 POST          /users/create                                                controllers.AppUserController.createAppUser
+
 
 # generate a friendship with two IDs of the inviter and the invitee
 # inviter_id is tokenized, but the invitee_id is the actual_id
@@ -21,53 +24,64 @@ POST          /users/create                                                contr
 # ex: /friendships/invite/123
 POST          /friendships/invite/:invitee_id                              controllers.FriendshipController.sendFriendRequest(invitee_id: String)
 
+
 # accept the friendship request between the inviter and the invitee using friendshipId
 # ex: /friendships/456/accept
 # provide invitee authorization token in the authorization header of the request;
 PUT           /friendships/:friendshipId/accept                            controllers.FriendshipController.acceptFriendRequest(friendshipId: String)
+
 
 # decline the friendship request between the inviter and the invitee using friendshipId
 # ex: /friendships/456/decline
 # provide invitee authorization token in the authorization header of the request;
 DELETE        /friendships/:friendshipId/decline                           controllers.FriendshipController.declineFriendRequest(friendshipId: String)
 
+
 # retrieve all friend requests sent to a user
 # ex: /friendships/receivedRequests
 # provide invitee authorization token in the authorization header of the request;
 GET           /friendships/receivedRequests                                controllers.FriendshipController.getReceivedFriendRequests
+
 
 # retrieving all friend requests that have been sent
 # ex: /friendships/sentRequests
 # provide inviter authorization token in the authorization header of the request;
 GET           /friendships/sentRequests                                    controllers.FriendshipController.getSentFriendRequests
 
+
 # retrieving data of all friends of a user
 # ex: /friendships
 # provide authorization token in the authorization header of the request;
 GET           /friendships                                                 controllers.AppUserController.getFriendList
+
 
 # start tracking activity with activity_id in the url
 # ex: /activities/1/start
 # provide authorization token in the authorization header of the request;
 POST          /activities/:activity_id/start                               controllers.TrackedActivityController.startActivity(activity_id: Long)
 
+
 # stop tracking of the currently running activity, without specifying which one it is
 # ex: /activities/stop
 # provide authorization token in the authorization header of the request;
 GET           /activities/stop                                             controllers.TrackedActivityController.stopActivity
+
 
 # get currently running activity
 # ex: /activities/activated
 # provide authorization token in the authorization header of the request;
 GET           /activities/activated                                        controllers.TrackedActivityController.currentActivity
 
+
 # get details about an activty blueprint
 # ex: /activities/5
 GET           /activities/:id                                              controllers.ActivityBlueprintController.getActivityBlueprint(id: String)
 
+
 # when app is started some activity blueprints are queried to be shown on activities screen
 # ex: /activities/top/10 to only show the top 10 activities
 GET           /activities/top/:number                                      controllers.ActivityBlueprintController.listActivities(number: Long)
+
 
 # create a custom activity
 # json for now because we might want to send more data, also returns existing activity if already exists
@@ -87,17 +101,28 @@ PUT           /activities/invitation/:invitationId/accept                  contr
 # decline invitation for activity
 DELETE        /activities/invitation/:invitationId/decline                 controllers.ActivityInvitationController.declineInvitation(invitationId)
 
+
+# retrieve all activity invitations sent to a user
+GET           /activities/invitation/receivedRequests                      controllers.ActivityInvitationController.getReceivedActivityInvitation()
+
+
+# retrieve all activity invitations that a user has sent
+GET           /activities/invitation/sentRequests                          controllers.ActivityInvitationController.getSentActivityInvitation()
+
+
 # get the total hours spent on an activity, for all activities done
 # time can be : week, month, quarter, year
 # ex. /statistics/hours-per-activity/month
 # provide authorization token in the authorization header of the request;
 GET           /statistics/hours-per-activity/:time                         controllers.StatisticsController.hoursPerActivity(time)
 
+
 # for a specific activity get how many hours it was done for every day
 # time can be : week, month, quarter, year
 # ex. /statistics/hours-per-day/5/month
 # provide authorization token in the authorization header of the request;
 GET           /statistics/hours-per-day/:activityId/:time                  controllers.StatisticsController.hoursPerDay(activityId, time)
+
 
 # for the most done activities show the percentile rank of the user among other users
 # time can be : week, month, quarter, year
