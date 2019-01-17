@@ -23,7 +23,7 @@ export class UserProfileComponent implements OnInit {
 
               // User is signed in.
               var myEl = document.querySelector('#image');
-              //myEl.src = user.photoURL;
+              myEl.setAttribute("src",  user.photoURL);
 
               var fbName = document.querySelector('#name');
               fbName.innerHTML = user.displayName;

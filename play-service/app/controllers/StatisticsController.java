@@ -38,6 +38,7 @@ public class StatisticsController extends Controller implements WSBodyReadables,
         this.ws = ws;
         this.httpExecutionContext = ec;
 
+        timePeriods.put("day", "1/day");
         timePeriods.put("week", "1/week");
         timePeriods.put("month", "1/month");
         timePeriods.put("quarter", "3/month");
@@ -86,9 +87,37 @@ public class StatisticsController extends Controller implements WSBodyReadables,
 
     public CompletionStage<Result> topActivities(String time) {
 
-        String path = String.format("top-activities/");
+        String path = "top-activities/";
 
         return makeStatisticsRequest(path, time);
+    }
+
+    public CompletionStage<Result> fourWeeksActivity(String activityId){
+
+        String verifiedUserId;
+        try {
+            verifiedUserId = FirebaseInit.getVerifiedUserIdFromRequestHeader(request());
+        } catch (AuthorizationException ae) {
+            return supplyAsync(() -> badRequest(ae.getMessage()));
+        }
+
+        String path = String.format("four-weeks-activity/%s/%s/", verifiedUserId, activityId);
+
+        return makeStatisticsRequest(path, "");
+    }
+
+    public CompletionStage<Result> topSixActivities(){
+
+        String verifiedUserId;
+        try {
+            verifiedUserId = FirebaseInit.getVerifiedUserIdFromRequestHeader(request());
+        } catch (AuthorizationException ae) {
+            return supplyAsync(() -> badRequest(ae.getMessage()));
+        }
+
+        String path = String.format("top-six-activities/%s", verifiedUserId);
+
+        return makeStatisticsRequest(path, "");
     }
 
     public CompletionStage<Result> suggestion(){
