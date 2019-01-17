@@ -4,6 +4,7 @@ export class Friend {
     isRequesting: boolean;
     isFriend: boolean;
     requested: boolean;
+    invitationShared: boolean;
 
     constructor(id: string, name: string) {
         this.id = id;
@@ -11,5 +12,13 @@ export class Friend {
         this.isRequesting = false;
         this.isFriend = false;
         this.requested = false;
+        this.invitationShared = false;
     }
+
+    // buttonText(): string {
+    //     if (this.invitationShared) {
+    //         return "Shared";
+    //     }
+    //     return "Not shared";
+    // }
 }

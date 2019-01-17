@@ -57,6 +57,7 @@ export class ItemsComponent implements OnInit {
         })
     }
 
+
     ngOnInit(): void {
         this.getActivities();
         firebase.getAuthToken({
@@ -115,6 +116,12 @@ export class ItemsComponent implements OnInit {
         });
         // this.itemService.createAccount().subscribe(response => this.reponse = response)
     }
+
+    
+    //testing function
+    // helloWorld(): String {
+    //     return 'Hello world!';
+    //   }
 
     onTapLogout(): void {
         firebase.logout();
@@ -203,7 +210,7 @@ export class ItemsComponent implements OnInit {
 
         dialogs.alert({
             title: "Alert",
-            message: "The activity has been stoppen! Time spent on the activity: " + this.hours + " h " + this.minutes + " min " + this.seconds + " sec.",
+            message: "The activity has been stoppen! Time spent on the activity: " + this.hours + " h " + this.minutes + " min " + this.second + " sec.",
             okButtonText: "Got it!"
         }).then(() => {
             console.log("Dialog closed!");

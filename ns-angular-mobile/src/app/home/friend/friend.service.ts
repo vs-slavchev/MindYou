@@ -19,6 +19,7 @@ export class FriendService {
 
     private url = `${AppSettings.API_URL}/users`;
     private urlFriends = `${AppSettings.API_URL}/friendships`;
+    private urlInvitation = `${AppSettings.API_URL}/activities/invitation/create`;
 
     // private items = new Array<Friend>(
     //     { id: 1, name: "user 1", role: "Goalkeeper" },
@@ -88,6 +89,17 @@ export class FriendService {
             catchError(this.handleError<any>('addFriend'))
         );
     }
+
+    //send invitation for an activity
+    // /activities/invitation/create/:activityId/:inviteeId
+    sendInvitation(activityId: number, inviteeId: string): Observable<any> {
+        console.log("activityID " + activityId);
+        return this.http.post<any>(`${this.urlInvitation}/${activityId}/${inviteeId}`, {}, Headers.getAuthTokenHeaders()).pipe(
+           // tap((friend: any) => this.log(`friend w/ id=${userId}`)),
+            catchError(this.handleError<any>('sendInvitation'))
+        );
+    }
+
 
     acceptFriendResuest(friendshipId: string): Observable<any> {
         // /friendships/123/accept/321
