@@ -1,19 +1,10 @@
 import {Friend} from "~/app/home/friend/friend";
+import {Item} from "~/app/home/item/item";
 
 export class Invitation {
     invitationId: number;
-    activityName: string;
+    activityBlueprint: Item;
     inviterUser: Friend;
-
-
-constructor(id: number, activityName:string, inviterName: string) {
-    this.invitationId = id;
-    this.activityName = activityName;
-    this.inviterUser.name = inviterName;
-}
-
-toString(): string {
-    return `${this.inviterUser.name} invites you for activity: ${this.activityName}`
-}
-
+    inviteeUser: Friend;
+    accepted: boolean;
 }

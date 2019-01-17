@@ -11,7 +11,12 @@ import {AppSettings} from "~/app/app-settings";
 import {Item} from "~/app/home/item/item";
 import {ActivatedRoute, NavigationExtras, Router} from "@angular/router";
 import {Suggestion} from "~/app/home/friend/Suggestion";
-
+import { Button } from "tns-core-modules/ui/button";
+//import { EventData } from "tns-core-modules/ui/page/page";
+import { EventData } from "tns-core-modules/data/observable/observable";
+import * as dialogs from "tns-core-modules/ui/dialogs";
+import { ItemService } from "../item/item.service";
+import { Invitation } from "./invitation";
 
 @Component({
     selector: "ns-statistics",
@@ -30,12 +35,15 @@ export class FriendsComponent implements OnInit {
     public searchPhrase: string;
     private sub: any;
 
+    public items: Item[];
+    receivedInvitations: Invitation[];
 
     // This pattern makes use of Angular’s dependency injection implementation to inject an instance of the FriendService service into this class.
     // Angular knows about this service because it is included in your app’s main NgModule, defined in app.module.ts.
-    constructor(private friendService: FriendService, private route: ActivatedRoute, private router: Router) {
+    constructor(private friendService: FriendService, private itemService: ItemService, private route: ActivatedRoute, private router: Router) {
         this.tabSelectedIndex = 0;
-        // this.tabSelectedIndexResult = "Profile Tab (tabSelectedIndex = 0 )";
+        this.getActivities();
+        // this.tabSelectedIndexResult = "Profile Tab (tabSelectedIndex = 0 )";  
     }
 
     ngOnInit(): void {
@@ -49,6 +57,11 @@ export class FriendsComponent implements OnInit {
         });
         this.refreshUsers();
         this.getSuggestion();
+        
+        this.friendService.getReceivedInvitations().subscribe(invitations => {
+            this.receivedInvitations = invitations;
+        });
+
     }
 
     getSuggestion(): void {
@@ -169,6 +182,12 @@ export class FriendsComponent implements OnInit {
         });
     }
 
+    refreshInvitations(): void{
+        this.friendService.getReceivedInvitations().subscribe(invitations => {
+            this.receivedInvitations = invitations;
+        });
+    }
+
     refreshUsers(doNotReloadUsers?: boolean): void {
         this.friendService.getPendingRequests().subscribe(users => {
             this.pending = users;
@@ -215,6 +234,9 @@ export class FriendsComponent implements OnInit {
     //invit a friend for an activity
    // /activities/invitation/create/:activityId/:inviteeId
     sendInvitation(user: Friend,args: EventData): void {
+       
+       // this.invitation = new Invitation()
+       
         user.invitationShared=true;
         console.log("change button color to red");
 
@@ -224,7 +246,7 @@ export class FriendsComponent implements OnInit {
           
         dialogs.action({
             message: "Choose the activity to share",
-            cancelButtonText: "Invite",
+            cancelButtonText: "Cancel",
             actions: this.items.map(function(el){return el.name})
         }).then(result => {
             console.log("Dialog result: " + result);
@@ -244,11 +266,31 @@ export class FriendsComponent implements OnInit {
     ///activities/invitation/:invitationId/accept
     acceptInvitation(invitationId: number): void {
         this.friendService.acceptInvitation(invitationId).subscribe();
+        for (var i in this.receivedInvitations){
+            if(this.receivedInvitations[i].invitationId==invitationId){
+                this.receivedInvitations.splice(this.receivedInvitations.indexOf[i],1);
+            }
+        }
     }
+
+    returnArray():void{
+       // console.log("invitations: " + this.receivedInvitations[0]);
+        for(let i=0; i<this.receivedInvitations.length; i++)
+    console.log("PrintinvitationsData:", this.receivedInvitations[i].inviterUser.name);
+    }
+        
+    
+
     //decline the invitation   
     ///activities/invitation/:invitationId/decline
-    declineInivitation(inivitationId: number): void {
-        this.friendService.declineInvitation(inivitationId).subscribe();
+    declineInivitation(invitationId: number): void {
+        this.friendService.declineInvitation(invitationId).subscribe();
+        for (var i in this.receivedInvitations){
+            if(this.receivedInvitations[i].invitationId==invitationId){
+                this.receivedInvitations.splice(this.receivedInvitations.indexOf[i],1);
+            }
+        }
+
     }
 
     getActivities(): void {

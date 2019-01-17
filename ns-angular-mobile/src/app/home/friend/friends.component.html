@@ -5,10 +5,13 @@
         <StackLayout *tabItem="{title: 'Friends'}">
             <StackLayout class="page">
                 <ListView [items]="friends" class="list-group">
-                    <ng-template let-item="item">
+                    <ng-template let-item="item" horizontalAlignment="stretch">
+                        <StackLayout orientation="horizontal" horizontalAlignment="stretch" class="list-group-item">
                         <Label [nsRouterLink]="['/home/friend', item.id]" [text]="item.name" class="list-group-item"></Label>
+                        <Button id = "InviteButton" text="Invite for activity"  class="list-btn friend" [ngClass]="{'shared': item.invitationShared}"  horizontalAlignment="right" [class.button-clicked]="buttonClicked" (tap)="sendInvitation(item,$event)"></Button>
                         <!--<Label text="1" class="notificationAndroid"></Label>-->
                         <!--<Label text="" style="font-size:25;margin-top:-15" class="font-awesome"/</ng-template>-->
+                       </StackLayout>
                     </ng-template>
                 </ListView>
             </StackLayout>
@@ -28,34 +31,32 @@
         </StackLayout>
         <StackLayout *tabItem="{title: 'Feed'}">
             <StackLayout>
-                <StackLayout  orientation="horizontal" horizontalAlignment="stretch" class="list-group-item">
-                    <Label [text]="suggestion.toString()"></Label>
+                <StackLayout *ngIf="suggestion" orientation="horizontal" horizontalAlignment="stretch" class="list-group-item">
+                    <Label [text]="suggestion.toString()" class="suggestionSize"></Label>
                     <Button text="Accept" class="list-btn friend" (tap)="acceptSuggestion()"></Button>
                     <Button text="Decline" class="list-btn decline" horizontalAlignment="right" (tap)="denySuggestion()"></Button>
                 </StackLayout>
-                <StackLayout *ngIf="invitation" orientation="horizontal" horizontalAlignment="stretch" class="list-group-item">
-                    <Label [text]="invitation.toString()"></Label>
-                    <Button text="Accept" class="list-btn friend" (tap)="acceptInvitation(invitation.invitationId)"></Button>
-                    <Button text="Decline" class="list-btn decline" horizontalAlignment="right" (tap)="declineInivitation(invitation.invitationId)"></Button>
-                </StackLayout>
+                <ListView [items]="receivedInvitations" class="list-group">
+                    <ng-template let-item="item" horizontalAlignment="stretch">
+                        <StackLayout orientation="vertical" horizontalAlignment="stretch" class="list-group-item">
+                            <Label [text]="item.inviterUser.name + ' invites for ' + item.activityBlueprint.name"></Label>
+                          
+                            <Button  text="Go!" class="friend" horizontalAlignment="right" (tap)="acceptInvitation(item.invitationId)"></Button>
+                            <Button  text="Can't go." class="decline" horizontalAlignment="right" (tap)="declineInivitation(item.invitationId)"></Button>
+                       
+                        </StackLayout>
+                    </ng-template>
+                </ListView> 
                 <ListView [items]="received" class="list-group">
                     <ng-template let-item="item" horizontalAlignment="stretch">
                         <StackLayout orientation="horizontal" horizontalAlignment="stretch" class="list-group-item">
-                            <!--<Label (tap)="acceptFriendRequest(item.friendshipId)" [text]="item.inviterUser.name" class="list-group-item"></Label>-->
                             <Label [text]="item.inviterUser.name"></Label>
                             <Button text="Accept" class="list-btn friend" (tap)="acceptFriendRequest(item.friendshipId)"></Button>
                             <Button text="Decline" class="list-btn decline" horizontalAlignment="right" (tap)="declineFriendRequest(item.friendshipId)"></Button>
                         </StackLayout>
                     </ng-template>
-
-                    <!--<ListView.itemTemplate>-->
-
-                    <!--</ListView.itemTemplate>-->
                 </ListView>
-                <!--<Label [text]="tabSelectedIndexResult" class="h2 m-t-16 text-center" textWrap="true"></Label>-->
-                <!--<Button text="Change Tab via ngModel" (tap)="changeTab()" class="btn btn-primary btn-active"></Button>-->
             </StackLayout>
         </StackLayout>
     </TabView>
-    <!-- << tab-view-navigation-ng-html -->
 </GridLayout>

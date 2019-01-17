@@ -9,6 +9,7 @@ import {AppSettings} from "~/app/app-settings";
 
 import {Headers} from "~/app/shared/headers";
 import {Friendship} from "~/app/home/friend/friendship";
+import { Invitation } from "./invitation";
 
 const httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -64,6 +65,14 @@ export class FriendService {
             .pipe(
                 tap(users => this.log('fetched friends')),
                 catchError(this.handleError('getFriends', []))
+            );
+    }
+
+    getReceivedInvitations(): Observable<Invitation[]> {
+        // /activities/invitation/receivedRequests
+        return this.http.get<Invitation[]>(`${this.urlAcceptDeclineInvitation}/receivedRequests`, Headers.getAuthTokenHeaders())
+            .pipe(
+                catchError(this.handleError('receivedInvitations', []))
             );
     }
 
