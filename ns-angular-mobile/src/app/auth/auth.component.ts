@@ -45,10 +45,21 @@ export class AuthComponent implements OnInit {
                 console.log(`Body: ${message.body}`);
                 // if your server passed a custom property called 'running', then do this:
                 console.log(`Value of 'running': ${message.data.running}`);
+                let title = "You received a notification!";
+                let body = "Do you want to open the feed?";
+
+                if (message) {
+                    if (message.title) {
+                        title = message.title;
+                    }
+                    if (message.body) {
+                        body = message.body;
+                    }
+                }
 
                 dialogs.confirm({
-                    title: `Title: ${message.title}`,
-                    message: `Body: ${message.body}`,
+                    title: `${title}`,
+                    message: `${body}`,
                     okButtonText: "Open",
                     cancelButtonText: "Cancel",
                     // neutralButtonText: "Neutral text"
