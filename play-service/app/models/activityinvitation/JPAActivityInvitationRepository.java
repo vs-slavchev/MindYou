@@ -25,13 +25,15 @@ import static java.util.concurrent.CompletableFuture.supplyAsync;
  */
 public class JPAActivityInvitationRepository implements ActivityInvitationRepository {
 
+    private WSClient ws;
     private final JPAApi jpaApi;
     private final DatabaseExecutionContext executionContext;
 
     @Inject
-    public JPAActivityInvitationRepository(JPAApi jpaApi, DatabaseExecutionContext executionContext) {
+    public JPAActivityInvitationRepository(JPAApi jpaApi, DatabaseExecutionContext executionContext, WSClient ws) {
         this.jpaApi = jpaApi;
         this.executionContext = executionContext;
+        this.ws = ws;
     }
 
     @Override
@@ -68,6 +70,11 @@ public class JPAActivityInvitationRepository implements ActivityInvitationReposi
             Object singleResult = query.getSingleResult();
             ActivityInvitation invitation = (ActivityInvitation) singleResult;
             invitation.setAccepted(true);
+            String jsonString = String.format("{\"notification\":{\"title\": \"MindYou\", \"text\": \"%s has accepted your activity invitation\", \"badge\": \"1\", \"sound\": \"default\"}, \"data\":{\"running\": \"2 hours\"}, \"priority\": \"High\", \"to\": \"%s\"}", invitation.getInviteeUser().getName(), invitation.getInviterUser().getDeviceToken());
+            ws.url("https://fcm.googleapis.com/fcm/send")
+                    .addHeader("Content-Type", "application/json")
+                    .addHeader("Authorization", "key=AAAA7_KxZwU:APA91bGOysZbGFO-grloUHj50HfIgYJfeleOYygSBxZRdV4Fmnd60Gvj5MQlCA_zh2PcuQRhvsMnUS0BlU5LrZKO_xGIJMcIapv6WDbeJ6UdTg2GXs5JgSbc4n46ypvHwjahpyIWyWGc")
+                    .post(jsonString);
             return invitation;
         }), executionContext);
     }

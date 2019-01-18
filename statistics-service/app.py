@@ -219,7 +219,7 @@ def send_suggestion():
             data = {
                 "notification": {
                     "title": "Time to refresh",
-                    "text": "Check out new activity suggestion delivered specially for you!",
+                    "text": "Check out new activity suggestion delivered for you!",
                     "badge": 1,
                     "sound": "default"
                 },

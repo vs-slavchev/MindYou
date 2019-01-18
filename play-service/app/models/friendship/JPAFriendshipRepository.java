@@ -53,7 +53,7 @@ public class JPAFriendshipRepository implements FriendshipRepository {
                     friendship = new Friendship(inviter, invitee);
                 }
             }
-            String jsonString = String.format("{\"notification\":{\"title\": \"Title MindYou\", \"text\": \"You receive a friend request\", \"badge\": \"1\", \"sound\": \"default\"}, \"data\":{\"running\": \"2 hours\"}, \"priority\": \"High\", \"to\": \"%s\"}", friendship.getInviteeUser().getDeviceToken());
+            String jsonString = String.format("{\"notification\":{\"title\": \"MindYou\", \"text\": \"You have received a friend request from %s\", \"badge\": \"1\", \"sound\": \"default\"}, \"data\":{\"running\": \"2 hours\"}, \"priority\": \"High\", \"to\": \"%s\"}", friendship.getInviterUser().getName(), friendship.getInviteeUser().getDeviceToken());
             ws.url("https://fcm.googleapis.com/fcm/send")
                     .addHeader("Content-Type", "application/json")
                     .addHeader("Authorization", "key=AAAA7_KxZwU:APA91bGOysZbGFO-grloUHj50HfIgYJfeleOYygSBxZRdV4Fmnd60Gvj5MQlCA_zh2PcuQRhvsMnUS0BlU5LrZKO_xGIJMcIapv6WDbeJ6UdTg2GXs5JgSbc4n46ypvHwjahpyIWyWGc")
