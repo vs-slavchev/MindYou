@@ -1,20 +1,23 @@
 import { Injectable } from '@angular/core';
+
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {IStatistics} from './statistics.js';
 import {Observable} from "rxjs/internal/Observable";
 import * as firebase from 'firebase';
 const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
+
 @Injectable({
   providedIn: 'root'
 })
 export class NewstatsService {
   tokenID:string;
-  fURL:string;
+  fURL:string='http://145.93.89.45:9000/statistics/four-weeks-activity/10';
   fullURL:string
-  UrlM:string;
-  url:string ='http://62.108.10.166:9000/statistics/hours-per-activity/';
+  UrlTop:string=' http://145.93.89.45:9000/statistics/top-six-activities';;
+  url:string ='http://145.93.89.45:9000/statistics/hours-per-activity/week';
+
 
   constructor(private http:HttpClient) { 
     this.fullURL=this.url.concat('week');
@@ -24,26 +27,27 @@ export class NewstatsService {
       // this.fURL = this.url.concat(this.tokenID);
       // this.fullURL= this.fURL.concat('/recent');
 
-       this.UrlM=this.url.concat('month');
+
   
      // console.log(this.fullURL);
 
      
    });
   }
-
- 
-  
-  //private curl:string ='http://62.108.10.166:9000/statistics/hours-per-activity/YC3FEaY113ft4sLtiuqVtrhv8G43/recent';
-  
- 
   
   getStatistics(): Observable<IStatistics[]>{
-    console.log(this.fullURL);
-    return this.http.get<IStatistics[]>(this.fullURL, httpOptions);
-    
+    console.log(this.url);
+    return this.http.get<IStatistics[]>(this.url, httpOptions);
   }
-  getOlderStats():Observable<IStatistics[]>{
-    return this.http.get<IStatistics[]>(this.UrlM, httpOptions);
+
+  getFourWeeks(): Observable<IStatistics[]>{
+    console.log(this.fURL);
+    return this.http.get<IStatistics[]>(this.fURL, httpOptions);
   }
+  
+  getTop(): Observable<IStatistics[]>{
+    console.log(this.fURL);
+    return this.http.get<IStatistics[]>(this.UrlTop, httpOptions);
+  }
+
 }

@@ -14,7 +14,7 @@ export class StatisticsService {
   fURL:string;
   fullURL:string
   UrlM:string;
-  url:string ='http://145.93.88.222:9000/statistics/hours-per-activity/';
+  url:string ='http://145.93.89.45:9000/statistics/hours-per-activity/';
 
   constructor(private http:HttpClient) { 
     this.fullURL=this.url.concat('day');

@@ -118,44 +118,73 @@ export class MonthlyStatsComponent implements OnInit {
       this.BubbleChart=new Chart('bubble-chart', {
         type: 'bubble',
         data:{
-          labels: activities,
-          datasets: [{
-          label: [activities[0], activities[1], activities[2], activities[3], activities[4],activities[5]],
-          data:[{ 
-                x: hours[0],
-                y:r[0],
-                r:40,
-                
-            },
-            {
-                x: hours[1],
-                y:r[1],
-                r:35
-            },
-                { 
-                    x: hours[2],
-                    y:r[2],
-                    r:10
-                },
-                { 
-                    x: hours[3],
-                    y:r[3],
-                    r:25
-                },
-                {
-                    x: hours[4],
-                    y:r[4],
-                    r:20
-                },
-                {
-                    x: hours[5],
-                    y:r[5],
-                    r:15
-        }],
-          backgroundColor: "#FF7816",
+          label: "Top Used Activities",
+          datasets: [
+              {
+                label: [activities[0]],
+                data:[{ 
+                  x: hours[0],
+                  y:r[0],
+                  r:40,
+                  
+              }
+            ],
+            backgroundColor: '#FF7816',
+          },{
+            label: [activities[1]],
+            data:[{ 
+                  x: hours[1],
+                  y:r[1],
+                  r:35,
+                  
+              }],
+              backgroundColor:'#78FCF8'
+          },{
+            label: [activities[2]],
+            data:[{ 
+                  x: hours[2],
+                  y:r[2],
+                  r:15,
+                  
+              }],
+              backgroundColor:'#54BA76'
+          },{
+            label: [activities[3]],
+            data:[{ 
+                  x: hours[3],
+                  y:r[3],
+                  r:25,
+                  
+              }],
+              backgroundColor:'#6F5B54'
+          },{
+            label: [activities[4]],
+            data:[{ 
+                  x: hours[4],
+                  y:r[4],
+                  r:20,
+                  
+              }],
+              backgroundColor:'#FDBF00'
+          },{
+            label: [activities[5]],
+            data:[{ 
+                  x: hours[5],
+                  y:r[5],
+                  r:10,
+                  
+              }],
+              backgroundColor:'#B1DFC0'
+                                
           
-        }]}
-      });
+        
+        }]
+      },
+      options: {
+        title: {
+            text: "Top used activities",
+            display: true
+        },}});
   
    
 

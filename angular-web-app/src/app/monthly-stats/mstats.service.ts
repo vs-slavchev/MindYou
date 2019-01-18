@@ -15,12 +15,12 @@ export class MstatsService {
   fURL:string;
   fullURL:string
   UrlM:string;
-  url:string ='http://62.108.10.166:9000/statistics/hours-per-activity/';
-  Murl:string='http://62.108.10.166:9000/statistics/hours-per-day/2/month';
-  urlI:string ='http://62.108.10.166:9000/statistics/hours-per-activity/month';
+  url:string ='http://145.93.89.45:9000/statistics/hours-per-activity/';
+  Murl:string='http://145.93.89.45:9000/statistics/hours-per-day/2/month';
+  urlI:string ='http://145.93.89.45:9000/statistics/hours-per-activity/month';
   
   constructor(private http:HttpClient) { 
-    this.fullURL=' http://145.93.88.222:9000/statistics/top-six-activities';
+    this.fullURL=' http://145.93.89.45:9000/statistics/top-six-activities';
    //this.fullURL=' http://145.93.90.22:9000/statistics/top-six-activities';
    
     firebase.auth().currentUser.getIdToken().then((data)=>{

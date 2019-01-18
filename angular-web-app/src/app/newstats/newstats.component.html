@@ -1,26 +1,44 @@
 <body>
-    <div class=row>
-            <div ngbDropdown class="d-inline-block" style="margin-left:20px;">
-                    <button class="btn btn-outline-primary nav-link dropdown-toggle" id="dropdownBasic1" ngbDropdownToggle>Activity</button>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownBasic1" ngbDropdownMenu >
-                        <button class="dropdown-item" >Daily</button>
-                        <button class="dropdown-item" >Weekly</button>
-                        <button class="dropdown-item" >Monthly</button>
-                    </div>
-                </div>
-	<div style="width:75%;">
-		<canvas id="line-chart"></canvas>
+  <!-- <div class=row>
+    <div ngbDropdown class="d-inline-block" style="margin-left:20px;" id="top-act-dropdown">
+      <button class="btn btn-outline-primary nav-link dropdown-toggle" id="dropdownBasic1" ngbDropdownToggle>Activity</button>
+      <-- {{statisticsTop|json}} -->
+      <!-- <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownBasic1" id="dropdownm"
+        ngbDropdownMenu (change)="selectName();">
+        <button *ngFor="let statistic of statisticsTop" class="dropdown-item"> {{statistic.name}}</button>
+      </div>
+    </div>
+  </div> -->
+
+  <div class="row">
+      <div class="col" style="width: 700px; height:50%"><canvas id="line-chart"></canvas></div>
   </div>
-</div>
+  
+  <!-- <div style="width:75%;">
+    <canvas id="line-chart"></canvas>
+  </div> -->
+
   <div class="row">
     <div class="col" style="height:75px"> </div>
-</div>
+  </div>
 
-  <div style="width:75%;">
+  <!-- <div style="width:75%;">
     <canvas id="dif-point-chart"></canvas>
-</div>
+  </div> -->
+
+  <div class="row">
+      <div class="col" style="width: 700px; height:50%"><canvas id="dif-point-chart"></canvas></div>
+  </div>
+  
+
+  <div class="row">
+    <div class="col" style="height:75px"> </div>
+  </div>
+
+  <div class="row">
+    <div class="col" style="width: 700px; height:50%"><canvas id="barChart"></canvas></div>
+  </div>
 
 
 
-
-  </body>
+</body>
