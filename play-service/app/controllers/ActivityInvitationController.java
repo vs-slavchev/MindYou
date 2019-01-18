@@ -76,4 +76,30 @@ public class ActivityInvitationController extends Controller implements WSBodyRe
         return activityInvitationRepository.declineRequest(invitation_id, verifiedInviteeId)
                 .thenApplyAsync(p -> ok("invitation declined"), httpExecutionContext.current());
     }
+
+    public CompletionStage<Result> getReceivedActivityInvitation() {
+        String verifiedUserId;
+        try {
+            verifiedUserId = FirebaseInit.getVerifiedUserIdFromRequestHeader(request());
+        } catch (AuthorizationException ae) {
+            return supplyAsync(() -> badRequest(ae.getMessage()));
+        }
+
+        return activityInvitationRepository.getReceivedActivityInvitation(verifiedUserId)
+                .thenApplyAsync(invitationListStream -> ok(Json.toJson(invitationListStream
+                        .collect(Collectors.toList()))), httpExecutionContext.current());
+    }
+
+    public CompletionStage<Result> getSentActivityInvitation() {
+        String verifiedUserId;
+        try {
+            verifiedUserId = FirebaseInit.getVerifiedUserIdFromRequestHeader(request());
+        } catch (AuthorizationException ae) {
+            return supplyAsync(() -> badRequest(ae.getMessage()));
+        }
+
+        return activityInvitationRepository.getSentActivityInvitation(verifiedUserId)
+                .thenApplyAsync(invitationListStream -> ok(Json.toJson(invitationListStream
+                        .collect(Collectors.toList()))), httpExecutionContext.current());
+    }
 }

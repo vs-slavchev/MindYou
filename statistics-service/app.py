@@ -126,17 +126,18 @@ def get_top_activities(number_unit, unit):
     top_activities = top_activities[top_activities.time_start > (datetime.datetime.now() - datetime.timedelta(days=number_days))]
     top_activities = top_activities.groupby(['name'])['duration_minutes'].sum().reset_index()
     top_activities = top_activities[['name', 'duration_minutes']].sort_values('duration_minutes', ascending=False).head(10)
-    results = top_activities.to_json(orient='values')
+    results = top_activities.to_json(orient='records')
     return results
 
 
 # time spent on an activity in 4 different weeks (last 4 weeks)
-@app.route("/four-weeks-activity/<user_id>/<activity_id>")
+@app.route("/four-weeks-activity/<activity_id>/<user_id>")
 def four_weeks_activity(activity_id, user_id):
     days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
-    merger = pandas.merge(activities, tracked_activities, left_on='activity_blueprint_id', right_on='activity_blueprint_id', how='inner')
-    merger = merger[(merger['user_id'] == user_id) & (merger['activity_blueprint_id'] == activity_id)]
+    merger = pandas.merge(activities, tracked_activities, left_on='activity_blueprint_id',
+                          right_on='activity_blueprint_id', how='inner')
+    merger = merger[(merger['user_id'] == user_id) & (merger['activity_blueprint_id'] == int(activity_id))]
 
     last_week_1 = merger[(merger['time_start'] > (datetime.datetime.now() - datetime.timedelta(weeks=1)))]
     last_week_1 = last_week_1.groupby(merger['time_start'].dt.weekday_name)['duration_minutes'].sum().reindex(days).reset_index()
@@ -155,7 +156,7 @@ def four_weeks_activity(activity_id, user_id):
     last_week_4 = last_week_4[['time_start', 'duration_minutes']]
 
     results = pandas.concat([last_week_1, last_week_2, last_week_3, last_week_4], ignore_index=True)
-    results = results.to_json(orient='values')
+    results = results.to_json(orient='records')
     return results
 
 
@@ -165,11 +166,11 @@ def top_six_activities(user_id):
     merger = pandas.merge(activities, tracked_activities, left_on='activity_blueprint_id', right_on='activity_blueprint_id', how='inner')
     merger = merger[(merger['user_id'] == user_id)]
 
-    weeks_per_activity = merger.groupby(['name'])['time_start'].size().reset_index()
+    weeks_per_activity = merger.groupby(['name', 'activity_blueprint_id'])['time_start'].size().reset_index()
     time_spent_per_activity = merger.groupby(['name'])['duration_minutes'].sum().reset_index()
     top_activities = pandas.merge(weeks_per_activity, time_spent_per_activity, left_on='name', right_on='name')
-    top_activities = top_activities[['name', 'time_start', 'duration_minutes']].sort_values('duration_minutes', ascending=False).head(6)
-    results = top_activities.to_json(orient='values')
+    top_activities = top_activities[['activity_blueprint_id', 'name', 'time_start', 'duration_minutes']].sort_values('duration_minutes', ascending=False).head(6)
+    results = top_activities.to_json(orient='records')
     return results
 
 

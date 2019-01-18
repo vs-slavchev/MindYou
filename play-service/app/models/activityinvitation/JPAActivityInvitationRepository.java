@@ -107,6 +107,34 @@ public class JPAActivityInvitationRepository implements ActivityInvitationReposi
         return supplyAsync(() -> wrap(em -> list(em)), executionContext);
     }
 
+    @Override
+    public CompletionStage<Stream<ActivityInvitation>> getReceivedActivityInvitation(String userId) {
+        return supplyAsync(() -> wrap(em -> receivedActivityInvitationList(em, userId)), executionContext);
+    }
+
+    @Override
+    public CompletionStage<Stream<ActivityInvitation>> getSentActivityInvitation(String userId) {
+        return supplyAsync(() -> wrap(em -> sentActivityInvitationList(em, userId)), executionContext);
+    }
+
+    private Stream<ActivityInvitation> receivedActivityInvitationList(EntityManager em, String userId) {
+        String sqlString = "select *" +
+                " from activity_invitation" +
+                " where invitee_user_id = '" + userId + "'" +
+                " and accepted is not true";
+        List<ActivityInvitation> activityInvitationList = em.createNativeQuery(sqlString, ActivityInvitation.class).getResultList();
+        return activityInvitationList.stream();
+    }
+
+    private Stream<ActivityInvitation> sentActivityInvitationList(EntityManager em, String userId) {
+        String sqlString = "select *" +
+                " from activity_invitation" +
+                " where inviter_user_id = '" + userId + "'" +
+                " and accepted is not true";
+        List<ActivityInvitation> activityInvitationList = em.createNativeQuery(sqlString, ActivityInvitation.class).getResultList();
+        return activityInvitationList.stream();
+    }
+
     private Stream<ActivityInvitation> list(EntityManager em) {
         String qlString = "select * from activity_invitation";
         List<ActivityInvitation> activityInvitations = em.createQuery(qlString, ActivityInvitation.class).getResultList();

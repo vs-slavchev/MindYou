@@ -15,4 +15,8 @@ public interface ActivityInvitationRepository{
     CompletionStage<ActivityInvitation> declineRequest(String invitationId, String inviteeId);
 
     CompletionStage<Stream<ActivityInvitation>> list();
+
+    CompletionStage<Stream<ActivityInvitation>> getReceivedActivityInvitation(String userId);
+
+    CompletionStage<Stream<ActivityInvitation>> getSentActivityInvitation(String userId);
 }
