@@ -41,7 +41,7 @@
                         <StackLayout orientation="vertical" horizontalAlignment="stretch" class="list-group-item">
                             <Label [text]="item.inviterUser.name + ' invites for ' + item.activityBlueprint.name"></Label>
                           
-                            <Button  text="Go!" class="friend" horizontalAlignment="right" (tap)="acceptInvitation(item.invitationId)"></Button>
+                            <Button  text="Go!" class="friend" horizontalAlignment="right" (tap)="acceptInvitation(item.invitationId,$event)"></Button>
                             <Button  text="Can't go." class="decline" horizontalAlignment="right" (tap)="declineInivitation(item.invitationId)"></Button>
                        
                         </StackLayout>

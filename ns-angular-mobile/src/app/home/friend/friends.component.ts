@@ -264,7 +264,11 @@ export class FriendsComponent implements OnInit {
  
     //accept the invitation
     ///activities/invitation/:invitationId/accept
-    acceptInvitation(invitationId: number): void {
+    acceptInvitation(invitationId: number, args: EventData): void {
+
+        const b = args.object as Button;  
+        b.backgroundColor = 'red';
+   
         this.friendService.acceptInvitation(invitationId).subscribe();
         for (var i in this.receivedInvitations){
             if(this.receivedInvitations[i].invitationId==invitationId){

@@ -122,6 +122,7 @@ export class ItemsComponent implements OnInit {
     getActivities(): void {
         this.itemService.getActivities().subscribe(activities => {
             this.items = activities;
+            this._dataItems = new ObservableArray<DataItem>();
             for (let i = 0; i < this.items.length; i++) {
                 let item = this.items[i];
                 let dataItem = new DataItem(i, item.activityBlueprintId, 0, item.name, null, null, item.name, null, false, null, null, null, null, false);
